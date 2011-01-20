@@ -1,0 +1,62 @@
+<domain type='kvm'>
+  <name>@NAME@</name>
+  <uuid>@UUID@</uuid>
+  <memory>1048576</memory>
+  <currentMemory>1048576</currentMemory>
+  <vcpu>2</vcpu>
+  <os>
+    <type arch='x86_64' machine='pc'>hvm</type>
+    <boot dev='hd'/>
+  </os>
+  <features>
+    <acpi/>
+    <apic/>
+    <pae/>
+  </features>
+  <clock offset='utc'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+  <devices>
+    <emulator>/usr/bin/qemu-kvm</emulator>
+    <disk type='file' device='disk'>
+      <source file='@DISK@'/>
+      <driver name='qemu' type='qcow2'/>
+      <target dev='vda' bus='virtio'/>
+    </disk>
+    <disk type='file' device='disk'>
+      <source file='@SHAREDDISK@'/>
+      <target dev='vdb' bus='virtio'/>
+    </disk>
+    <interface type='bridge'>
+      <mac address='@MACADDRESS0@'/>
+      <source bridge='br0'/>
+      <model type='virtio'/>
+    </interface>
+    <interface type='bridge'>
+      <mac address='@MACADDRESS1@'/>
+      <source bridge='br1'/>
+      <model type='virtio'/>
+    </interface>
+    <interface type='bridge'>
+      <mac address='@MACADDRESS2@'/>
+      <source bridge='br2'/>
+      <model type='virtio'/>
+    </interface>
+    <interface type='bridge'>
+      <mac address='@MACADDRESS3@'/>
+      <source bridge='br3'/>
+      <model type='virtio'/>
+    </interface>
+    <serial type='pty'>
+      <target port='0'/>
+    </serial>
+    <console type='pty'>
+      <target port='0'/>
+    </console>
+    <input type='tablet' bus='usb'/>
+    <input type='mouse' bus='ps2'/>
+    <graphics type='vnc' port='-1' autoport='yes'/>
+  </devices>
+</domain>
+

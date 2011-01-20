@@ -13,3 +13,6 @@
   (trinks on avoiding udev renaming the interfaces based on mac address)
   and use dhcp to determine both ip and host name
   the dhcp config/bind zone generations are trivial
+
+- knet_node_libvirt_template.in:
+  same as above, handles multiple interfaces for redudant ring
