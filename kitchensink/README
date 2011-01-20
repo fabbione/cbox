@@ -5,3 +5,11 @@
   keeping the bits small and simple to follow
   the envvars exported from cman_notify are visible to all hooks
   and we can use them to drive the scripts (for eg).
+
+- cnode_libvirt_template.in:
+  this is the libvirt machine template I use to cat/sed on the fly
+  to easily create N guests.
+  all guests are configured so that eth always come up with eth0
+  (trinks on avoiding udev renaming the interfaces based on mac address)
+  and use dhcp to determine both ip and host name
+  the dhcp config/bind zone generations are trivial
