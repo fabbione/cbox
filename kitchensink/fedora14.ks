@@ -21,16 +21,13 @@ device virtio_blk
 # not by the livecd tools.
 #
 part / --size 4096 --fstype ext3 --ondisk vda
+part swap --size 1024 --fstype swap --ondisk vda
 
 #
 # Repositories
 #
-# To compose against the current release tree, use the following "repo" (enabled by default)
 repo --name="Fedora 14 - x86_64" --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-14&arch=$basearch
 repo --name="Fedora 14 - x86_64 - Updates" --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f14&arch=$basearch
-
-# To compose against rawhide, use the following "repo" (disabled by default)
-#repo --name=rawhide --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=rawhide&arch=$basearch
 
 #
 # Add all the packages after the base packages

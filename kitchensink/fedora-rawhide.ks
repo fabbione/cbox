@@ -21,6 +21,7 @@ device virtio_blk
 # not by the livecd tools.
 #
 part / --size 4096 --fstype ext3 --ondisk vda
+part swap --size 1024 --fstype swap --ondisk vda
 
 #
 # Repositories
