@@ -2,8 +2,8 @@
 
 set -e
 
-# cbox hook dir
-[ -z "$cboxdata" ] && cboxdata="HOOKDIR"
+# cbox hooks dir
+[ -z "$cboxhooksdir" ] && cboxhooksdir="HOOKSDIR"
 
 function print_usage() {
 	echo "$(basename $0) usage:"
@@ -83,5 +83,11 @@ done
 	echo "INFO: no cluster type defined, default to cman"
 	cboxclustertype=cman
 }
+
+export cboxhooksdir
+export cboxclustername
+export cboxnumnodes
+export cboxclustertype
+export cboxverbose
 
 exit 0

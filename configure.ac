@@ -55,13 +55,13 @@ AC_ARG_ENABLE([debug],
 
 ## random vars
 
-LOGDIR=${localstatedir}/log/cbox
-CBOXDATA=${datadir}/cbox
+CBOXLOGDIR=${localstatedir}/log/cbox
+CBOXHOOKSDIR=${datadir}/cbox
 
 ## do subst
 
-AC_SUBST([LOGDIR])
-AC_SUBST([CBOXDATA])
+AC_SUBST([CBOXLOGDIR])
+AC_SUBST([CBOXHOOKSDIR])
 
 AC_CONFIG_FILES([Makefile])
 
