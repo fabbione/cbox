@@ -1,0 +1,2 @@
+guestmount -d test -m /dev/vda1 /mnt
+

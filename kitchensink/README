@@ -25,3 +25,6 @@
 
 - create_image
   use appliance-tool to build a vm
+
+- mount_guest
+  use libguestfs-mount to access a VM device
