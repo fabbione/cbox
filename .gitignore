@@ -28,3 +28,4 @@ missing
 *.la
 *.lo
 .version
+cbox
