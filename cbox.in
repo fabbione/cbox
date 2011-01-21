@@ -3,7 +3,7 @@
 set -e
 
 # cbox hook dir
-[ -z "$CBOXDATA" ] && CBOXDATA="HOOKDIR"
+[ -z "$cboxdata" ] && cboxdata="HOOKDIR"
 
 function print_usage() {
 	echo "$(basename $0) usage:"
@@ -17,44 +17,45 @@ function is_integer() {
 
 # parse command line options
 #
-# c -> cluster name (clustername)
+# c -> cluster name (cboxclustername)
 # h -> help
-# n -> number of nodes (numnodes)
-# t -> type (clustertype)
+# n -> number of nodes (cboxnumnodes)
+# t -> type (cboxclustertype)
 # v -> verbose
 
 # clear envvars
-clustername=""
-numnodes=""
-clustertype=""
-verbose=""
+cboxclustername=""
+cboxnumnodes=""
+cboxclustertype=""
+cboxverbose=""
 
 while getopts ":c:hn:t:v" optflag; do
 	case "$optflag" in
 	c)
-		clustername="$OPTARG"
+		cboxclustername="$OPTARG"
 		;;
 	n)
-		numnodes="$OPTARG"
+		cboxnumnodes="$OPTARG"
 		! is_integer $numnodes && {
 			echo "ERROR: number of nodes needs to be an integer (min 2, max 16)"
 			exit 1
 		}
-		if [ "$numnodes" -lt "2" ] || [ "$numnodes" -gt "16" ]; then
+		if [ "$cboxnumnodes" -lt "2" ] || \
+		   [ "$cboxnumnodes" -gt "16" ]; then
 			echo "ERROR: invalid number of nodes specified (min 2, max 16)"
 			exit 1
 		fi
 		;;
 	t)
-		clustertype="$OPTARG"
-		if [ "$clustertype" != "cman" ] && \
-		   [ "$clustertype" != "pacemaker" ]; then
+		cboxclustertype="$OPTARG"
+		if [ "$cboxclustertype" != "cman" ] && \
+		   [ "$cboxclustertype" != "pacemaker" ]; then
 			echo "ERROR: cluster type has to be cman or pacemaker"
 			exit 1
 		fi
 		;;
 	v)
-		verbose="yes"
+		cboxverbose="yes"
 		;;
 	h)
 		print_usage
@@ -67,20 +68,20 @@ while getopts ":c:hn:t:v" optflag; do
 	esac
 done
 
-[ -z "$clustername" ] && {
+[ -z "$cboxclustername" ] && {
 	echo "ERROR: please specify the clustername"
 	print_usage
 	exit 1
 }
 
-[ -z "$numnodes" ] && {
+[ -z "$cboxnumnodes" ] && {
 	echo "INFO: no number of nodes specified, default to 2"
-	numnodes=2
+	cboxnumnodes=2
 }
 
-[ -z "$clustertype" ] && {
+[ -z "$cboxclustertype" ] && {
 	echo "INFO: no cluster type defined, default to cman"
-	clustertype=cman
+	cboxclustertype=cman
 }
 
 exit 0
