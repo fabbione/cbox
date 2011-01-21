@@ -23,7 +23,7 @@ function is_integer() {
 # t -> type (cboxclustertype)
 # v -> verbose
 
-# clear envvars
+# clear envvars (when adding, make sure to export them below)
 cboxclustername=""
 cboxnumnodes=""
 cboxclustertype=""
@@ -67,6 +67,11 @@ while getopts ":c:hn:t:v" optflag; do
 		;;
 	esac
 done
+
+[ ! -d "$cboxhooksdir" ] && {
+	echo "ERROR: no valid hooks directory specified: $cboxhooksdir"
+	exit 1
+}
 
 [ -z "$cboxclustername" ] && {
 	echo "ERROR: please specify the clustername"
