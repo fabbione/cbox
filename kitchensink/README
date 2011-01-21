@@ -22,3 +22,6 @@
 
 - fedora-rawhide.ks
   as above, use ssh or tty2 to access (for some reasons tty1 is not active)
+
+- create_image
+  use appliance-tool to build a vm
