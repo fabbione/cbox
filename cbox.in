@@ -5,6 +5,10 @@ set -e
 # cbox hooks dir
 [ -z "$cboxhooksdir" ] && cboxhooksdir="HOOKSDIR"
 
+# basic logging
+[ -z "$cboxlogdir" ] && cboxlogdir="LOGDIR"
+cboxlogfile=$cboxlogdir/cbox-$(date +%F_%T).log
+
 function print_usage() {
 	echo "$(basename $0) usage:"
 	echo ""
@@ -73,6 +77,16 @@ done
 	exit 1
 }
 
+[ ! -d "$cboxlogdir" ] && {
+	echo "ERROR: no valid log directory specified: $cboxlogdir"
+	exit 1
+}
+
+touch $cboxlogfile || {
+	echo "ERROR: unable to write to logfile: $cboxlogfile"
+	exit 1
+}
+
 [ -z "$cboxclustername" ] && {
 	echo "ERROR: please specify the clustername"
 	print_usage
@@ -94,5 +108,28 @@ export cboxclustername
 export cboxnumnodes
 export cboxclustertype
 export cboxverbose
+export cboxlogdir
+export cboxlogfile
+
+for i in $(LC_ALL=C; echo $cboxhooksdir/*[^~,]); do
+	[ -d $i ] && continue
+	# skip know scripts
+	[ "${i%.cfsaved}" != "${i}" ] && continue
+	[ "${i%.rpmsave}" != "${i}" ] && continue
+        [ "${i%.rpmorig}" != "${i}" ] && continue
+        [ "${i%.rpmnew}" != "${i}" ] && continue
+        [ "${i%.swp}" != "${i}" ] && continue
+	[ "${i%,v}" != "${i}" ] && continue
+	[ "${i%.dpkg-old}" != "${i}" ] && continue
+	[ "${i%.dpkg-dist}" != "${i}" ] && continue
+	[ "${i%.dpkg-new}" != "${i}" ] && continue
+
+	if [ -x $i ]; then
+		echo "starting $(basename $i)" >> $cboxlogfile
+		[ -n "$cboxverbose" ] && $i >> $cboxlogfile
+		[ -z "$cboxverbose" ] && $i > /dev/null 2>&1
+		echo "finished $(basename $i)" >> $cboxlogfile
+	fi
+done
 
 exit 0
