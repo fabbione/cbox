@@ -3,6 +3,6 @@
 set -e
 
 # cbox hook dir
-CBOXDATA="HOOKDIR"
+[ -z "$(CBOXDATA)" ] && CBOXDATA="HOOKDIR"
 
 exit 0
