@@ -56,7 +56,7 @@ AC_ARG_ENABLE([debug],
 ## random vars
 
 LOGDIR=${localstatedir}/log/cbox
-COBXDATA=${datadir}/cbox
+CBOXDATA=${datadir}/cbox
 
 ## do subst
 

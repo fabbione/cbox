@@ -12,7 +12,10 @@ TARGET			= cbox
 sbin_SCRIPTS		= $(TARGET)
 
 $(TARGET): $(TARGET).in
-	cat $< > $@-t && chmod 755 $@-t && mv $@-t $@
+	cat $< | sed \
+		-e 's#HOOKDIR#$(CBOXDATA)#g' \
+		> $@-t && \
+	chmod 755 $@-t && mv $@-t $@
 
 clean-local:
 	rm -f $(TARGET)

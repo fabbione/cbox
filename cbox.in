@@ -2,4 +2,7 @@
 
 set -e
 
+# cbox hook dir
+CBOXDATA="HOOKDIR"
+
 exit 0
