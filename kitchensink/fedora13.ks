@@ -11,7 +11,7 @@ services --enabled=network
 # Uncomment the next line
 # to make the root password be thincrust
 # By default the root password is emptied
-#rootpw --iscrypted $1$uw6MV$m6VtUWPed4SqgoW6fKfTZ/
+rootpw cluster
 
 device virtio_blk
 
