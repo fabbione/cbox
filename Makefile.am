@@ -7,10 +7,15 @@ MAINTAINERCLEANFILES	= Makefile.in aclocal.m4 configure \
 			  missing install-sh autoscan.log \
 			  configure.scan
 
-sbin_SCRIPTS		= cbox
+TARGET			= cbox
 
-cbox: cbox.in
+sbin_SCRIPTS		= $(TARGET)
+
+$(TARGET): $(TARGET).in
 	cat $< > $@-t && chmod 755 $@-t && mv $@-t $@
+
+clean-local:
+	rm -f $(TARGET)
 
 install-exec-local:
 			$(INSTALL) -d $(DESTDIR)/$(LOGDIR)
