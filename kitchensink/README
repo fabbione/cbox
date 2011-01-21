@@ -19,3 +19,6 @@
 
 - fedora13/fedora14.ks
   super minimal cluster node install
+
+- fedora-rawhide.ks
+  as above, use ssh or tty2 to access (for some reasons tty1 is not active)
