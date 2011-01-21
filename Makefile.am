@@ -13,7 +13,7 @@ sbin_SCRIPTS		= $(TARGET)
 
 $(TARGET): $(TARGET).in
 	cat $< | sed \
-		-e 's#HOOKSDIR#$(CBOXHOOKSDIR)#g' \
+		-e 's#DATADIR#$(CBOXDATADIR)#g' \
 		-e 's#LOGDIR#$(CBOXLOGDIR)#g' \
 		> $@-t && \
 	chmod 755 $@-t && mv $@-t $@

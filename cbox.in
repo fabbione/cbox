@@ -2,8 +2,11 @@
 
 set -e
 
+# cbox data dir
+[ -z "$cboxdatadir" ] && cboxhooksdir="DATADIR"
+
 # cbox hooks dir
-[ -z "$cboxhooksdir" ] && cboxhooksdir="HOOKSDIR"
+[ -z "$cboxhooksdir" ] && cboxhooksdir="$cboxdatadir/hooks"
 
 # basic logging
 [ -z "$cboxlogdir" ] && cboxlogdir="LOGDIR"
@@ -72,6 +75,11 @@ while getopts ":c:hn:t:v" optflag; do
 	esac
 done
 
+[ ! -d "$cboxdatadir" ] && {
+	echo "ERROR: no valid data directory specified: $cboxdatadir"
+	exit 1
+}
+
 [ ! -d "$cboxhooksdir" ] && {
 	echo "ERROR: no valid hooks directory specified: $cboxhooksdir"
 	exit 1
@@ -103,6 +111,7 @@ touch $cboxlogfile || {
 	cboxclustertype=cman
 }
 
+export cboxdatadir
 export cboxhooksdir
 export cboxclustername
 export cboxnumnodes
