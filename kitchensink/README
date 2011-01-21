@@ -16,3 +16,6 @@
 
 - knet_node_libvirt_template.in:
   same as above, handles multiple interfaces for redudant ring
+
+- fedora14.ks
+  super minimal cluster node install
