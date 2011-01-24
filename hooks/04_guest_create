@@ -2,10 +2,10 @@
 
 set -e
 
-echo "Creating VMs in /srv/$cboxclustername"
-mkdir -p /srv/$cboxclustername
+echo "Creating VMs in /srv/cbox/$cboxclustername"
+mkdir -p /srv/cbox/$cboxclustername
 
-cd /srv/$cboxclustername
+cd /srv/cbox/$cboxclustername
 
 appliance-creator -v --vmem=2048 --vcpu=2 \
 		  -n $cboxclustername-boot \
