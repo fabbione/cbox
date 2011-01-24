@@ -135,6 +135,11 @@ export cboxlogdir
 export cboxlogfile
 export cboxfedrelease
 
+# TODO: add question here
+
+echo "Creating cluster... this might take several minutes"
+echo "check progress in $cboxlogfile"
+
 for i in $(LC_ALL=C; echo $cboxhooksdir/*[^~,]); do
 	[ -d $i ] && continue
 	# skip know scripts
