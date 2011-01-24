@@ -110,9 +110,8 @@ touch $cboxlogfile || {
 }
 
 [ -z "$cboxclustername" ] && {
-	echo "ERROR: please specify the clustername"
-	print_usage
-	exit 1
+	echo "INFO: no cluster name specified, default to testcluster"
+	cboxclustername=testcluster
 }
 
 [ -z "$cboxnumnodes" ] && {
