@@ -3,5 +3,7 @@
 virsh net-destroy cluster
 virsh net-undefine cluster
 mv -f /etc/hosts.cbox /etc/hosts
+service fence_virtd stop
+mv -f /etc/fence_virtd.conf.cbox /etc/fence_virtd.conf
 
 rm -rf /srv/cbox
