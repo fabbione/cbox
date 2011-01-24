@@ -21,6 +21,7 @@ EOF
 
 for i in $(seq 1 $cboxnumnodes); do
 	echo "      <host mac='54:52:00:00:00:$(printf '%x' $i)' name='$cboxclustername-node$i' ip='192.168.123.$i' />" >> "$tempfile"
+	echo "192.168.123.$i $cboxclustername-node$i" >> /etc/hosts
 done
 
 cat >> "$tempfile" << EOF
