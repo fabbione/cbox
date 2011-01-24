@@ -32,6 +32,7 @@ function is_integer() {
 # c -> cluster name (cboxclustername)
 # h -> help
 # n -> number of nodes (cboxnumnodes)
+# r -> fedora release (13 / 14 / rawhide)
 # t -> type (cboxclustertype)
 # v -> verbose
 
@@ -40,8 +41,9 @@ cboxclustername=""
 cboxnumnodes=""
 cboxclustertype=""
 cboxverbose=""
+cboxfedrelease=""
 
-while getopts ":c:hn:t:v" optflag; do
+while getopts ":c:hn:r:t:v" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
@@ -55,6 +57,13 @@ while getopts ":c:hn:t:v" optflag; do
 		if [ "$cboxnumnodes" -lt "2" ] || \
 		   [ "$cboxnumnodes" -gt "16" ]; then
 			echo "ERROR: invalid number of nodes specified (min 2, max 16)"
+			exit 1
+		fi
+		;;
+	r)
+		cboxfedrelease="$OPTARG"
+		if [ ! -f $cboxdatadir/fedora-$cboxfedrelease.ks ]; then
+			echo "ERROR: no kickstart file for fedora $cboxfedrelease"
 			exit 1
 		fi
 		;;
@@ -124,6 +133,7 @@ export cboxclustertype
 export cboxverbose
 export cboxlogdir
 export cboxlogfile
+export cboxfedrelease
 
 for i in $(LC_ALL=C; echo $cboxhooksdir/*[^~,]); do
 	[ -d $i ] && continue

@@ -9,15 +9,6 @@
 - knet_node_libvirt_template.in:
   same as above, handles multiple interfaces for redudant ring
 
-- fedora13/fedora14.ks
-  super minimal cluster node install
-
-- fedora-rawhide.ks
-  as above, use ssh or tty2 to access (for some reasons tty1 is not active)
-
-- create_image
-  use appliance-tool to build a vm
-
 - mount_guest
   use libguestfs-mount to access a VM device
 

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+echo "Creating VMs in /srv/$cboxclustername"
+mkdir -p /srv/$cboxclustername
+
+cd /srv/$cboxclustername
+
+appliance-creator -v --vmem=2048 --vcpu=2 \
+		  -n $cboxclustername-boot \
+		  -c $cboxdatadir/fedora-$cboxfedrelease.ks
+
+exit 0

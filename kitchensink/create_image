@@ -1,1 +1,0 @@
-appliance-creator -v -n test --vmem=1024 --vcpu=2 -c /home/fabbione/work/cluster/cbox/cbox/kitchensink/fedora13.ks
