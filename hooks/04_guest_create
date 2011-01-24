@@ -11,4 +11,6 @@ appliance-creator -v --vmem=2048 --vcpu=2 \
 		  -n $cboxclustername-boot \
 		  -c $cboxdatadir/fedora-$cboxfedrelease.ks
 
+rm -f $cboxclustername-boot/$cboxclustername-boot.xml
+
 exit 0
