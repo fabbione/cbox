@@ -1,0 +1,22 @@
+#!/bin/bash
+
+[ "$(whoami)" != "root" ] && {
+	echo "Need root baby"
+	exit 1
+}
+
+cd /root
+mkdir .ssh
+chmod 0700 .ssh
+cat >> .ssh/authorized_keys << EOF
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEAvsv1ztlDubEKL6AHNPwJKZQdFrNIwa9SrfmBw2uB0HEq8tWnGJCkANvVeNwpWWAqegsyuYTwBqPBSPDTkC9F3wnodfklu6AnlVh6UgB0b4H4iDvS0Q6zBriYTAQEIKZfkubQe9LADmYLqdSjux+CMc02JM3nBbse46pbA1Z65pmJrI/h6IwCXcasOV2lqrebFCBDT6nV3WucODGlyZ27/tHVQHTyuv0hl+JVzZiTBUsMt1tRL19tg71W8//sGZqZgY3VUL2kUxfElEqjLT8eiy3R+GKm+KlpMrOY89nc4uO/M7Szz0wUkuTju3hdzlXbElwg4Vi1fPRoXwjT2sNria4UvLD6iRJ/7LnnpG1/k8+EepvTxGhN55M+zuaRg2ObouQwKpooPhZ9OFBqZsGnJK5csGTLoLuN8j7xsfi0HhOIQ2dwb7TMrLnhPgHTXaZ/0i0QMQm+VSDHD2e7jL1e7sspcZsSSycyxbLwlRRrYDi00qrwfwR4drM/FATH8m5PkqI5M+uFvf8VnLryf19DPw0gHNXtwCqnbP3EgICtZ5TQZGa3eaBG4+89ylb6jCdIRR2VIBsGZvuivdjzlbO8+QqSMv0rdJD1cY1rACaeMvMLA0OqppjUBOIyBYD74hTi6yKrpDX3pHzhC5oGgJVTJgmhxgwqxfFQ9BaeQiHQovk= fabbione@trider-g7
+EOF
+chmod 0400 .ssh/authorized_keys
+[ -n "$(which restorecon)" ] && {
+	restorecon .ssh
+	restorecon .ssh/authorized_keys
+}
+yum update -y
+yum install -y git
+rm -rf cbox
+git clone git://github.com/fabbione/cbox.git
