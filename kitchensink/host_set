@@ -17,6 +17,6 @@ chmod 0400 .ssh/authorized_keys
 	restorecon .ssh/authorized_keys
 }
 yum update -y
-yum install -y git autoconf automake
+yum install -y git autoconf automake vim
 rm -rf cbox
 git clone git://github.com/fabbione/cbox.git
