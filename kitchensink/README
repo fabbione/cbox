@@ -1,11 +1,3 @@
-- cman_notify:
-  we can re-use it as run-parts equivalent to execute
-  a series of hooks in /path/to/dir/*
-  each hook would perform a very specific operation,
-  keeping the bits small and simple to follow
-  the envvars exported from cman_notify are visible to all hooks
-  and we can use them to drive the scripts (for eg).
-
 - cnode_libvirt_template.in:
   this is the libvirt machine template I use to cat/sed on the fly
   to easily create N guests.
