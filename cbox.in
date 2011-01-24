@@ -121,7 +121,7 @@ touch $cboxlogfile || {
 }
 
 [ -z "$cboxfedrelease" ] && {
-	if grep -q -i rawhide /etc/fedora; then
+	if grep -q -i rawhide /etc/fedora-release; then
 		cboxfedrelease=rawhide
 	else
 		cboxfedrelease=$(cat /etc/fedora-release | awk '{print $3}')
