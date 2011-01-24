@@ -7,4 +7,4 @@ yum install -y \
 	appliance-tools libguestfs-mount \
 	fence-virtd fence-virtd-multicast fence-virtd-libvirt
 
-exit $?
+exit 0

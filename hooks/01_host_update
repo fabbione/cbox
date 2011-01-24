@@ -4,4 +4,4 @@ set -e
 
 yum update -y
 
-exit $?
+exit 0
