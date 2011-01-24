@@ -18,6 +18,14 @@ $(TARGET): $(TARGET).in
 		> $@-t && \
 	chmod 755 $@-t && mv $@-t $@
 
+cboxdatadir		= $(CBOXDATADIR)
+
+cboxdata_SCRIPTS	= data/*
+
+cboxhooksdir		= $(CBOXDATADIR)/hooks
+
+cboxhooks_SCRIPTS	= hooks/*
+
 clean-local:
 	rm -f $(TARGET)
 
