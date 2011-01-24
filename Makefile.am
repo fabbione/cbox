@@ -30,7 +30,7 @@ clean-local:
 	rm -f $(TARGET)
 
 install-exec-local:
-			$(INSTALL) -d $(DESTDIR)/$(LOGDIR)
+			$(INSTALL) -d $(DESTDIR)/$(CBOXLOGDIR)
 
 uninstall-local:
 			rmdir $(DESTDIR)/$(LOGDIR) || :;

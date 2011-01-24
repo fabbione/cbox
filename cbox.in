@@ -8,7 +8,7 @@ set -e
 }
 
 # cbox data dir
-[ -z "$cboxdatadir" ] && cboxhooksdir="DATADIR"
+[ -z "$cboxdatadir" ] && cboxdatadir="DATADIR"
 
 # cbox hooks dir
 [ -z "$cboxhooksdir" ] && cboxhooksdir="$cboxdatadir/hooks"
@@ -50,7 +50,7 @@ while getopts ":c:hn:r:t:v" optflag; do
 		;;
 	n)
 		cboxnumnodes="$OPTARG"
-		! is_integer $numnodes && {
+		! is_integer $cboxnumnodes && {
 			echo "ERROR: number of nodes needs to be an integer (min 2, max 16)"
 			exit 1
 		}
