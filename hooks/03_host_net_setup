@@ -6,6 +6,8 @@ service libvirtd start
 
 virsh net-list |grep -q ^cluster && exit 0
 
+cp /etc/hosts /etc/hosts.cbox
+
 tempfile="$(mktemp)"
 
 cat > "$tempfile" << EOF
@@ -29,6 +31,8 @@ cat >> "$tempfile" << EOF
   </ip>
 </network>
 EOF
+
+echo "192.168.123.254 $cboxclustername-host" >> /etc/hosts
 
 virsh net-define "$tempfile"
 virsh net-autostart cluster
