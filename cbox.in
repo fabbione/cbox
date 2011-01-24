@@ -154,7 +154,7 @@ for i in $(LC_ALL=C; echo $cboxhooksdir/*[^~,]); do
 
 	if [ -x $i ]; then
 		echo "starting $(basename $i)" >> $cboxlogfile
-		[ -n "$cboxverbose" ] && $i >> $cboxlogfile
+		[ -n "$cboxverbose" ] && $i >> $cboxlogfile 2>&1
 		[ -z "$cboxverbose" ] && $i > /dev/null 2>&1
 		echo "finished $(basename $i)" >> $cboxlogfile
 	fi
