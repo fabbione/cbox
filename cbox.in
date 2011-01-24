@@ -2,6 +2,11 @@
 
 set -e
 
+[ "$(whoami)" != "root" ] && {
+	echo "Need root baby"
+	exit 1
+}
+
 # cbox data dir
 [ -z "$cboxdatadir" ] && cboxhooksdir="DATADIR"
 
