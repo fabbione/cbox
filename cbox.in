@@ -62,10 +62,6 @@ while getopts ":c:hn:r:t:v" optflag; do
 		;;
 	r)
 		cboxfedrelease="$OPTARG"
-		if [ ! -f $cboxdatadir/fedora-$cboxfedrelease.ks ]; then
-			echo "ERROR: no kickstart file for fedora $cboxfedrelease"
-			exit 1
-		fi
 		;;
 	t)
 		cboxclustertype="$OPTARG"
@@ -122,6 +118,20 @@ touch $cboxlogfile || {
 [ -z "$cboxclustertype" ] && {
 	echo "INFO: no cluster type defined, default to cman"
 	cboxclustertype=cman
+}
+
+[ -z "$cboxfedrelease" ] && {
+	if grep -q -i rawhide /etc/fedora; then
+		cboxfedrelease=rawhide
+	else
+		cboxfedrelease=$(cat /etc/fedora-release | awk '{print $3}')
+	fi
+	echo "INFO: no fedora release define, autodetected $cboxfedrelease from host"
+}
+
+[ ! -f $cboxdatadir/fedora-$cboxfedrelease.ks ] && {
+	echo "ERROR: no kickstart file for fedora $cboxfedrelease"
+	exit 1
 }
 
 export cboxdatadir
