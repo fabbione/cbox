@@ -132,8 +132,8 @@ touch $cboxlogfile || {
 }
 
 [ -z "$cboxrasmngr" ] && {
-	echo "INFO: no cluster resource manager specified, default to rgmanager"
-	cboxrasmngr=rgmanager
+	echo "INFO: no cluster resource manager specified, default to none"
+	cboxrasmngr=none
 }
 
 [ -z "$cboxfedrelease" ] && {
