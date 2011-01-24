@@ -31,9 +31,10 @@ function is_integer() {
 #
 # c -> cluster name (cboxclustername)
 # h -> help
+# m -> resource manager (cboxrasmngr) rgmanager|pacemaker|none
 # n -> number of nodes (cboxnumnodes)
 # r -> fedora release (13 / 14 / rawhide)
-# t -> type (cboxclustertype)
+# t -> type (cboxclustertype) cman|corosync
 # v -> verbose
 
 # clear envvars (when adding, make sure to export them below)
@@ -42,11 +43,21 @@ cboxnumnodes=""
 cboxclustertype=""
 cboxverbose=""
 cboxfedrelease=""
+cboxrasmngr=""
 
-while getopts ":c:hn:r:t:v" optflag; do
+while getopts ":c:hm:n:r:t:v" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
+		;;
+	m)
+		cboxrasmngr="$OPTARG"
+		if [ "$cboxrasmngr" != "rgmanager" ] && \
+		   [ "$cboxrasmngr" != "pacemaker" ] && \
+		   [ "$cboxrasmngr" != "none" ]; then
+			echo "ERROR: cluster resource manager has to be rgmanager, pacemaker or none"
+			exit 1
+		fi
 		;;
 	n)
 		cboxnumnodes="$OPTARG"
@@ -66,8 +77,8 @@ while getopts ":c:hn:r:t:v" optflag; do
 	t)
 		cboxclustertype="$OPTARG"
 		if [ "$cboxclustertype" != "cman" ] && \
-		   [ "$cboxclustertype" != "pacemaker" ]; then
-			echo "ERROR: cluster type has to be cman or pacemaker"
+		   [ "$cboxclustertype" != "corosync" ]; then
+			echo "ERROR: cluster type has to be cman or corosync"
 			exit 1
 		fi
 		;;
@@ -116,8 +127,13 @@ touch $cboxlogfile || {
 }
 
 [ -z "$cboxclustertype" ] && {
-	echo "INFO: no cluster type defined, default to cman"
+	echo "INFO: no cluster type specified, default to cman"
 	cboxclustertype=cman
+}
+
+[ -z "$cboxrasmngr" ] && {
+	echo "INFO: no cluster resource manager specified, default to rgmanager"
+	cboxrasmngr=rgmanager
 }
 
 [ -z "$cboxfedrelease" ] && {
@@ -134,6 +150,12 @@ touch $cboxlogfile || {
 	exit 1
 }
 
+## cross checks
+[ "$cboxclustertype" = "corosync" ] && [ "$cboxrasmngr" = "rgmanager" ] && {
+	echo "ERROR: you can't select corosync and rgmanager together."
+	exit 1
+}
+
 export cboxdatadir
 export cboxhooksdir
 export cboxclustername
@@ -143,6 +165,7 @@ export cboxverbose
 export cboxlogdir
 export cboxlogfile
 export cboxfedrelease
+export cboxrasmngr
 
 # TODO: add question here
 
