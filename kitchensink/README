@@ -17,6 +17,7 @@
 
 random bubbling:
 
+- use host to install ccs/luci for management?
 - enable more than one bridge/interface?
 - use dhcp+dns?
 - use ssh-keygen on the host and distribute .pub on the guests?
