@@ -1,0 +1,7 @@
+#!/bin/bash
+
+virsh net-destroy cluster
+virsh net-undefine cluster
+mv -f /etc/hosts.cbox /etc/hosts
+
+rm -rf /srv/cbox

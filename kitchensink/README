@@ -12,7 +12,7 @@
 - mount_guest
   use libguestfs-mount to access a VM device
 
-- host_set
+- host_set/unset
   debug script to set fabbione public ssh key on host and do git clone
 
 random bubbling:
