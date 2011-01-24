@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+service libvirtd start
+
+virsh net-list |grep -q ^cluster-bridge0 && exit 0
+
+tempfile="$(mktemp)"
+
+cat > "$tempfile" << EOF
+<network>
+  <name>cluster</name>
+  <uuid>$(uuidgen)</uuid>
+  <forward mode='nat'/>
+  <bridge name='cluster-bridge0' stp='off' delay='0'/>
+  <ip address='192.168.123.254' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.123.1' end='192.168.122.253'/>
+EOF
+
+for i in $(seq 1 $cboxnumnodes); do
+	echo "      <host mac='54:52:00:00:00:$(printf '%x' $i)' name='$cboxclustername-node$i' ip='192.168.123.$i' />" >> "$tempfile"
+done
+
+cat >> "$tempfile" << EOF
+    </dhcp>
+  </ip>
+</network>
+EOF
+
+virsh net-define "$tempfile"
+virst net-autostart cluster-bridge0
+
+rm -f "$tempfile"
+
+exit 0
