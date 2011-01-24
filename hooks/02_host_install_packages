@@ -1,0 +1,7 @@
+#!/bin/bash
+
+yum install -y \
+	libvirt qemu-system-x86 appliance-tools libguestfs-mount \
+	fence-virtd fence-virtd-multicast fence-virtd-libvirt
+
+exit $?
