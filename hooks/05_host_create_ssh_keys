@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+cd /root
+mkdir -p .ssh
+ssh-keygen -q -N '' -C '' -t rsa -b 2048 -f .ssh/id_rsa_$cboxclustername
+chmod 0600 .ssh/id_rsa_$cboxclustername.pub
+
+exit 0
