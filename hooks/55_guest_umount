@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+echo "Unmount VM disk"
+
+cd /srv/cbox/$cboxclustername
+
+umount $cboxclustername-mount
+
+sync
+
+exit 0
