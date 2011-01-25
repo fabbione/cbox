@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+echo "Starting main guest"
+
+virsh start $cboxclustername-node1
+
+sleep 60
+
+exit 0
