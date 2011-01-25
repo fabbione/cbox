@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+cd /srv/cbox/$cboxclustername
+
+mkdir -p $cboxclustername-mount/root/.ssh
+cp /root/.ssh/id_rsa_$cboxclustername.pub \
+   $cboxclustername-mount/root/.ssh/authorized_keys
+
+chmod 0400 $cboxclustername-mount/root/.ssh/authorized_keys
+
+exit 0
