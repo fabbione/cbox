@@ -5,6 +5,7 @@ set -e
 yum install -y \
 	libvirt libvirt-client qemu-system-x86 \
 	appliance-tools libguestfs-mount \
-	fence-virtd fence-virtd-multicast fence-virtd-libvirt
+	fence-virtd fence-virtd-multicast fence-virtd-libvirt \
+	openssh-clients
 
 exit 0
