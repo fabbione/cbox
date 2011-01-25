@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+echo "Configure clvmd in the guest"
+
+cd /srv/cbox/$cboxclustername
+
+ssh $cboxclustername-node1 \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no \
+	"pvcreate -f $(cat "clvmd_partition")"
+
+ssh $cboxclustername-node1 \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no \
+	"vgcreate --autobackup y --clustered n $cboxclustername-vg $(cat "clvmd_partition")"
+
+ssh $cboxclustername-node1 \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no \
+	"lvcreate --autobackup y  --extents 100%VG testcluster-vg -n testcluster-lv"
+
+ssh $cboxclustername-node1 \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no \
+	"mkfs.gfs2 -j 16 -O -t $cboxclustername:clvmd_gfs2 $(cat "clvmd_partition")"
+
+ssh $cboxclustername-node1 \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no \
+	"vgchange --clustered y $cboxclustername-vg"
+
+ssh $cboxclustername-node1 \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no \
+	"lvmconf --enable-cluster"
+
+exit 0

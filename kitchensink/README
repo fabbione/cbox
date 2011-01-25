@@ -12,6 +12,7 @@
 
 random bubbling:
 
+- enable qdiskd?
 - use host to install ccs/luci for management?
 - enable more than one bridge/interface?
 - use dhcp+dns?

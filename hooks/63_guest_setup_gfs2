@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+echo "Configure gfs2 in the guest"
+
+cd /srv/cbox/$cboxclustername
+
+ssh $cboxclustername-node1 \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no \
+	"mkfs.gfs2 -j 16 -O -t $cboxclustername:gfs2 $(cat "gfs2_partition")"
+
+exit 0
