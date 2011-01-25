@@ -2,6 +2,8 @@
 
 set -e
 
+cd /srv/cbox/$cboxclustername
+
 cat > $cboxclustername-mount/etc/cluster/cluster.conf << EOF
 <?xml version="1.0"?>
 
