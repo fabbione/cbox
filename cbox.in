@@ -33,19 +33,19 @@ function is_integer() {
 # h -> help
 # m -> resource manager (cboxrasmngr) rgmanager|pacemaker|none
 # n -> number of nodes (cboxnumnodes)
+# q -> quiet
 # r -> fedora release (13 / 14 / rawhide)
 # t -> type (cboxclustertype) cman|corosync
-# v -> verbose
 
 # clear envvars (when adding, make sure to export them below)
 cboxclustername=""
 cboxnumnodes=""
 cboxclustertype=""
-cboxverbose=""
+cboxverbose="yes"
 cboxfedrelease=""
 cboxrasmngr=""
 
-while getopts ":c:hm:n:r:t:v" optflag; do
+while getopts ":c:hm:n:qr:t:" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
@@ -71,6 +71,9 @@ while getopts ":c:hm:n:r:t:v" optflag; do
 			exit 1
 		fi
 		;;
+	q)
+		cboxverbose=""
+		;;
 	r)
 		cboxfedrelease="$OPTARG"
 		;;
@@ -81,9 +84,6 @@ while getopts ":c:hm:n:r:t:v" optflag; do
 			echo "ERROR: cluster type has to be cman or corosync"
 			exit 1
 		fi
-		;;
-	v)
-		cboxverbose="yes"
 		;;
 	h)
 		print_usage
