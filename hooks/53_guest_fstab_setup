@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+cd /srv/cbox/$cboxclustername
+
+echo "Fix guests /etc/fstab"
+
+cp $cboxclustername-mount/etc/fstab \
+   $cboxclustername-mount/etc/fstab.cbox
+
+sed -i \
+   -e 's%.*vdb.*clvm.*%## &%g' \
+   -e 's%.*vdb.*qdisk.*%## &%g' \
+   -e 's%gfs2.*ext3%gfs2 gfs2%g' \
+   $cboxclustername-mount/etc/fstab
+
+exit 0
