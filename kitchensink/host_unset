@@ -1,5 +1,12 @@
 #!/bin/bash
 
+for i in $(virsh list | grep testcluster | awk '{print $2}'; do
+	virsh destroy $i
+	virsh undefine $i
+done
+
+rm -f /root/.ssh/known_hosts
+
 virsh net-destroy cluster
 virsh net-undefine cluster
 mv -f /etc/hosts.cbox /etc/hosts
