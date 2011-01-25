@@ -4,8 +4,6 @@ set -e
 
 cd /srv/cbox/$cboxclustername
 
-# $cboxclustername-mount
-
 echo "Fix guests /etc/hosts"
 
 cp $cboxclustername-mount/etc/hosts \
