@@ -10,4 +10,6 @@ umount $cboxclustername-mount
 
 sync
 
+rm -f $cboxclustername-mount
+
 exit 0
