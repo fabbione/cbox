@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+cat > $cboxclustername-mount/etc/cluster/cluster.conf << EOF
+<?xml version="1.0"?>
+
+<cluster name="$cboxclustername" config_version="1" >
+  <logging debug="on"/>
+  <clusternodes>
+EOF
+
+for i in $(seq 1 $cboxnumnodes); do
+
+cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
+    <clusternode name="$cboxclustername-node$i" nodeid="$i">
+      <fence>
+        <method name="single">
+          <device name="kvm" domain="$cboxclustername-node$i"/>
+        </method>
+      </fence>
+    </clusternode>
+EOF
+
+done
+
+cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
+  </clusternodes>
+  <fencedevices>
+    <fencedevice name="xvm" agent="fence_xvm"/>
+  </fencedevices>
+</cluster>
+EOF
+
+exit 0
