@@ -13,12 +13,12 @@ mv $cboxclustername-boot/$cboxclustername-boot-vdb.raw \
    $cboxclustername-shareddisk.raw
 
 cat $cboxdatadir/libvirt_template.xml | sed \
-	-e 's#@NAME@#$cboxclustername-node1#g' \
-	-e 's#@UUID@#$(uuidgen)#g' \
+	-e 's#@NAME@#'$cboxclustername-node1'#g' \
+	-e 's#@UUID@#'$(uuidgen)'#g' \
 	-e 's#@MEMORY@#2097152#g' \
 	-e 's#@VCPUS@#2#g' \
-	-e 's#@DISK@#/srv/cbox/$cboxclustername/$cboxclustername-node1.raw#g' \
-	-e 's#@SHAREDDISK@#/srv/cbox/$cboxclustername/$cboxclustername-shareddisk.raw#g' \
+	-e 's#@DISK@#'/srv/cbox/$cboxclustername/$cboxclustername-node1.raw'#g' \
+	-e 's#@SHAREDDISK@#'/srv/cbox/$cboxclustername/$cboxclustername-shareddisk.raw'#g' \
 	-e 's#@MACADDRESS@#54:52:00:00:00:1#g' \
 	> $cboxclustername-node1.xml
 
