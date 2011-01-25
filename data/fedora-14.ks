@@ -23,6 +23,11 @@ device virtio_blk
 part / --size 4096 --fstype ext3 --ondisk vda
 part swap --size 1024 --fstype swap --ondisk vda
 
+# temporary workaround to get the image created easily
+part /srv/cbox/qdiskd --size 64 --fstype ext3 --ondisk vdb
+part /srv/cbox/gfs2 --size 10240 --fstype ext3 --ondisk vdb
+part /srv/cbox/clvmd --size 10240 --fstype ext3 --ondisk vdb
+
 #
 # Repositories
 #
