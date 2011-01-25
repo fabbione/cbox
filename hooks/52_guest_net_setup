@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+cd /srv/cbox/$cboxclustername
+
+# $cboxclustername-mount
+
+echo "Fix guests /etc/hosts"
+
+cp $cboxclustername-mount/etc/hosts \
+   $cboxclustername-mount/etc/hosts.cbox
+
+cat /etc/hosts | \
+	grep 192.168.123 \
+	>> $cboxclustername-mount/etc/hosts
+
+echo "Fix guests /etc/sysconfig/network"
+
+cp $cboxclustername-mount/etc/sysconfig/network \
+   $cboxclustername-mount/etc/sysconfig/network.cbox
+
+sed -i -e 's#HOSTNAME.*##g' \
+   $cboxclustername-mount/etc/sysconfig/network
+
+exit 0
