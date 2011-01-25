@@ -18,7 +18,7 @@ cat > "$tempfile" << EOF
   <bridge name='cluster-bridge0' stp='off' delay='0'/>
   <ip address='192.168.123.254' netmask='255.255.255.0'>
     <dhcp>
-      <range start='192.168.123.1' end='192.168.122.253'/>
+      <range start='192.168.123.1' end='192.168.123.253'/>
 EOF
 
 for i in $(seq 1 $cboxnumnodes); do
