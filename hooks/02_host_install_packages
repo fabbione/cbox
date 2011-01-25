@@ -4,7 +4,7 @@ set -e
 
 yum install -y \
 	libvirt libvirt-client qemu-system-x86 \
-	appliance-tools libguestfs-mount python-virtinst \
+	appliance-tools libguestfs-mount \
 	fence-virtd fence-virtd-multicast fence-virtd-libvirt
 
 exit 0
