@@ -24,7 +24,7 @@ ssh $cboxclustername-node1 \
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
-	"mkfs.gfs2 -j 16 -O -t $cboxclustername:clvmd_gfs2 $(cat "clvmd_partition")"
+	"mkfs.gfs2 -j 16 -O -t $cboxclustername:clvmd_gfs2 /dev/testcluster-vg/testcluster-lv"
 
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
