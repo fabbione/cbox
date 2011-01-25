@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+echo "Mount VM disk"
+
+cd /srv/cbox/$cboxclustername
+
+mkdir -p $cboxclustername-mount
+
+guestmount \
+	-a $cboxclustername-boot/$cboxclustername-boot-vda.raw \
+	-m /dev/vda1 \
+	$cboxclustername-mount
+
+exit 0

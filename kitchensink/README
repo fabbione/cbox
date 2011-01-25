@@ -9,9 +9,6 @@
 - knet_node_libvirt_template.in:
   same as above, handles multiple interfaces for redudant ring
 
-- mount_guest
-  use libguestfs-mount to access a VM device
-
 - host_set/unset
   debug script to set fabbione public ssh key on host and do git clone
 
