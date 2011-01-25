@@ -1,12 +1,10 @@
-- cnode_libvirt_template.in:
+- knet_node_libvirt_template.in:
   this is the libvirt machine template I use to cat/sed on the fly
   to easily create N guests.
   all guests are configured so that eth always come up with eth0
   (trinks on avoiding udev renaming the interfaces based on mac address)
   and use dhcp to determine both ip and host name
   the dhcp config/bind zone generations are trivial
-
-- knet_node_libvirt_template.in:
   same as above, handles multiple interfaces for redudant ring
 
 - host_set/unset

@@ -1,9 +1,9 @@
 <domain type='kvm'>
   <name>@NAME@</name>
   <uuid>@UUID@</uuid>
-  <memory>524288</memory>
-  <currentMemory>524288</currentMemory>
-  <vcpu>1</vcpu>
+  <memory>@MEMORY@</memory>
+  <currentMemory>@MEMORY@</currentMemory>
+  <vcpu>@VCPUS@</vcpu>
   <os>
     <type arch='x86_64' machine='pc'>hvm</type>
     <boot dev='hd'/>
@@ -29,7 +29,7 @@
     </disk>
     <interface type='bridge'>
       <mac address='@MACADDRESS@'/>
-      <source bridge='br0'/>
+      <source bridge='cluster-bridge0'/>
       <model type='virtio'/>
     </interface>
     <serial type='pty'>
