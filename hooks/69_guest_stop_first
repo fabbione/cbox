@@ -8,7 +8,8 @@ virsh stop $cboxclustername-node1
 
 max=60
 count=0
-while [ -n "$(virsh list | grep testcluster | awk '{print $2}')" ]
+while [ -n "$(virsh list | grep testcluster | awk '{print $2}')" ]; do
+	sleep 5
 	[ "$max" -eq "$count" ] && {
 		echo "ERROR: $cboxclustername-node1 did not shutdown after 300 seconds"
 		exit 1
