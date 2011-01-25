@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+echo "Stopping main guest"
+
+virsh stop $cboxclustername-node1
+
+max=60
+count=0
+while [ -n "$(virsh list | grep testcluster | awk '{print $2}')" ]
+	[ "$max" -eq "$count" ] && {
+		echo "ERROR: $cboxclustername-node1 did not shutdown after 300 seconds"
+		exit 1
+	}
+	count=$((count+1))
+done
+
+exit 0
