@@ -6,6 +6,6 @@ mv -f /etc/hosts.cbox /etc/hosts
 service fence_virtd stop
 mv -f /etc/fence_virt.conf.cbox /etc/fence_virt.conf
 
-rm -f /usr/share/cbox
+rm -rf /usr/share/cbox
 
 rm -rf /srv/cbox
