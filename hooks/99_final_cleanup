@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+cd /srv/cbox/$cboxclustername
+
+rm -rf $cboxclustername-boot
+rm -rf *_partition
+rm -rf *.xml
+
+exit 0
