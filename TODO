@@ -19,6 +19,7 @@ cbox.in
 hooks
 -----
 
+- cluster.conf: enable cman two_nodes/expected_votes
 - need lots of cleanup for paths/temp files
 - make a common function file (see for example ssh usage or gfs2 creation)
 - should be more distro agnostic (or prepare for that)
