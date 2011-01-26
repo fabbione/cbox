@@ -19,12 +19,12 @@ ssh $cboxclustername-node1 \
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
-	"lvcreate --autobackup y  --extents 50%VG testcluster-vg -n testcluster-lv"
+	"lvcreate --autobackup y  --extents 50%VG $cboxclustername-vg -n $cboxclustername-lv"
 
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
-	"mkfs.gfs2 -j 16 -O -t $cboxclustername:clvmd_gfs2 /dev/testcluster-vg/testcluster-lv"
+	"mkfs.gfs2 -j 16 -O -t $cboxclustername:clvmd_gfs2 /dev/$cboxclustername-vg/$cboxclustername-lv"
 
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
