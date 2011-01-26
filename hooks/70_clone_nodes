@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+cd /srv/cbox/$cboxclustername
+
+for i in $(seq 2 $cboxnumnodes); do
+	echo "Creating $cboxclustername-node$i"
+	cp $cboxclustername-node1.raw $cboxclustername-node$i.raw
+
+	cat $cboxdatadir/libvirt_template.xml | sed \
+		-e 's#@NAME@#'$cboxclustername-node$i'#g' \
+		-e 's#@UUID@#'$(uuidgen)'#g' \
+		-e 's#@MEMORY@#2097152#g' \
+		-e 's#@VCPUS@#2#g' \
+		-e 's#@DISK@#'/srv/cbox/$cboxclustername/$cboxclustername-node$i.raw'#g' \
+		-e 's#@SHAREDDISK@#'/srv/cbox/$cboxclustername/$cboxclustername-shareddisk.raw'#g' \
+		-e 's#@MACADDRESS@#54:52:00:00:00:$(printf '%x' $i)#g' \
+		> $cboxclustername-node$i.xml
+
+	virsh define $cboxclustername-node$i.xml
+done
+
+exit 0
