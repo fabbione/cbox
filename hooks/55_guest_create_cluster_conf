@@ -18,7 +18,7 @@ cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
     <clusternode name="$cboxclustername-node$i" nodeid="$i">
       <fence>
         <method name="single">
-          <device name="kvm" domain="$cboxclustername-node$i"/>
+          <device name="xvm" domain="$cboxclustername-node$i"/>
         </method>
       </fence>
     </clusternode>
