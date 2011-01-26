@@ -1,0 +1,30 @@
+cbox.in
+-------
+
+- create temp file dir at startup
+- check if a cluster already exists
+- maybe more sanity checks for options?
+- add options for:
+  * virt guests sizing (ram/cpu/disk/swap)
+  * shared disk size
+  * shared disk partitioning (qdisk/gfs2/clvmd)
+
+- maybe allow rollback? (this could be complicated)
+
+- allow to execute/disable single hooks
+- progress on the console output
+
+- more distro agnostic
+
+hooks
+-----
+
+- need lots of cleanup for paths/temp files
+- make a common function file (see for example ssh usage or gfs2 creation)
+- should be more distro agnostic (or prepare for that)
+
+data
+----
+
+- generate kickstarts from templates
+
