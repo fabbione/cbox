@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+cd /srv/cbox/$cboxclustername
+
+for i in $(seq 1 $cboxnumnodes); do
+	virsh start $cboxclustername-node$i
+done
+
+exit 0
