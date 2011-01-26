@@ -26,6 +26,7 @@
     <disk type='file' device='disk'>
       <source file='@SHAREDDISK@'/>
       <target dev='vdb' bus='virtio'/>
+      <shareable/>
     </disk>
     <interface type='bridge'>
       <mac address='@MACADDRESS@'/>
