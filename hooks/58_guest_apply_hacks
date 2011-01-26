@@ -8,7 +8,7 @@ echo "applying version specific hacks"
 
 if [ "$cboxfedrelease" = "13" ]; then
 	echo "Removing Fedora 13 udev persistent net rules generator"
-	rm -f $cboxclustername-mount/lib/udev/rules/*persistent-net*
+	rm -f $cboxclustername-mount/lib/udev/rules.d/*persistent-net*
 fi
 
 exit 0
