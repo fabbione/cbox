@@ -6,7 +6,7 @@ echo "Enable cluster daemons"
 
 cd /srv/cbox/$cboxclustername
 
-for i in clvmd cman cmirrord gfs2 modclusterd rgmanager ricci; do
+for i in clvmd cman cmirrord gfs2 gfs2-cluster modclusterd rgmanager ricci; do
 	ssh $cboxclustername-node1 \
 		-i /root/.ssh/id_rsa_$cboxclustername \
 		-o StrictHostKeyChecking=no \
