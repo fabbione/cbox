@@ -8,4 +8,20 @@ for i in $(seq 1 $cboxnumnodes); do
 	virsh start $cboxclustername-node$i
 done
 
+# not ideal but let's not make it too complicated
+for i in $(seq 1 $cboxnumnodes); do
+	max=60
+	count=0
+	while ! ssh $cboxclustername-node$i \
+		-i /root/.ssh/id_rsa_$cboxclustername \
+		-o StrictHostKeyChecking=no "sleep 5"; do
+		echo "Wating for $cboxclustername-node$i to boot"
+		sleep 5
+		[ "$max" -eq "$count" ] && {
+			echo "WARNING: $cboxclustername-node$i did not respond to ssh after 300 seconds"
+		}
+		count=$((count+1))
+	done
+done
+
 exit 0
