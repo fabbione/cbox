@@ -19,7 +19,7 @@ ssh $cboxclustername-node1 \
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
-	"lvcreate --autobackup y  --extents 100%VG testcluster-vg -n testcluster-lv"
+	"lvcreate --autobackup y  --extents 50%VG testcluster-vg -n testcluster-lv"
 
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
