@@ -1,14 +1,17 @@
 #!/bin/bash
 
-for i in $(virsh list --all | grep testcluster | awk '{print $2}'); do
+cboxclustername="$1"
+
+for i in $(virsh list --all | grep $cboxclustername | awk '{print $2}'); do
 	virsh destroy $i
 	virsh undefine $i
 done
 
 rm -f /root/.ssh/known_hosts
 
-virsh net-destroy cluster
-virsh net-undefine cluster
+virsh net-destroy $cboxclustername-bridge0
+virsh net-undefine $cboxclustername-bridge0
+
 mv -f /etc/hosts.cbox /etc/hosts
 service fence_virtd stop
 mv -f /etc/fence_virt.conf.cbox /etc/fence_virt.conf
