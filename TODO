@@ -18,7 +18,6 @@ cbox.in
 - allow to execute/disable single hooks
 
 - more distro agnostic
-- warn about what you are going to do
 
 hooks
 -----
