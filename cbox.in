@@ -192,7 +192,7 @@ touch $cboxlogfile || {
 }
 
 cboxtempdir=$cboxvmsdir/$cboxclustername/temp
-mkdir $cboxtempdir
+mkdir -p $cboxtempdir
 
 export cboxdatadir
 export cboxhooksdir
