@@ -33,7 +33,7 @@ function is_integer() {
 # h -> help
 # m -> resource manager (cboxrasmngr) rgmanager|pacemaker|none
 # n -> number of nodes (cboxnumnodes)
-# q -> quiet
+# o -> output dir (cboxvmsdir)
 # r -> fedora release (13 / 14 / rawhide)
 # t -> type (cboxclustertype) cman|corosync
 
@@ -41,11 +41,11 @@ function is_integer() {
 cboxclustername=""
 cboxnumnodes=""
 cboxclustertype=""
-cboxverbose="yes"
 cboxfedrelease=""
 cboxrasmngr=""
+cboxvmsdir="/srv/cbox"
 
-while getopts ":c:hm:n:qr:t:" optflag; do
+while getopts ":c:hm:n:or:t:" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
@@ -71,8 +71,8 @@ while getopts ":c:hm:n:qr:t:" optflag; do
 			exit 1
 		fi
 		;;
-	q)
-		cboxverbose=""
+	o)
+		cboxvmsdir="$OPTARG"
 		;;
 	r)
 		cboxfedrelease="$OPTARG"
@@ -150,6 +150,11 @@ touch $cboxlogfile || {
 	exit 1
 }
 
+[ -d $cboxvmsdir/$cboxclustername ] && {
+	echo "ERROR: $cboxvmsdir/$cboxclustername appears to already exist"
+	exit 1
+}
+
 ## cross checks
 [ "$cboxclustertype" = "corosync" ] && [ "$cboxrasmngr" = "rgmanager" ] && {
 	echo "ERROR: you can't select corosync and rgmanager together."
@@ -161,16 +166,19 @@ export cboxhooksdir
 export cboxclustername
 export cboxnumnodes
 export cboxclustertype
-export cboxverbose
 export cboxlogdir
 export cboxlogfile
 export cboxfedrelease
 export cboxrasmngr
+export cboxvmsdir
 
 # TODO: add question here
 
 echo "Creating cluster... this might take several minutes"
-echo "check progress in $cboxlogfile"
+echo "check verbose output in $cboxlogfile"
+
+# we catch errors here
+set +e
 
 for i in $(LC_ALL=C; echo $cboxhooksdir/*[^~,]); do
 	[ -d $i ] && continue
@@ -186,11 +194,17 @@ for i in $(LC_ALL=C; echo $cboxhooksdir/*[^~,]); do
 	[ "${i%.dpkg-new}" != "${i}" ] && continue
 
 	if [ -x $i ]; then
-		echo "starting $(basename $i)" >> $cboxlogfile
-		[ -n "$cboxverbose" ] && $i >> $cboxlogfile 2>&1
-		[ -z "$cboxverbose" ] && $i > /dev/null 2>&1
-		echo "finished $(basename $i)" >> $cboxlogfile
+		echo -n "Executing $(basename $i): "
+		echo "Executing $(basename $i)" >> $cboxlogfile
+		$i >> $cboxlogfile 2>&1 || {
+			echo "ERROR $? from $(basename $i). Please check logs"
+			exit 1
+		}
+		echo "OK"
+		echo "Done with $(basename $i)" >> $cboxlogfile
 	fi
 done
+
+echo "cluster $cboxclustername successfully created and running"
 
 exit 0
