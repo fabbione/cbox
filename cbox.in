@@ -191,6 +191,9 @@ touch $cboxlogfile || {
 	exit 1
 }
 
+cboxtempdir=$cboxvmsdir/$cboxclustername/temp
+mkdir $cboxtempdir
+
 export cboxdatadir
 export cboxhooksdir
 export cboxclustername
@@ -201,8 +204,7 @@ export cboxlogfile
 export cboxfedrelease
 export cboxrasmngr
 export cboxvmsdir
-
-# TODO: add question here
+export cboxtempdir
 
 echo "Creating cluster... this might take several minutes"
 echo "check verbose output in $cboxlogfile"
