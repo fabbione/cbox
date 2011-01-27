@@ -30,7 +30,7 @@
     </disk>
     <interface type='bridge'>
       <mac address='@MACADDRESS@'/>
-      <source bridge='cluster-bridge0'/>
+      <source bridge='@BRIDGE@'/>
       <model type='virtio'/>
     </interface>
     <serial type='pty'>

@@ -24,6 +24,7 @@ cat $cboxdatadir/libvirt_template.xml | sed \
 	-e 's#@DISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-node1.raw'#g' \
 	-e 's#@SHAREDDISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-shareddisk.raw'#g' \
 	-e 's#@MACADDRESS@#54:52:00:00:00:1#g' \
+	-e 's#@BRIDGE@#$cboxclustername-br0#g' \
 	> $cboxclustername-node1.xml
 
 echo "Defining $cboxclustername-node1 in libvirt"
