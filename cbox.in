@@ -151,6 +151,11 @@ touch $cboxlogfile || {
 	cboxclustername=testcluster
 }
 
+[ "$(echo ${#cboxclustername})" -gt "12" ] && {
+	echo "ERROR: clustername has be 12 or less chars"
+	exit 1
+}
+
 [ -z "$cboxnumnodes" ] && {
 	echo "INFO: no number of nodes specified, default to 2"
 	cboxnumnodes=2
