@@ -2,11 +2,13 @@
 
 set -e
 
-echo "Unmount VM disk"
+echo "Un-mount main/first VM disk"
 
-cd /srv/cbox/$cboxclustername
+cd $cboxtempdir
 
 umount $cboxclustername-mount
+
+echo "Syncing data (might take sometime)"
 
 sync
 

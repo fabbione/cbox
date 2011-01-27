@@ -2,11 +2,10 @@
 
 set -e
 
-echo "Enable cluster daemons"
-
-cd /srv/cbox/$cboxclustername
+echo "Enabling cluster daemons in the guest"
 
 for i in clvmd cman cmirrord gfs2 gfs2-cluster modclusterd rgmanager ricci; do
+	echo "$i enabled"
 	ssh $cboxclustername-node1 \
 		-i /root/.ssh/id_rsa_$cboxclustername \
 		-o StrictHostKeyChecking=no \

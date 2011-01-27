@@ -6,7 +6,6 @@ general
 cbox.in
 -------
 
-- create temp file dir at startup
 - maybe more sanity checks for options?
 - add options for:
   * virt guests sizing (ram/cpu/disk/swap)
@@ -22,10 +21,8 @@ cbox.in
 hooks
 -----
 
-- need lots of cleanup for paths/temp files
 - make a common function file (see for example ssh usage or gfs2 creation)
 - should be more distro agnostic (or prepare for that)
-- ssh into all hosts to populate .ssh/known_hosts?
 
 data
 ----

@@ -2,9 +2,9 @@
 
 set -e
 
-cd /srv/cbox/$cboxclustername
+echo "Apply distribution/version specific hacks (the pain!)"
 
-echo "applying version specific hacks"
+cd $cboxtempdir
 
 if [ "$cboxfedrelease" = "13" ]; then
 	echo "Removing Fedora 13 udev persistent net rules generator"

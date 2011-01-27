@@ -2,12 +2,17 @@
 
 set -e
 
-cd /srv/cbox/$cboxclustername
+echo "Update guest /etc/fstab"
 
-echo "Fix guests /etc/fstab"
+cd $cboxtempdir
+
+echo "Making a backup copy of guest /etc/fstab to /etc/fstab.cbox"
 
 cp $cboxclustername-mount/etc/fstab \
    $cboxclustername-mount/etc/fstab.cbox
+
+echo "Remove clvmd/qdiskd fake mountpoint, and fix gfs2 fs type"
+echo "(leftover from anaconda partitioning hack)"
 
 sed -i \
    -e 's%.*vdb.*clvm.*%## &%g' \
@@ -15,10 +20,12 @@ sed -i \
    -e 's%gfs2.*ext3%gfs2 gfs2%g' \
    $cboxclustername-mount/etc/fstab
 
+echo "Gather info on shared storage"
 cat $cboxclustername-mount/etc/fstab | grep gfs2 | awk '{print $1}' > gfs2_partition
 cat $cboxclustername-mount/etc/fstab | grep qdiskd | awk '{print $2}' > qdiskd_partition
 cat $cboxclustername-mount/etc/fstab | grep clvmd | awk '{print $2}' > clvmd_partition
 
+echo "Create clvmd/gfs2 device mount point"
 echo "/dev/$cboxclustername-vg/$cboxclustername-lv /srv/cbox/clvmd gfs2 defaults,noatime 0 0" >> \
 	$cboxclustername-mount/etc/fstab
 

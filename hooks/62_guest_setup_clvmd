@@ -2,34 +2,46 @@
 
 set -e
 
-echo "Configure clvmd in the guest"
+echo "Configure clvmd in the guest $cboxclustername-node1"
 
-cd /srv/cbox/$cboxclustername
+cd $cboxtempdir
+
+echo "Creating pv on $(cat clvmd_partition)"
 
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
 	"pvcreate -f $(cat "clvmd_partition")"
 
+echo "Creating non-clustered vg on $(cat clvmd_partition)"
+
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
 	"vgcreate --autobackup y --clustered n $cboxclustername-vg $(cat "clvmd_partition")"
+
+echo "Creating lv (50% space of VG) on $cboxclustername-vg"
 
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
 	"lvcreate --autobackup y  --extents 50%VG $cboxclustername-vg -n $cboxclustername-lv"
 
+echo "Creating gfs2 filesystem on $cboxclustername-lv (this might take a bit)"
+
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
 	"mkfs.gfs2 -j 16 -O -t $cboxclustername:clvmd_gfs2 /dev/$cboxclustername-vg/$cboxclustername-lv"
 
+echo "Switching VG $cboxclustername-vg to clustered"
+
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
 	"vgchange --clustered y $cboxclustername-vg"
+
+echo "Enable lvm cluster locking"
 
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \

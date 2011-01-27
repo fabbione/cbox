@@ -2,25 +2,31 @@
 
 set -e
 
-echo "Creating main guest"
+echo "Creating first node"
 
-cd /srv/cbox/$cboxclustername
+cd $cboxvmsdir/$cboxclustername
 
-mv $cboxclustername-boot/$cboxclustername-boot-vda.raw \
+echo "Moving disks"
+
+mv $cboxtempdir/$cboxclustername-boot/$cboxclustername-boot-vda.raw \
    $cboxclustername-node1.raw
 
-mv $cboxclustername-boot/$cboxclustername-boot-vdb.raw \
+mv $cboxtempdir/$cboxclustername-boot/$cboxclustername-boot-vdb.raw \
    $cboxclustername-shareddisk.raw
+
+echo "Generating $cboxclustername-node1 libvirt xml template"
 
 cat $cboxdatadir/libvirt_template.xml | sed \
 	-e 's#@NAME@#'$cboxclustername-node1'#g' \
 	-e 's#@UUID@#'$(uuidgen)'#g' \
 	-e 's#@MEMORY@#2097152#g' \
 	-e 's#@VCPUS@#2#g' \
-	-e 's#@DISK@#'/srv/cbox/$cboxclustername/$cboxclustername-node1.raw'#g' \
-	-e 's#@SHAREDDISK@#'/srv/cbox/$cboxclustername/$cboxclustername-shareddisk.raw'#g' \
+	-e 's#@DISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-node1.raw'#g' \
+	-e 's#@SHAREDDISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-shareddisk.raw'#g' \
 	-e 's#@MACADDRESS@#54:52:00:00:00:1#g' \
 	> $cboxclustername-node1.xml
+
+echo "Defining $cboxclustername-node1 in libvirt"
 
 virsh define $cboxclustername-node1.xml
 

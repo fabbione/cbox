@@ -2,21 +2,27 @@
 
 set -e
 
-cd /srv/cbox/$cboxclustername
+echo "Configure guest network"
 
-echo "Fix guests /etc/hosts"
+cd $cboxtempdir
+
+echo "Make a backup copy of guest /etc/hosts to /etc/hosts.cbox"
 
 cp $cboxclustername-mount/etc/hosts \
    $cboxclustername-mount/etc/hosts.cbox
+
+echo "Update guest /etc/hosts"
 
 cat /etc/hosts | \
 	grep 192.168.123 \
 	>> $cboxclustername-mount/etc/hosts
 
-echo "Fix guests /etc/sysconfig/network"
+echo "Make a backup copy of guest /etc/sysconfig/network to /etc/sysconfig/network.cbox"
 
 cp $cboxclustername-mount/etc/sysconfig/network \
    $cboxclustername-mount/etc/sysconfig/network.cbox
+
+echo "Strip HOSTNAME to allow dhcp to set the correct one for us"
 
 sed -i -e 's#HOSTNAME.*##g' \
    $cboxclustername-mount/etc/sysconfig/network

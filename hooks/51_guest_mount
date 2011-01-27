@@ -2,9 +2,9 @@
 
 set -e
 
-echo "Mount VM disk"
+echo "Mounting main/first VM disk in $cboxtempdir/$cboxclustername-mount"
 
-cd /srv/cbox/$cboxclustername
+cd $cboxtempdir
 
 mkdir -p $cboxclustername-mount
 

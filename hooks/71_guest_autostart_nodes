@@ -2,7 +2,7 @@
 
 set -e
 
-cd /srv/cbox/$cboxclustername
+echo "Setting cluster nodes to autostart"
 
 for i in $(seq 1 $cboxnumnodes); do
 	virsh autostart $cboxclustername-node$i

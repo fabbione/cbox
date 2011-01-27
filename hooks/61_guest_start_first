@@ -2,7 +2,7 @@
 
 set -e
 
-echo "Starting main guest"
+echo "Starting $cboxclustername-node1"
 
 virsh start $cboxclustername-node1
 

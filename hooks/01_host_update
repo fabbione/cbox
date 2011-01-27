@@ -2,6 +2,7 @@
 
 set -e
 
+echo "Updating host machine"
 yum update -y
 
 exit 0

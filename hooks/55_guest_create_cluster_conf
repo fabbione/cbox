@@ -2,7 +2,9 @@
 
 set -e
 
-cd /srv/cbox/$cboxclustername
+echo "Creating RHCS /etc/cluster/cluster.conf in the guest"
+
+cd $cboxtempdir
 
 if [ "$cboxnumnodes" = "2" ]; then
 	cmanvotes='two_node="1" expected_votes="1"'

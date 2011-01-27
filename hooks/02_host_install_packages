@@ -2,6 +2,8 @@
 
 set -e
 
+echo "Installing required packages on host system"
+
 yum install -y \
 	libvirt libvirt-client qemu-system-x86 \
 	appliance-tools libguestfs-mount \

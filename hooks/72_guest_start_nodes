@@ -2,11 +2,13 @@
 
 set -e
 
-cd /srv/cbox/$cboxclustername
+echo "Booting all cluster nodes"
 
 for i in $(seq 1 $cboxnumnodes); do
 	virsh start $cboxclustername-node$i
 done
+
+echo "Wait for nodes to boot and update main host .ssh/known_hosts"
 
 # not ideal but let's not make it too complicated
 for i in $(seq 1 $cboxnumnodes); do

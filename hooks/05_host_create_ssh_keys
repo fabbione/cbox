@@ -2,10 +2,15 @@
 
 set -e
 
-cd /root
-mkdir -p .ssh
-rm -f .ssh/id_rsa_$cboxclustername*
+echo "Generating ssh keys on main host to access cluster nodes"
+
+echo "Creating /root/.ssh"
+mkdir -p /root/.ssh
+echo "Removing old id_rsa_$cboxclustername keys"
+rm -f /root/.ssh/id_rsa_$cboxclustername*
+echo "Generating keys"
 ssh-keygen -q -N '' -C '' -t rsa -b 2048 -f .ssh/id_rsa_$cboxclustername >&/dev/null
+echo "Fixing permissions"
 chmod 0600 .ssh/id_rsa_$cboxclustername.pub
 
 exit 0
