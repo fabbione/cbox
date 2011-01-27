@@ -9,8 +9,8 @@ done
 
 rm -f /root/.ssh/known_hosts
 
-virsh net-destroy $cboxclustername-bridge0
-virsh net-undefine $cboxclustername-bridge0
+virsh net-destroy $cboxclustername-br0
+virsh net-undefine $cboxclustername-br0
 
 mv -f /etc/hosts.cbox /etc/hosts
 service fence_virtd stop
