@@ -7,23 +7,23 @@ echo "Starting libvirtd service"
 service libvirtd start
 
 echo "Checking if cluster virt net already exists"
-virsh net-list |grep -q ^$cboxclustername-bridge0 && {
-	echo "$cboxclustername-bridge0 virt net detected: aborting"
+virsh net-list |grep -q ^$cboxclustername-br0 && {
+	echo "$cboxclustername-br0 virt net detected: aborting"
 	exit 1
 }
 
 echo "Making a backup copy of main host /etc/hosts to /etc/hosts.cbox"
 cp /etc/hosts /etc/hosts.cbox
 
-echo "Generating libvirt $cboxclustername-bridge0 xml template"
+echo "Generating libvirt $cboxclustername-br0 xml template"
 tempfile="$cboxtempdir/libvirt-net.xml"
 
 cat > "$tempfile" << EOF
 <network>
-  <name>$cboxclustername-bridge0</name>
+  <name>$cboxclustername-br0</name>
   <uuid>$(uuidgen)</uuid>
   <forward mode='nat'/>
-  <bridge name='$cboxclustername-bridge0' stp='off' delay='0'/>
+  <bridge name='$cboxclustername-br0' stp='off' delay='0'/>
   <ip address='192.168.123.254' netmask='255.255.255.0'>
     <dhcp>
       <range start='192.168.123.1' end='192.168.123.253'/>
@@ -47,12 +47,12 @@ cat "$tempfile"
 echo "Updating main host /etc/hosts"
 echo "192.168.123.254 $cboxclustername-host" >> /etc/hosts
 
-echo "Adding $cboxclustername-bridge to libvirt"
+echo "Adding $cboxclustername-br0 to libvirt"
 virsh net-define "$tempfile"
-echo "Setting $cboxclustername-bridge to start automatically"
-virsh net-autostart $cboxclustername-bridge0
-echo "Starting $cboxclustername-bridge"
-virsh net-start $cboxclustername-bridge0
+echo "Setting $cboxclustername-br0 to start automatically"
+virsh net-autostart $cboxclustername-br0
+echo "Starting $cboxclustername0"
+virsh net-start $cboxclustername-br0
 
 rm -f "$tempfile"
 
