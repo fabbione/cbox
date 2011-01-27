@@ -119,7 +119,7 @@ echo "Yes, I fully understand the risks of what I am doing"
 echo ""
 read -p "type here: " ans
 
-[ "$ans" = "Yes, I fully understand the risk of what I am doing" ] || {
+[ "$ans" = "Yes, I fully understand the risks of what I am doing" ] || {
 	echo "Wise choice.. or you simply didn't type it right"
 	exit 0
 }
