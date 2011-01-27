@@ -51,7 +51,7 @@ echo "Adding $cboxclustername-br0 to libvirt"
 virsh net-define "$tempfile"
 echo "Setting $cboxclustername-br0 to start automatically"
 virsh net-autostart $cboxclustername-br0
-echo "Starting $cboxclustername0"
+echo "Starting $cboxclustername-br0"
 virsh net-start $cboxclustername-br0
 
 rm -f "$tempfile"
