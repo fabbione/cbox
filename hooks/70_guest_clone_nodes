@@ -20,6 +20,7 @@ for i in $(seq 2 $cboxnumnodes); do
 		-e 's#@DISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-node$i.raw'#g' \
 		-e 's#@SHAREDDISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-shareddisk.raw'#g' \
 		-e 's#@MACADDRESS@#54:52:00:00:00:'$(printf '%x' $i)'#g' \
+		-e 's#@BRIDGE@#'$cboxclustername-br0'#g' \
 		> $cboxclustername-node$i.xml
 
 	echo "Defining $cboxclustername-node$i in libvirt"
