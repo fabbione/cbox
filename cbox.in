@@ -124,6 +124,8 @@ read -p "type here: " ans
 	exit 0
 }
 
+echo ""
+
 [ ! -d "$cboxdatadir" ] && {
 	echo "ERROR: no valid data directory specified: $cboxdatadir"
 	exit 1
