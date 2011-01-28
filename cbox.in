@@ -196,6 +196,30 @@ touch $cboxlogfile || {
 	exit 1
 }
 
+## show details:
+
+echo "***** requested configuration *****"
+echo ""
+echo "cluster name:             $cboxclustername"
+echo "cluster nodes:            $cboxnumnodes"
+echo "cluster type:             $cboxclustertype"
+echo "cluster resource manager: $cboxrasmngr"
+echo "cluster fedora release:   $cboxfedrelease"
+echo ""
+echo "under the hood info"
+echo "cbox data dir:            $cboxdatadir"
+echo "cbox hooks dir:           $cboxhooksdir"
+echo "cbox log dir:             $cboxlogdir"
+echo "cbox log file:            $cboxlogfile"
+echo "cbox VMs storage dir:     $cboxvmsdir"
+echo ""
+read -p "Proceed (Y/n)? " ans
+
+[ -n "$ans" ] && [ "$ans" != "Y" ] && {
+	echo "Aborting"
+	exit 1
+}
+
 cboxtempdir=$cboxvmsdir/$cboxclustername/temp
 mkdir -p $cboxtempdir
 
@@ -212,7 +236,6 @@ export cboxvmsdir
 export cboxtempdir
 
 echo "Creating cluster... this might take several minutes"
-echo "check verbose output in $cboxlogfile"
 
 # we catch errors here
 set +e
