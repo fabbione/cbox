@@ -31,8 +31,6 @@ EOF
 
 for i in $(seq 1 $cboxnumnodes); do
 	echo "      <host mac='54:52:00:00:00:$(printf '%x' $i)' name='$cboxclustername-node$i' ip='192.168.123.$i' />" >> "$tempfile"
-	echo "Adding 192.168.123.$i $cboxclustername-node$i to main host /etc/hosts"
-	echo "192.168.123.$i $cboxclustername-node$i" >> /etc/hosts
 done
 
 cat >> "$tempfile" << EOF
@@ -45,6 +43,9 @@ echo "XML result:"
 cat "$tempfile"
 
 echo "Updating main host /etc/hosts"
+for i in $(seq 1 $cboxnumnodes); do
+	echo "192.168.123.$i $cboxclustername-node$i" >> /etc/hosts
+done
 echo "192.168.123.254 $cboxclustername-host" >> /etc/hosts
 
 echo "Adding $cboxclustername-br0 to libvirt"
