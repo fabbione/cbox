@@ -29,4 +29,8 @@ echo "Create clvmd/gfs2 device mount point"
 echo "/dev/$cboxclustername-vg/$cboxclustername-lv /srv/cbox/clvmd gfs2 defaults,noatime 0 0" >> \
 	$cboxclustername-mount/etc/fstab
 
+echo "Create debugfs fstab entry"
+echo "debugfs /sys/kernel/debug debugfs defaults 0 0" \
+	$cboxclustername-mount/etc/fstab
+
 exit 0
