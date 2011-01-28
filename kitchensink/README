@@ -7,5 +7,5 @@
   the dhcp config/bind zone generations are trivial
   same as above, handles multiple interfaces for redudant ring
 
-- host_set/unset
+- host_set
   debug script to set fabbione public ssh key on host and do git clone

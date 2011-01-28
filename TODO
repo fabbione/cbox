@@ -12,8 +12,6 @@ cbox.in
   * shared disk size
   * shared disk partitioning (qdisk/gfs2/clvmd)
 
-- maybe allow rollback? (this could be complicated)
-
 - allow to execute/disable single hooks
 
 - more distro agnostic
