@@ -34,6 +34,6 @@ EOF
 echo "Enabling fence_virtd to run on main host"
 chkconfig fence_virtd on
 echo "Starting fence_virtd"
-service fence_virtd start
+service fence_virtd restart
 
 exit 0
