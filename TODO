@@ -18,6 +18,10 @@ cbox.in
 
 - more distro agnostic
 
+- use host to install ccs/luci for management?
+- enable more than one bridge/interface?
+- use real dhcp+dns?
+
 hooks
 -----
 
