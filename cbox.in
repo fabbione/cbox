@@ -9,9 +9,9 @@ set -e
 
 [ -f /root/.cbox ] && {
 	. /root/.cbox
-	echo "Cluster $cboxclustername appears to be installed on the system"
+	echo "Cluster: $cboxclustername appears to be installed on the system"
 	echo ""
-	read -p "Do you want to totally detroy $cboxclustername (y/N)?" ans
+	read -p "Do you want to totally detroy $cboxclustername (y/N)? " ans
 
 	[ -n "$ans" ] && [ "$ans" != "y" ] && {
 		echo "Aborting"
