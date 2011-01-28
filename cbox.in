@@ -7,6 +7,60 @@ set -e
 	exit 1
 }
 
+[ -f /root/.cbox ] && {
+	. /root/.cbox
+	echo "Cluster $cboxclustername appears to be installed on the system"
+	echo ""
+	read -p "Do you want to totally detroy $cboxclustername (y/N)?" ans
+
+	[ -n "$ans" ] && [ "$ans" != "y" ] && {
+		echo "Aborting"
+		exit 1
+	}
+
+	# go as far as we can without failing
+	set +e
+
+	echo "Destroying nodes:"
+
+	for i in $(virsh list --all | grep $cboxclustername-node | awk '{print $2}'); do
+		virsh destroy $i
+		virsh undefine $i
+	done
+
+	echo "Destroying virtual network:"
+
+	virsh net-destroy $cboxclustername-br0
+	virsh net-undefine $cboxclustername-br0
+
+	echo "Purging nodes disks $cboxvmsdir/$cboxclustername"
+	rm -rf $cboxvmsdir/$cboxclustername
+
+	echo "Removing keys from /root/.ssh and update known_hosts"
+
+	cat /root/.ssh/known_hosts | \
+		grep -v "^$cboxclustername-node" > /root/.ssh/known_hosts.new
+	mv /root/.ssh/known_hosts.new /root/.ssh/known_hosts
+
+	echo "Restore /etc/hosts"
+	mv -f /etc/hosts.cbox /etc/hosts
+
+	echo "Restore /etc/fence_virt.conf"
+	mv -f /etc/fence_virt.conf.cbox /etc/fence_virt.conf
+
+	echo "Stopping fence_virtd"
+	service fence_virtd stop
+
+	rm -f /root/.cbox
+
+	echo "We have done our best to restore original configs and destroy"
+	echo "$cboxclustername cluster."
+	echo ""
+	echo "May the force be with you!"
+
+	exit 0
+}
+
 # cbox data dir
 [ -z "$cboxdatadir" ] && cboxdatadir="DATADIR"
 
@@ -203,6 +257,9 @@ read -p "Proceed (Y/n)? " ans
 	echo "Aborting"
 	exit 1
 }
+
+echo "cboxclustername=$cboxclustername" > /root/.cbox
+echo "cboxvmsdir=$cboxvmsdir" >> /root/.cbox
 
 cboxtempdir=$cboxvmsdir/$cboxclustername/temp
 mkdir -p $cboxtempdir
