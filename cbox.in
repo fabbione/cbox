@@ -13,7 +13,7 @@ set -e
 	echo ""
 	read -p "Do you want to totally detroy $cboxclustername (y/N)? " ans
 
-	[ -n "$ans" ] && [ "$ans" != "y" ] && {
+	[ -z "$ans" ] && [ "$ans" != "y" ] && {
 		echo "Aborting"
 		exit 1
 	}
