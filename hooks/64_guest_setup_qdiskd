@@ -9,6 +9,6 @@ echo "Creating qdiskd filesystem on $(cat qdiskd_partition)"
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
-	"echo y | mkqdisk -l $cboxclustername_qdiskd -c $(cat "qdiskd_partition")"
+	"echo y | mkqdisk -l $cboxclustername-qdiskd -c $(cat "qdiskd_partition")"
 
 exit 0
