@@ -219,7 +219,9 @@ export cboxrasmngr
 export cboxvmsdir
 export cboxtempdir
 
+echo ""
 echo "Creating cluster... this might take several minutes"
+echo ""
 
 # we catch errors here
 set +e
