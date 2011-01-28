@@ -37,9 +37,11 @@ done
 
 cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
   </clusternodes>
+<!--
   <quorumd label="$cboxclustername-qdiskd">
    <heuristic program="ping $cboxclustername-host -c1 -t1" score="1" interval="2" tko="3"/>
   </quorumd>
+-->
   <fencedevices>
     <fencedevice name="xvm" agent="fence_xvm"/>
   </fencedevices>
