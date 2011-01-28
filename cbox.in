@@ -146,38 +146,22 @@ touch $cboxlogfile || {
 	exit 1
 }
 
-[ -z "$cboxclustername" ] && {
-	echo "INFO: no cluster name specified, default to testcluster"
-	cboxclustername=testcluster
-}
+[ -z "$cboxclustername" ] && cboxclustername=testcluster
 
 [ "$(echo ${#cboxclustername})" -gt "12" ] && {
 	echo "ERROR: clustername has be 12 or less chars"
 	exit 1
 }
 
-[ -z "$cboxnumnodes" ] && {
-	echo "INFO: no number of nodes specified, default to 2"
-	cboxnumnodes=2
-}
+[ -z "$cboxnumnodes" ] && cboxnumnodes=2
 
-[ -z "$cboxclustertype" ] && {
-	echo "INFO: no cluster type specified, default to cman"
-	cboxclustertype=cman
-}
+[ -z "$cboxclustertype" ] && cboxclustertype=cman
 
-[ -z "$cboxrasmngr" ] && {
-	echo "INFO: no cluster resource manager specified, default to none"
-	cboxrasmngr=none
-}
+[ -z "$cboxrasmngr" ] && cboxrasmngr=none
 
 [ -z "$cboxfedrelease" ] && {
-	if grep -q -i rawhide /etc/fedora-release; then
-		cboxfedrelease=rawhide
-	else
-		cboxfedrelease=$(cat /etc/fedora-release | awk '{print $3}')
-	fi
-	echo "INFO: no fedora release define, autodetected $cboxfedrelease from host"
+	cboxfedrelease=$(cat /etc/fedora-release | awk '{print $3}')
+	grep -q -i rawhide /etc/fedora-release && cboxfedrelease=rawhide
 }
 
 [ ! -f $cboxdatadir/fedora-$cboxfedrelease.ks ] && {
