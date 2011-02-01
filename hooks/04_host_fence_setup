@@ -17,7 +17,7 @@ backends {
 
 listeners {
 	multicast {
-		interface = "$cboxclustername-bridge0";
+		interface = "$cboxclustername-br0";
 		port = "1229";
 		family = "ipv4";
 		address = "225.0.0.12";
