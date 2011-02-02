@@ -20,13 +20,13 @@ device virtio_blk
 # This information is used by appliance-tools but
 # not by the livecd tools.
 #
-part / --size 4096 --fstype ext3 --ondisk vda
-part swap --size 1024 --fstype swap --ondisk vda
+part / --size @ROOTSIZE@ --fstype ext3 --ondisk vda
+part swap --size @SWAPSIZE@ --fstype swap --ondisk vda
 
 # temporary workaround to get the image created easily
-part /srv/cbox/qdiskd --size 64 --fstype ext3 --ondisk vdb
-part /srv/cbox/gfs2 --size 10240 --fstype ext3 --ondisk vdb
-part /srv/cbox/clvmd --size 10240 --fstype ext3 --ondisk vdb
+part /srv/cbox/qdiskd --size @QDISKDSIZE@ --fstype ext3 --ondisk vdb
+part /srv/cbox/gfs2 --size @GFS2SIZE@ --fstype ext3 --ondisk vdb
+part /srv/cbox/clvmd --size @CLVMDSIZE@ --fstype ext3 --ondisk vdb
 
 #
 # Repositories

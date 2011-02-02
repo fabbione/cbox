@@ -6,9 +6,9 @@ echo "Creating main/first VM in $cboxtempdir (this will take time!)"
 
 cd $cboxtempdir
 
-appliance-creator -v --vmem=2048 --vcpu=2 \
+appliance-creator -v --vmem=$cboxvirtram --vcpu=$cboxvirtcpus \
 		  -n $cboxclustername-boot \
-		  -c $cboxdatadir/fedora-$cboxfedrelease.ks
+		  -c fedora-$cboxfedrelease.ks
 
 rm -f $cboxclustername-boot/$cboxclustername-boot.xml
 

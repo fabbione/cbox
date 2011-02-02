@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+echo "Generating fedora-$cboxfedrelease.ks"
+
+cd $cboxtempdir
+
+# need to think if there is a better way to do this without
+# reinventing debian-installer receipts for disk paritioning
+
+# priciple of ops:
+# disk size - 64MB for qdisk
+# free space / 2 (one for gfs2 and one for clvmd)
+
+freespace=$cboxvirtshare
+qdisksize=64
+freespace=$((freespace - 64))
+gfs2size=$((freespace / 2))
+freespace=$((freespace - gfs2size))
+clvmdsize=$freespace
+
+cat $cboxdatadir/fedora-$cboxfedrelease.ks | sed \
+	-e 's#@ROOTSIZE@#'$cboxvirtroot'#g' \
+	-e 's#@SWAPSIZE@#'$cboxvirtswap'#g' \
+	-e 's#@QDISKDSIZE@#'$qdiskdsize'#g' \
+	-e 's#@GFS2SIZE@#'$gfs2size'#g' \
+	-e 's#@CLVMDSIZE@#'$clvmdsize'#g' \
+	> fedora-$cboxfedrelease.ks
+
+exit 0

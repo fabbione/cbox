@@ -6,6 +6,8 @@ echo "Cloning $cboxclustername-node1 (this will take time)"
 
 cd $cboxvmsdir/$cboxclustername
 
+memory=$((cboxvirtram * 1024))
+
 for i in $(seq 2 $cboxnumnodes); do
 	echo "Creating $cboxclustername-node$i boot disk"
 	cp $cboxclustername-node1.raw $cboxclustername-node$i.raw
@@ -15,8 +17,8 @@ for i in $(seq 2 $cboxnumnodes); do
 	cat $cboxdatadir/libvirt_template.xml | sed \
 		-e 's#@NAME@#'$cboxclustername-node$i'#g' \
 		-e 's#@UUID@#'$(uuidgen)'#g' \
-		-e 's#@MEMORY@#2097152#g' \
-		-e 's#@VCPUS@#2#g' \
+		-e 's#@MEMORY@#'$memory'#g' \
+		-e 's#@VCPUS@#'$cboxvirtcpus'#g' \
 		-e 's#@DISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-node$i.raw'#g' \
 		-e 's#@SHAREDDISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-shareddisk.raw'#g' \
 		-e 's#@MACADDRESS@#54:52:00:00:00:'$(printf '%x' $i)'#g' \

@@ -7,10 +7,6 @@ cbox.in
 -------
 
 - maybe more sanity checks for options?
-- add options for:
-  * virt guests sizing (ram/cpu/disk/swap)
-  * shared disk size
-  * shared disk partitioning (qdisk/gfs2/clvmd)
 
 - allow to execute/disable single hooks
 

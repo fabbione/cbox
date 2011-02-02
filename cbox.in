@@ -77,8 +77,79 @@ function print_usage() {
 }
 
 function is_integer() {
-    [ "$1" -eq "$1" ] > /dev/null 2>&1
-    return $?
+	[ "$1" -eq "$1" ] > /dev/null 2>&1
+	return $?
+}
+
+function parse_virt_opts() {
+	OLD_IFS=${IFS}
+	IFS=,
+	for i in $@; do
+		opt=$(echo $i | sed -e 's#=.*##g')
+		val=$(echo $i | sed -e 's#.*=##g')
+		case $opt in
+		ram)
+			cboxvirtram=$val
+			! is_integer $cboxvirtram && {
+				echo "ERROR: virt ram size needs to be an integer"
+				exit 1
+			}
+			[ "$cboxvirtram" -lt "512" ] && {
+				echo "ERROR: virt ram size too small to complete the installation (min 512 MB)"
+				exit 1
+			}
+			;;
+		cpus)
+			cboxvirtcpus=$val
+			! is_integer $cboxvirtcpus && {
+				echo "ERROR: virt cpus needs to be an integer"
+				exit 1
+			}
+			[ "$cboxvirtcpus" -lt "1" ] && {
+				echo "ERROR: virt cpus needs to be a reasonable value (hint: greater than 0)"
+				exit 1
+			}
+			;;
+		root)
+			cboxvirtroot=$val
+			! is_integer $cboxvirtroot && {
+				echo "ERROR: virt root size needs to be an integer"
+				exit 1
+			}
+			[ "$cboxvirtroot" -lt "2048" ] && {
+				echo "ERROR: virt root size too small to complete the installation (min 2048 MB)"
+				exit 1
+			}
+			;;
+		swap)
+			cboxvirtswap=$val
+			! is_integer $cboxvirtswap && {
+				echo "ERROR: virt swap size needs to be an integer"
+				exit 1
+			}
+			[ "$cboxvirtswap" -lt "512" ] && {
+				echo "ERROR: virt swap size needs to be a reasonable value (hint: greater than 512 MB)"
+				exit 1
+			}
+			;;
+		share)
+			cboxvirtshare=$val
+			! is_integer $cboxvirtshare && {
+				echo "ERROR: virt shared disk size needs to be an integer"
+				exit 1
+			}
+			[ "$cboxvirtshare" -lt "20544" ] && {
+				echo "ERROR: virt shared disk size needs to be a reasonable value (hint: greater than 20544 MB)"
+				exit 1
+			}
+			;;
+		*)
+			echo "ERROR Unknown virtopt $opt=$val"
+			exit 1
+			;;
+		esac
+	done
+	IFS=${OLD_IFS}
 }
 
 # parse command line options
@@ -91,6 +162,7 @@ function is_integer() {
 # q -> enable qdiskd (cboxqdiskd)
 # r -> fedora release (13 / 14 / rawhide)
 # t -> type (cboxclustertype) cman|corosync
+# v -> virt params (ram/cpu/root/swap)
 
 # clear envvars (when adding, make sure to export them below)
 cboxclustername=""
@@ -101,7 +173,14 @@ cboxrasmngr=""
 cboxqdiskd=""
 cboxvmsdir="/srv/cbox"
 
-while getopts ":c:hm:n:oqr:t:" optflag; do
+cboxvirt=""
+cboxvirtram=2048
+cboxvirtcpus=2
+cboxvirtroot=4096
+cboxvirtswap=$((cboxvirtram / 2))
+cboxvirtshare=20544
+
+while getopts ":c:hm:n:oqr:t:v:" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
@@ -144,6 +223,9 @@ while getopts ":c:hm:n:oqr:t:" optflag; do
 			exit 1
 		fi
 		;;
+	v)
+		cboxvirt="$OPTARG"
+		;;
 	h)
 		print_usage
 		exit 0
@@ -154,6 +236,8 @@ while getopts ":c:hm:n:oqr:t:" optflag; do
 		;;
 	esac
 done
+
+parse_virt_opts "$cboxvirt"
 
 ## ask question
 echo "***** WARNING *****"
@@ -256,6 +340,15 @@ echo "cluster qdiskd:           $cboxqdiskd"
 echo "cluster resource manager: $cboxrasmngr"
 echo "cluster fedora release:   $cboxfedrelease"
 echo ""
+echo "node capacity (for each node):"
+echo ""
+echo "RAM:                      $cboxvirtram (MB)"
+echo "CPU(s):                   $cboxvirtcpus"
+echo "root partition size:      $cboxvirtroot (MB)"
+echo "swap partition size:      $cboxvirtswap (MB)"
+echo ""
+echo "shared disk size:         $cboxvirtshare (MB)"
+echo ""
 echo "under the hood info"
 echo "cbox data dir:            $cboxdatadir"
 echo "cbox hooks dir:           $cboxhooksdir"
@@ -276,6 +369,8 @@ echo "cboxvmsdir=$cboxvmsdir" >> /root/.cbox
 cboxtempdir=$cboxvmsdir/$cboxclustername/temp
 mkdir -p $cboxtempdir
 
+# export all into enviroment
+
 export cboxdatadir
 export cboxhooksdir
 export cboxclustername
@@ -288,6 +383,11 @@ export cboxrasmngr
 export cboxqdiskd
 export cboxvmsdir
 export cboxtempdir
+export cboxvirtram
+export cboxvirtcpus
+export cboxvirtroot
+export cboxvirtswap
+export cboxvirtshare
 
 echo ""
 echo "Creating cluster... this might take several minutes"
