@@ -74,6 +74,25 @@ cboxlogfile=$cboxlogdir/cbox-$(date +%F_%T).log
 function print_usage() {
 	echo "$(basename $0) usage:"
 	echo ""
+	echo "$(basename $0) [options]"
+	echo ""
+	echo "Options:"
+	echo " -c cluster_name                set clustername (default: testcluster)"
+	echo " -m [pacemaker|rgmanager|none]  use a resource manager (default: none)"
+	echo " -n number_of_nodes             a value between 2 and 16 (default: 2)"
+	echo " -o path_to_storage_dir         set path where to store VMs (default: /srv/cbox)"
+	echo " -q                             enable qdiskd for cman clusters (default: no)"
+	echo " -r fedora_release              force fedora release to install on the nodes (defaults: autodetect/same as host)"
+	echo " -t [cman|corosync]             define cluster type (default: cman)"
+	echo " -h                             this help"
+	echo " -v virt_opts                   define virtual nodes and storage size in a comma separated list of parameters"
+	echo "    valid parameters are:"
+	echo "    ram=XXX                     amount of RAM (for each node) in MB (min. 512 - default 2048)"
+	echo "    cpus=XXX                    number of virtual cpus"
+	echo "    root=XXX                    size of the root partition in MB (min. 2048 - default 4096)"
+	echo "    swap=XXX                    size of the swap partition in MB (min. 512 - default is 1024)"
+	echo "    share=XXX                   size of the shared storage disk in MB (min. 20544 - default 20544)"
+	echo ""
 }
 
 function is_integer() {
