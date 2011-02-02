@@ -6,10 +6,15 @@ echo "Creating RHCS /etc/cluster/cluster.conf in the guest"
 
 cd $cboxtempdir
 
-if [ "$cboxnumnodes" = "2" ]; then
-	cmanvotes='two_node="1" expected_votes="1"'
+if [ -z "$cboxqdiskd" ]; then
+	if [ "$cboxnumnodes" = "2" ]; then
+		cmanvotes='two_node="1" expected_votes="1"'
+	else
+		cmanvotes='expected_votes="'$cboxnumnodes'"'
+	fi
 else
-	cmanvotes='expected_votes="'$cboxnumnodes'"'
+	expected_votes=$((cboxnumnodes + 1))
+	cmanvotes='expected_votes="'$expected_votes'"'
 fi
 
 cat > $cboxclustername-mount/etc/cluster/cluster.conf << EOF
@@ -37,11 +42,17 @@ done
 
 cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
   </clusternodes>
-<!--
+EOF
+
+if [ -n "$cboxqdiskd" ]; then
+cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
   <quorumd label="$cboxclustername-qdiskd">
    <heuristic program="ping $cboxclustername-host -c1 -t1" score="1" interval="2" tko="3"/>
   </quorumd>
--->
+EOF
+fi
+
+cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
   <fencedevices>
     <fencedevice name="xvm" agent="fence_xvm"/>
   </fencedevices>

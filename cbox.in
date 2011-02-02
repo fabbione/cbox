@@ -88,6 +88,7 @@ function is_integer() {
 # m -> resource manager (cboxrasmngr) rgmanager|pacemaker|none
 # n -> number of nodes (cboxnumnodes)
 # o -> output dir (cboxvmsdir)
+# q -> enable qdiskd (cboxqdiskd)
 # r -> fedora release (13 / 14 / rawhide)
 # t -> type (cboxclustertype) cman|corosync
 
@@ -97,9 +98,10 @@ cboxnumnodes=""
 cboxclustertype=""
 cboxfedrelease=""
 cboxrasmngr=""
+cboxqdiskd=""
 cboxvmsdir="/srv/cbox"
 
-while getopts ":c:hm:n:or:t:" optflag; do
+while getopts ":c:hm:n:oqr:t:" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
@@ -127,6 +129,9 @@ while getopts ":c:hm:n:or:t:" optflag; do
 		;;
 	o)
 		cboxvmsdir="$OPTARG"
+		;;
+	q)
+		cboxqdiskd="yes"
 		;;
 	r)
 		cboxfedrelease="$OPTARG"
@@ -235,6 +240,11 @@ touch $cboxlogfile || {
 	exit 1
 }
 
+[ "$cboxclustertype" = "corosync" ] && [ -n "$cboxqdiskd" ] && {
+	echo "ERROR: you can't select corosync and qdiskd togetehr."
+	exit 1
+}
+
 ## show details:
 
 echo "***** requested configuration *****"
@@ -242,6 +252,7 @@ echo ""
 echo "cluster name:             $cboxclustername"
 echo "cluster nodes:            $cboxnumnodes"
 echo "cluster type:             $cboxclustertype"
+echo "cluster qdiskd:           $cboxqdiskd"
 echo "cluster resource manager: $cboxrasmngr"
 echo "cluster fedora release:   $cboxfedrelease"
 echo ""
@@ -274,6 +285,7 @@ export cboxlogdir
 export cboxlogfile
 export cboxfedrelease
 export cboxrasmngr
+export cboxqdiskd
 export cboxvmsdir
 export cboxtempdir
 
