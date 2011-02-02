@@ -14,8 +14,8 @@ cd $cboxtempdir
 # free space / 2 (one for gfs2 and one for clvmd)
 
 freespace=$cboxvirtshare
-qdisksize=64
-freespace=$((freespace - 64))
+qdiskdsize=64
+freespace=$((freespace - qdiskdsize))
 gfs2size=$((freespace / 2))
 freespace=$((freespace - gfs2size))
 clvmdsize=$freespace
