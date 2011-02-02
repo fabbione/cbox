@@ -15,6 +15,7 @@ if [ -z "$cboxqdiskd" ]; then
 else
 	expected_votes=$((cboxnumnodes + 1))
 	cmanvotes='expected_votes="'$expected_votes'"'
+	forcevotes='votes="1"'
 fi
 
 cat > $cboxclustername-mount/etc/cluster/cluster.conf << EOF
@@ -29,7 +30,7 @@ EOF
 for i in $(seq 1 $cboxnumnodes); do
 
 cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
-    <clusternode name="$cboxclustername-node$i" nodeid="$i">
+    <clusternode name="$cboxclustername-node$i" nodeid="$i" $forcevotes>
       <fence>
         <method name="single">
           <device name="xvm" domain="$cboxclustername-node$i"/>
