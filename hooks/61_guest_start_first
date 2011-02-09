@@ -10,7 +10,7 @@ max=60
 count=0
 while ! ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
-	-o StrictHostKeyChecking=no "sleep 5"; do
+	-o StrictHostKeyChecking=no "sleep 1"; do
 	echo "Wating for $cboxclustername-node1 to boot"
 	sleep 5
 	[ "$max" -eq "$count" ] && {
@@ -20,4 +20,8 @@ while ! ssh $cboxclustername-node1 \
 	count=$((count+1))
 done
 
-exit 0
+ssh $cboxclustername-node1-br1 \
+    -i /root/.ssh/id_rsa_$cboxclustername \
+    -o StrictHostKeyChecking=no "sleep 1"
+
+exit $?

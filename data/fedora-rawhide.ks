@@ -6,6 +6,7 @@ selinux --permissive
 firewall --disabled
 bootloader --timeout=1 --append="selinux=0"
 network --bootproto=dhcp --device=eth0 --onboot=on
+network --bootproto=dhcp --device=eth1 --onboot=on
 services --enabled=network
 
 # Uncomment the next line

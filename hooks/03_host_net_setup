@@ -7,54 +7,59 @@ echo "Starting libvirtd service"
 service libvirtd start
 
 echo "Checking if cluster virt net already exists"
-virsh net-list |grep -q ^$cboxclustername-br0 && {
-	echo "$cboxclustername-br0 virt net detected: aborting"
+virsh net-list |grep -q ^$cboxclustername-br && {
+	echo "$cboxclustername-br virt net detected: aborting"
 	exit 1
 }
 
 echo "Making a backup copy of main host /etc/hosts to /etc/hosts.cbox"
 cp /etc/hosts /etc/hosts.cbox
 
-echo "Generating libvirt $cboxclustername-br0 xml template"
-tempfile="$cboxtempdir/libvirt-net.xml"
+for br in 0 1; do
+	echo "Generating libvirt $cboxclustername-br$br xml template"
+	tempfile="$cboxtempdir/libvirt-net-br$br.xml"
 
-cat > "$tempfile" << EOF
+	brstr=""
+	[ "$br" -eq "1" ] && brstr="-br$br"
+
+	cat > "$tempfile" << EOF
 <network>
-  <name>$cboxclustername-br0</name>
+  <name>$cboxclustername-br$br</name>
   <uuid>$(uuidgen)</uuid>
   <forward mode='nat'/>
-  <bridge name='$cboxclustername-br0' stp='off' delay='0'/>
-  <ip address='192.168.123.254' netmask='255.255.255.0'>
+  <bridge name='$cboxclustername-br$br' stp='off' delay='0'/>
+  <ip address='192.168.$((123 + br)).254' netmask='255.255.255.0'>
     <dhcp>
-      <range start='192.168.123.1' end='192.168.123.253'/>
+      <range start='192.168.$((123 + br)).1' end='192.168.$((123 + br)).253'/>
 EOF
 
-for i in $(seq 1 $cboxnumnodes); do
-	echo "      <host mac='54:52:00:00:00:$(printf '%x' $i)' name='$cboxclustername-node$i' ip='192.168.123.$i' />" >> "$tempfile"
-done
+	for i in $(seq 1 $cboxnumnodes); do
+		echo "      <host mac='54:52:00:00:$br:$(printf '%x' $i)' name='$cboxclustername-node$i$brstr' ip='192.168.$((123 + br)).$i' />" >> "$tempfile"
+	done
 
-cat >> "$tempfile" << EOF
+	cat >> "$tempfile" << EOF
     </dhcp>
   </ip>
 </network>
 EOF
 
-echo "XML result:"
-cat "$tempfile"
+	echo "XML result:"
+	cat "$tempfile"
 
-echo "Updating main host /etc/hosts"
-for i in $(seq 1 $cboxnumnodes); do
-	echo "192.168.123.$i $cboxclustername-node$i" >> /etc/hosts
+	echo "Updating main host /etc/hosts"
+	for i in $(seq 1 $cboxnumnodes); do
+		echo "192.168.$((123 + br)).$i $cboxclustername-node$i$brstr" >> /etc/hosts
+	done
+	echo "192.168.$((123 + br)).254 $cboxclustername-host$brstr" >> /etc/hosts
+
+	echo "Adding $cboxclustername-br$br to libvirt"
+	virsh net-define "$tempfile"
+	echo "Setting $cboxclustername-br$br to start automatically"
+	virsh net-autostart $cboxclustername-br$br
+	echo "Starting $cboxclustername-br$br"
+	virsh net-start $cboxclustername-br$br
+
+	rm -f "$tempfile"
 done
-echo "192.168.123.254 $cboxclustername-host" >> /etc/hosts
-
-echo "Adding $cboxclustername-br0 to libvirt"
-virsh net-define "$tempfile"
-echo "Setting $cboxclustername-br0 to start automatically"
-virsh net-autostart $cboxclustername-br0
-echo "Starting $cboxclustername-br0"
-virsh net-start $cboxclustername-br0
-
-rm -f "$tempfile"
 
 exit 0

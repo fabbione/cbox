@@ -30,7 +30,7 @@ EOF
 for i in $(seq 1 $cboxnumnodes); do
 
 cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
-    <clusternode name="$cboxclustername-node$i" nodeid="$i" $forcevotes>
+    <clusternode name="$cboxclustername-node$i-br1" nodeid="$i" $forcevotes>
       <fence>
         <method name="single">
           <device name="xvm" domain="$cboxclustername-node$i"/>
@@ -45,17 +45,27 @@ cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
   </clusternodes>
 EOF
 
-if [ -n "$cboxqdiskd" ]; then
+if [ -z "$cboxqdiskd" ]; then
+cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
+  <!--
+EOF
+fi
+
 cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
   <quorumd label="$cboxclustername-qdiskd">
    <heuristic program="ping $cboxclustername-host -c1 -t1" score="1" interval="2" tko="3"/>
   </quorumd>
 EOF
+
+if [ -z "$cboxqdiskd" ]; then
+cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
+  -->
+EOF
 fi
 
 cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
   <fencedevices>
-    <fencedevice name="xvm" agent="fence_xvm"/>
+    <fencedevice name="xvm" agent="fence_xvm" interface="eth1"/>
   </fencedevices>
 </cluster>
 EOF

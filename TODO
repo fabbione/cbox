@@ -13,8 +13,9 @@ cbox.in
 
 - use host to install ccs/luci for management?
 
-- enable more than one bridge/interface?
-  allow to specify network for bridges
+- allow to specify network for bridges
+
+- support IPv6
 
 - enable shared disk paritioning options
 

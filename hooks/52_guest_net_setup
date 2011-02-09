@@ -14,7 +14,7 @@ cp $cboxclustername-mount/etc/hosts \
 echo "Update guest /etc/hosts"
 
 cat /etc/hosts | \
-	grep 192.168.123 \
+	grep $cboxclustername \
 	>> $cboxclustername-mount/etc/hosts
 
 echo "Make a backup copy of guest /etc/sysconfig/network to /etc/sysconfig/network.cbox"

@@ -30,8 +30,10 @@ set -e
 
 	echo "Destroying virtual network:"
 
-	virsh net-destroy $cboxclustername-br0
-	virsh net-undefine $cboxclustername-br0
+	for i in 0 1; do
+		virsh net-destroy $cboxclustername-br$i
+		virsh net-undefine $cboxclustername-br$i
+	done
 
 	echo "Purging nodes disks $cboxvmsdir/$cboxclustername"
 	rm -rf $cboxvmsdir/$cboxclustername

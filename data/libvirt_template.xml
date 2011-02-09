@@ -29,8 +29,13 @@
       <shareable/>
     </disk>
     <interface type='bridge'>
-      <mac address='@MACADDRESS@'/>
-      <source bridge='@BRIDGE@'/>
+      <mac address='@MACADDRESS0@'/>
+      <source bridge='@BRIDGE0@'/>
+      <model type='virtio'/>
+    </interface>
+    <interface type='bridge'>
+      <mac address='@MACADDRESS1@'/>
+      <source bridge='@BRIDGE1@'/>
       <model type='virtio'/>
     </interface>
     <serial type='pty'>
