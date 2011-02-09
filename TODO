@@ -12,7 +12,9 @@ cbox.in
 - more distro agnostic
 
 - use host to install ccs/luci for management?
+
 - enable more than one bridge/interface?
+  allow to specify network for bridges
 
 - enable shared disk paritioning options
 
