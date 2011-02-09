@@ -8,14 +8,12 @@ cbox.in
 
 - maybe more sanity checks for options?
 
-- allow to execute/disable single hooks
-
 - more distro agnostic
 
 - use host to install ccs/luci for management?
 - enable more than one bridge/interface?
 
-- add help output
+- enable shared disk paritioning options
 
 hooks
 -----
