@@ -1,8 +1,7 @@
 general
 -------
 
-- add man page/readme
-- add wiki page
+- add man page
 
 cbox.in
 -------
@@ -10,8 +9,6 @@ cbox.in
 - maybe more sanity checks for options?
 
 - more distro agnostic
-
-- use host to install ccs/luci for management?
 
 - allow to specify network for bridges
 
@@ -25,6 +22,15 @@ hooks
 - make hooks respect all cbox options (based on specs)
 - make a common function file (see for example ssh usage or gfs2 creation)
 - should be more distro agnostic (or prepare for that)
+- use host to install ccs/luci for management?
+
+technologies
+------------
+
+- get cmirror to work
+- add drbd?
+- add ocfs2?
+- add pacemaker
 
 data
 ----
