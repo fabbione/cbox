@@ -49,4 +49,3 @@
     <graphics type='vnc' port='-1' autoport='yes'/>
   </devices>
 </domain>
-
