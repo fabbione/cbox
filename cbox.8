@@ -1,0 +1,47 @@
+.TH CBOX "8" "February 2011" "cbox" "System/Cluster Administration Utilities"
+.SH NAME
+cbox \- manual page for cbox usage
+.SH DESCRIPTION
+Usage:
+.PP
+cbox [options]
+.SH OPTIONS
+.TP
+\fB\-c\fR cluster_name
+set clustername (default: testcluster)
+.TP
+\fB\-m\fR [pacemaker|rgmanager|none]
+use a resource manager (default: none)
+.TP
+\fB\-n\fR number_of_nodes
+a value between 2 and 16 (default: 2)
+.TP
+\fB\-o\fR path_to_storage_dir
+set path where to store VMs (default: /srv/cbox)
+.TP
+\fB\-q\fR
+enable qdiskd for cman clusters (default: no)
+.TP
+\fB\-r\fR fedora_release
+force fedora release to install on the nodes (defaults: autodetect/same as host)
+.TP
+\fB\-t\fR [cman|corosync]
+define cluster type (default: cman)
+.TP
+\fB\-h\fR
+this help
+.TP
+\fB\-v\fR virt_opts
+define virtual nodes and storage size in a comma separated list of parameters
+.IP
+valid parameters are:
+
+ram=XXX                     amount of RAM (for each node) in MB (min. 512 \- default 2048)
+
+cpus=XXX                    number of virtual cpus
+
+root=XXX                    size of the root partition in MB (min. 2048 \- default 4096)
+
+swap=XXX                    size of the swap partition in MB (min. 512 \- default is 1024)
+
+share=XXX                   size of the shared storage disk in MB (min. 20544 \- default 20544)

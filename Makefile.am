@@ -11,6 +11,8 @@ TARGET			= cbox
 
 sbin_SCRIPTS		= $(TARGET)
 
+man_MANS		= $(TARGET).8
+
 $(TARGET): $(TARGET).in
 	cat $< | sed \
 		-e 's#DATADIR#$(CBOXDATADIR)#g' \
