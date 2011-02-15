@@ -6,12 +6,10 @@ echo "Apply distribution/version specific hacks live"
 
 cd $cboxtempdir
 
-if [ "$cboxfedrelease" = "13" ]; then
-	echo "Removing Fedora 13 udev persistent net generated rules"
-	ssh $cboxclustername-node1 \
-		-i /root/.ssh/id_rsa_$cboxclustername \
-		-o StrictHostKeyChecking=no \
-		"rm -f /etc/udev/rules.d/*persistent-net*"
-fi
+echo "Removing udev persistent net generated rules"
+ssh $cboxclustername-node1 \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no \
+	"rm -f /etc/udev/rules.d/*persistent-net*"
 
 exit 0
