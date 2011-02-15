@@ -21,6 +21,7 @@ for i in $(seq 1 $cboxnumnodes); do
 		sleep 5
 		[ "$max" -eq "$count" ] && {
 			echo "WARNING: $cboxclustername-node$i did not respond to ssh after 300 seconds"
+			exit 1
 		}
 		count=$((count+1))
 	done
