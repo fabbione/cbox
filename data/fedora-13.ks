@@ -69,7 +69,6 @@ iputils
 
 # Remove the authconfig pieces
 -authconfig
--rhpl
 -wireless-tools
 
 # Remove the kbd bits
@@ -77,7 +76,6 @@ iputils
 -usermode
 
 # these are all kind of overkill but get pulled in by mkinitrd ordering
--mkinitrd
 -kpartx
 -dmraid
 -mdadm

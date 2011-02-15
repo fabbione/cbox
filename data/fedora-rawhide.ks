@@ -65,14 +65,12 @@ iputils
 #
 
 # no need for kudzu if the hardware doesn't change
--kudzu
 -prelink
 -setserial
 -ed
 
 # Remove the authconfig pieces
 -authconfig
--rhpl
 -wireless-tools
 
 # Remove the kbd bits
@@ -80,7 +78,6 @@ iputils
 -usermode
 
 # these are all kind of overkill but get pulled in by mkinitrd ordering
--mkinitrd
 -kpartx
 -dmraid
 -mdadm
