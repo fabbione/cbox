@@ -74,7 +74,9 @@ set -e
 cboxlogfile=$cboxlogdir/cbox-$(date +%F_%T).log
 
 function print_usage() {
-	echo "$(basename $0) usage:"
+	echo "$(basename $0) ver: VERSION"
+	echo ""
+	echo "usage:"
 	echo ""
 	echo "$(basename $0) [options]"
 	echo ""
@@ -353,6 +355,8 @@ touch $cboxlogfile || {
 ## show details:
 
 echo "***** requested configuration *****"
+echo ""
+echo "cbox version:             VERSION"
 echo ""
 echo "cluster name:             $cboxclustername"
 echo "cluster nodes:            $cboxnumnodes"

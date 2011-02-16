@@ -15,6 +15,7 @@ man_MANS		= $(TARGET).8
 
 $(TARGET): $(TARGET).in
 	cat $< | sed \
+		-e 's#VERSION#$(VERSION)#g' \
 		-e 's#DATADIR#$(CBOXDATADIR)#g' \
 		-e 's#LOGDIR#$(CBOXLOGDIR)#g' \
 		> $@-t && \
