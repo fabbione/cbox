@@ -63,6 +63,10 @@ CBOXDATADIR=${datadir}/cbox
 AC_SUBST([CBOXLOGDIR])
 AC_SUBST([CBOXDATADIR])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([
+		 Makefile
+		 data/Makefile
+		 hooks/Makefile
+		])
 
 AC_OUTPUT

@@ -1,5 +1,8 @@
 EXTRA_DIST		= autogen.sh .version make/release.mk \
-			  make/git-version-gen make/gitlog-to-changelog
+			  make/git-version-gen make/gitlog-to-changelog \
+			  cbox.in cbox.8
+
+SUBDIRS			= data hooks
 
 AUTOMAKE_OPTIONS	= foreign
 
@@ -20,14 +23,6 @@ $(TARGET): $(TARGET).in
 		-e 's#LOGDIR#$(CBOXLOGDIR)#g' \
 		> $@-t && \
 	chmod 755 $@-t && mv $@-t $@
-
-cboxdatadir		= $(CBOXDATADIR)
-
-cboxdata_SCRIPTS	= data/*
-
-cboxhooksdir		= $(CBOXDATADIR)/hooks
-
-cboxhooks_SCRIPTS	= hooks/*
 
 clean-local:
 	rm -f $(TARGET)

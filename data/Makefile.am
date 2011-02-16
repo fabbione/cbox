@@ -1,0 +1,13 @@
+MAINTAINERCLEANFILES	= Makefile.in
+
+KICKSTARTS		= fedora-13.ks \
+			  fedora-14.ks \
+			  fedora-rawhide.ks
+
+TEMPLATES		= libvirt_template.xml
+
+EXTRA_DIST		= $(KICKSTARTS) $(TEMPLATES)
+
+cboxdatadir		= $(CBOXDATADIR)
+
+cboxdata_DATA		= $(KICKSTARTS) $(TEMPLATES)
