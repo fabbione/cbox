@@ -2,9 +2,9 @@
 
 set -e
 
-echo "Creating RHCS /etc/cluster/cluster.conf in the guest"
-
 cd $cboxtempdir
+
+echo "Creating RHCS /etc/cluster/cluster.conf in the guest"
 
 if [ -z "$cboxqdiskd" ]; then
 	if [ "$cboxnumnodes" = "2" ]; then
@@ -69,5 +69,11 @@ cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
   </fencedevices>
 </cluster>
 EOF
+
+echo "Creating corosync /etc/corosync/corosync.conf in the guest"
+
+cat $cboxclustername-mount/etc/corosync/corosync.conf.example | sed \
+	-e 's#192.168.1.1#192.168.124.1#g' \
+	> $cboxclustername-mount/etc/corosync/corosync.conf
 
 exit 0
