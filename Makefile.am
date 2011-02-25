@@ -21,6 +21,7 @@ $(TARGET): $(TARGET).in
 		-e 's#VERSION#$(VERSION)#g' \
 		-e 's#DATADIR#$(CBOXDATADIR)#g' \
 		-e 's#LOGDIR#$(CBOXLOGDIR)#g' \
+		-e 's#EMULATOR#$(CBOXEMULATOR)#g' \
 		> $@-t && \
 	chmod 755 $@-t && mv $@-t $@
 

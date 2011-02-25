@@ -69,6 +69,9 @@ set -e
 # cbox hooks dir
 [ -z "$cboxhooksdir" ] && cboxhooksdir="$cboxdatadir/hooks"
 
+# cbox emulator
+[ -z "$cboxemulator" ] && cboxemulator="EMULATOR"
+
 # basic logging
 [ -z "$cboxlogdir" ] && cboxlogdir="LOGDIR"
 cboxlogfile=$cboxlogdir/cbox-$(date +%F_%T).log
@@ -186,6 +189,7 @@ function parse_virt_opts() {
 # r -> fedora release (13 / 14 / rawhide)
 # t -> type (cboxclustertype) cman|corosync
 # v -> virt params (ram/cpu/root/swap)
+# l -> disable guestmount and use loop and kpartx
 
 # clear envvars (when adding, make sure to export them below)
 cboxclustername=""
@@ -203,10 +207,13 @@ cboxvirtroot=4096
 cboxvirtswap=$((cboxvirtram / 2))
 cboxvirtshare=20544
 
-while getopts ":c:hm:n:o:qr:t:v:" optflag; do
+while getopts ":c:hlm:n:o:qr:t:v:" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
+		;;
+	l)
+		cboxuseloop="yes"
 		;;
 	m)
 		cboxrasmngr="$OPTARG"
@@ -413,6 +420,8 @@ export cboxvirtcpus
 export cboxvirtroot
 export cboxvirtswap
 export cboxvirtshare
+export cboxuseloop
+export cboxemulator
 
 echo ""
 echo "Creating cluster... this might take several minutes"

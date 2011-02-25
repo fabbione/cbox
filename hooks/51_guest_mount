@@ -8,9 +8,14 @@ cd $cboxtempdir
 
 mkdir -p $cboxclustername-mount
 
-guestmount \
-	-a $cboxclustername-boot/$cboxclustername-boot-vda.raw \
-	-m /dev/vda1 \
-	$cboxclustername-mount
+if [ -z "$cboxuseloop" ]; then
+    guestmount \
+		-a $cboxclustername-boot/$cboxclustername-boot-vda.raw \
+		-m /dev/vda1 \
+		$cboxclustername-mount
+else
+	name=$(kpartx -p p -a $cboxclustername-boot/$cboxclustername-boot-vda.raw -v | grep p1 | cut -d' ' -f 3)
+	mount /dev/mapper/$name $cboxclustername-mount
+fi
 
 exit 0

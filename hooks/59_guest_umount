@@ -8,6 +8,10 @@ cd $cboxtempdir
 
 umount $cboxclustername-mount
 
+if [ -n "$cboxuseloop" ]; then
+    kpartx -d $cboxclustername-boot/$cboxclustername-boot-vda.raw
+fi
+
 echo "Syncing data (might take sometime)"
 
 sync

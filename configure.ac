@@ -48,6 +48,16 @@ AC_PROG_LN_S
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
+AC_CHECK_PROGS([APPCREATOR],[appliance-creator])
+if test -z "$APPCREATOR"; then
+	AC_MSG_ERROR([you don't seem to have appliance-creator; it is required])
+fi
+
+AC_PATH_TOOL([CBOXEMULATOR],[qemu-kvm],,[/usr/bin:/usr/libexec])
+if test -z "$CBOXEMULATOR"; then
+	AC_MSG_ERROR([you don't seem to have qemu-kvm; it is required])
+fi
+
 # local options
 AC_ARG_ENABLE([debug],
 	[  --enable-debug          enable debug build. ],
@@ -62,6 +72,7 @@ CBOXDATADIR=${datadir}/cbox
 
 AC_SUBST([CBOXLOGDIR])
 AC_SUBST([CBOXDATADIR])
+AC_SUBST([CBOXEMULATOR])
 
 AC_CONFIG_FILES([
 		 Makefile
