@@ -20,7 +20,7 @@ hooks
 - make hooks respect all cbox options (based on specs)
 - make a common function file (see for example ssh usage or gfs2 creation)
 - should be more distro agnostic (or prepare for that)
-- use host to install ccs/luci for management?
+- use host to install luci for management?
 - implement install/uninstall per hook? and reverse execution for destroy?
 
 technologies
