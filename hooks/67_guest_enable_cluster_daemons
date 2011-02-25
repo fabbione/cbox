@@ -4,12 +4,27 @@ set -e
 
 echo "Enabling cluster daemons in the guest"
 
-for i in clvmd cman cmirrord gfs2 gfs2-cluster modclusterd rgmanager ricci; do
-	echo "$i enabled"
+enable_daemon() {
+	daemon="$1"
 	ssh $cboxclustername-node1 \
 		-i /root/.ssh/id_rsa_$cboxclustername \
-		-o StrictHostKeyChecking=no \
-		"chkconfig $i on"
+	-o StrictHostKeyChecking=no \
+		"chkconfig $daemon on"
+	echo "$daemon enabled"
+}
+
+daemons=""
+
+[ "$cboxclustertype" = "cman" ] && \
+	daemons="$daemons clvmd cman cmirrord gfs2 gfs2-cluster modclusterd ricci"
+
+[ "$cboxclustertype" = "corosync" ] && \
+	daemons="$daemons corosync"
+
+[ "$cboxrasmngr" != "none" ] && daemons="$daemons $cboxrasmngr"
+
+for i in $daemons; do
+	enable_daemon $i
 done
 
 exit 0
