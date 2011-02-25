@@ -203,7 +203,7 @@ cboxvirtroot=4096
 cboxvirtswap=$((cboxvirtram / 2))
 cboxvirtshare=20544
 
-while getopts ":c:hm:n:oqr:t:v:" optflag; do
+while getopts ":c:hm:n:o:qr:t:v:" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
