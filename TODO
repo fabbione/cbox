@@ -29,9 +29,21 @@ technologies
 - add drbd?
 - add ocfs2?
 - add pacemaker
+- add clustered samba
 
 data
 ----
 
 - generate kickstarts from templates
 - use multiether libvirt template or generate one of the fly
+
+random bits
+-----------
+
+- add ntpdate / time sync / ntpd
+- fix tz via host config
+  # date +%Z
+  CDT
+  # date +%:::z
+  -05
+- create random default unprivileged user?
