@@ -103,6 +103,8 @@ cmirror
 gfs2-utils
 gfs2-cluster
 rsyslog
+ntp
+ntpdate
 
 %end
 
