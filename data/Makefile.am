@@ -2,6 +2,7 @@ MAINTAINERCLEANFILES	= Makefile.in
 
 KICKSTARTS		= fedora-13.ks \
 			  fedora-14.ks \
+			  fedora-15.ks \
 			  fedora-rawhide.ks
 
 TEMPLATES		= libvirt_template.xml
