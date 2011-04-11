@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+echo "Starting ntp on main host"
+
+chkconfig ntp on
+echo "Starting ntp"
+service ntp restart
+
+exit 0
