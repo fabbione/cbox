@@ -23,7 +23,7 @@ daemons=""
 
 [ "$cboxrasmngr" != "none" ] && daemons="$daemons $cboxrasmngr"
 
-for i in $daemons; do
+for i in $daemons ntpd ntpdate; do
 	enable_daemon $i
 done
 

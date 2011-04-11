@@ -1,6 +1,6 @@
 lang C
 keyboard us
-timezone US/Eastern
+timezone @TIMEZONE@
 auth --useshadow --enablemd5
 selinux --permissive
 firewall --disabled

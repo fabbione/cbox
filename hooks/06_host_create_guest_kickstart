@@ -19,8 +19,10 @@ freespace=$((freespace - qdiskdsize))
 gfs2size=$((freespace / 2))
 freespace=$((freespace - gfs2size))
 clvmdsize=$freespace
+. /etc/sysconfig/clock
 
 cat $cboxdatadir/fedora-$cboxfedrelease.ks | sed \
+	-e 's#@TIMEZONE@#'$ZONE'#g' \
 	-e 's#@ROOTSIZE@#'$cboxvirtroot'#g' \
 	-e 's#@SWAPSIZE@#'$cboxvirtswap'#g' \
 	-e 's#@QDISKDSIZE@#'$qdiskdsize'#g' \
