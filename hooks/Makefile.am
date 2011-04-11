@@ -6,6 +6,7 @@ HOOKS			= 01_host_update \
 			  04_host_fence_setup \
 			  05_host_create_ssh_keys \
 			  06_host_create_guest_kickstart \
+			  07_host_ntp_setup \
 			  50_guest_create \
 			  51_guest_mount \
 			  52_guest_net_setup \
