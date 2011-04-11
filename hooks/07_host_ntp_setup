@@ -2,10 +2,10 @@
 
 set -e
 
-echo "Starting ntp on main host"
+echo "Starting ntpd on main host"
 
-chkconfig ntp on
-echo "Starting ntp"
-service ntp restart
+chkconfig ntpd on
+echo "Starting ntpd"
+service ntpd restart
 
 exit 0
