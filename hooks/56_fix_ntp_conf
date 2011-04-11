@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+cd $cboxtempdir
+
+echo "Make a backup copy of guest /etc/ntp.conf to /etc/ntp.conf.cbox"
+
+cp $cboxclustername-mount/etc/ntp.conf \
+   $cboxclustername-mount/etc/ntp.conf.cbox
+
+echo "Fixing ntpd config"
+
+sed -i -e 's/^server.*//g' $cboxclustername-mount/etc/ntp.conf
+echo "server $cboxclustername-host" >> $cboxclustername-mount/etc/ntp.conf
+
+exit 0
