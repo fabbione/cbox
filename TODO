@@ -30,6 +30,7 @@ technologies
 - add ocfs2?
 - add pacemaker
 - add clustered samba
+- add iscsi
 
 data
 ----
@@ -42,8 +43,5 @@ random bits
 
 - add ntpdate / time sync / ntpd
 - fix tz via host config
-  # date +%Z
-  CDT
-  # date +%:::z
-  -05
+  (use /etc/sysconfig/clock to seed anaconda kickstart)
 - create random default unprivileged user?
