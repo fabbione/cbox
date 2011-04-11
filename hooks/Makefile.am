@@ -20,7 +20,7 @@ HOOKS			= 01_host_update \
 			  62_guest_setup_clvmd \
 			  63_guest_setup_gfs2 \
 			  64_guest_setup_qdiskd \
-			  67_guest_enable_cluster_daemons \
+			  67_guest_enable_daemons \
 			  68_guest_apply_hacks_live \
 			  69_guest_stop_first \
 			  70_guest_clone_nodes \
