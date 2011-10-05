@@ -11,7 +11,8 @@ set -e
 	. /root/.cbox
 	echo "Cluster: $cboxclustername appears to be installed on the system"
 	echo ""
-	read -p "Do you want to totally detroy $cboxclustername (y/N)? " ans
+	# TODO: would like to be able to skip this question if -f is used:
+	read -p "Do you want to totally destroy $cboxclustername (y/N)? " ans
 
 	[ -z "$ans" ] && [ "$ans" != "y" ] && {
 		echo "Aborting"
@@ -85,6 +86,7 @@ function print_usage() {
 	echo ""
 	echo "Options:"
 	echo " -c cluster_name                set clustername (default: testcluster)"
+	echo " -f                             force switch to skip all questions. Use with care!"
 	echo " -m [pacemaker|rgmanager|none]  use a resource manager (default: none)"
 	echo " -n number_of_nodes             a value between 2 and 16 (default: 2)"
 	echo " -o path_to_storage_dir         set path where to store VMs (default: /srv/cbox)"
@@ -193,6 +195,7 @@ function parse_virt_opts() {
 
 # clear envvars (when adding, make sure to export them below)
 cboxclustername=""
+cboxforce=""
 cboxnumnodes=""
 cboxclustertype=""
 cboxfedrelease=""
@@ -207,10 +210,13 @@ cboxvirtroot=4096
 cboxvirtswap=$((cboxvirtram / 2))
 cboxvirtshare=20544
 
-while getopts ":c:hlm:n:o:qr:t:v:" optflag; do
+while getopts ":c:fhlm:n:o:qr:t:v:" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
+		;;
+	f)
+		cboxforce="yes"
 		;;
 	l)
 		cboxuseloop="yes"
@@ -275,8 +281,10 @@ echo ""
 echo "cbox is an experimental script to build virtual TEST cluster"
 echo "and it performs actions and configurations that might not be"
 echo "considered safe on both the host and the guests."
+if [ -z "$cboxforce" ]; then
 echo "Please abort the execution now unless you fully understand"
 echo "what you are doing."
+fi
 echo "The resulting setup has to be used only for TESTING."
 echo "Do NOT place this cluster into production."
 echo ""
@@ -288,6 +296,7 @@ echo "***** END OF WARNING *****"
 echo ""
 echo "YOU HAVE BEEN WARNED"
 echo ""
+if [ -z "$cboxforce" ]; then
 echo "If you agree, and want to proceed, please type:"
 echo "Yes, I fully understand the risks of what I am doing"
 echo ""
@@ -297,6 +306,7 @@ read -p "type here: " ans
 	echo "Wise choice.. or you simply didn't type it right"
 	exit 0
 }
+fi
 
 echo ""
 
@@ -388,12 +398,14 @@ echo "cbox log dir:             $cboxlogdir"
 echo "cbox log file:            $cboxlogfile"
 echo "cbox VMs storage dir:     $cboxvmsdir"
 echo ""
+if [ -z "$cboxforce" ]; then
 read -p "Proceed (Y/n)? " ans
 
 [ -n "$ans" ] && [ "$ans" != "Y" ] && {
 	echo "Aborting"
 	exit 1
 }
+fi
 
 echo "cboxclustername=$cboxclustername" > /root/.cbox
 echo "cboxvmsdir=$cboxvmsdir" >> /root/.cbox
