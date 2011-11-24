@@ -1,0 +1,62 @@
+# cbox - Cluster in a Box
+
+Script to help building a cluster playground.
+
+## DISCLAIMER
+
+Use at your own risk or do not use at all.
+
+> cbox is an experimental script to build virtual TEST cluster
+> and it performs actions and configurations that might not be
+> considered safe on both the host and the guests.
+>
+> The resulting setup has to be used only for TESTING.
+> Do NOT place this cluster into production.
+>
+> cbox can only be executed once on each host to create a virtual cluster.
+> Second execution will safely request to destroy the previously
+> created cluster, and start all over again.
+
+## Installation
+
+### Requirements
+
+ - autoconf
+ - appliance-tools
+ - qemu-kvm
+
+### Build and install
+
+    ./autogen.sh
+    ./configure
+    make
+    make check
+    make install
+
+## Usage by Examples
+
+To create a cluster of 2 (the default) Fedora14 nodes (-r 14), each having
+1024MiB of RAM and 2 CPUs run this (the -v option):
+
+    cbox -r 14 -t cman -v ram=1024,cpus=2
+
+The default cluster name is testcluster. Replace testcluster with the name used
+if different.
+
+Then you can connect to the newly built node1 of the cluster like this:
+
+    ssh root@*testcluster*-node1
+
+The password is cluster.
+
+You will likely want to run a ssh-agent and add the PKI key like this:
+
+    ssh-add /root/.ssh/id_rsa_*testcluster*
+
+Here are some ideas how to go about starting the ssh-agent and exporting the
+settings:
+
+  http://superuser.com/questions/141044/sharing-the-same-ssh-agent-among-multiple-login-sessions
+
+See `man 8 cbox` for more options.
+
