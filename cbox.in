@@ -197,6 +197,7 @@ function parse_virt_opts() {
 cboxclustername=""
 cboxforce=""
 cboxnumnodes=""
+cboxminnodes=""
 cboxclustertype=""
 cboxfedrelease=""
 cboxrasmngr=""
@@ -236,11 +237,6 @@ while getopts ":c:fhlm:n:o:qr:t:v:" optflag; do
 			echo "ERROR: number of nodes needs to be an integer (min 2, max 16)"
 			exit 1
 		}
-		if [ "$cboxnumnodes" -lt "2" ] || \
-		   [ "$cboxnumnodes" -gt "16" ]; then
-			echo "ERROR: invalid number of nodes specified (min 2, max 16)"
-			exit 1
-		fi
 		;;
 	o)
 		cboxvmsdir="$OPTARG"
@@ -338,6 +334,17 @@ touch $cboxlogfile || {
 }
 
 [ -z "$cboxnumnodes" ] && cboxnumnodes=2
+# waiting for cboxforce - let's do the check here
+if [ -z "$cboxforce" ]; then
+	cboxminnodes="2"
+else
+	cboxminnodes="1"
+fi
+if [ "$cboxnumnodes" -lt "$cboxminnodes" ] || \
+   [ "$cboxnumnodes" -gt "16" ]; then
+	echo "ERROR: invalid number of nodes specified (min $cboxminnodes, max 16)"
+	exit 1
+fi
 
 [ -z "$cboxclustertype" ] && cboxclustertype=cman
 
