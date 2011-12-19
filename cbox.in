@@ -86,6 +86,7 @@ function print_usage() {
 	echo ""
 	echo "Options:"
 	echo " -c cluster_name                set clustername (default: testcluster)"
+	echo " -d                             development mode. Will repeat failed hook."
 	echo " -f                             force switch to skip all questions. Use with care!"
 	echo " -k kickstart                   use custom kickstart file. This overrides both \-O and \-r."
 	echo " -m [pacemaker|rgmanager|none]  use a resource manager (default: none)"
@@ -198,6 +199,7 @@ function parse_virt_opts() {
 # clear envvars (when adding, make sure to export them below)
 cboxclustername=""
 cboxforce=""
+cboxdevel=""
 cboxnumnodes=""
 cboxminnodes=""
 cboxclustertype=""
@@ -215,10 +217,13 @@ cboxvirtroot=4096
 cboxvirtswap=$((cboxvirtram / 2))
 cboxvirtshare=20544
 
-while getopts ":c:fhk:lm:n:o:O:qr:t:v:" optflag; do
+while getopts ":c:dfhk:lm:n:o:O:qr:t:v:" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
+		;;
+	d)
+		cboxdevel="yes"
 		;;
 	f)
 		cboxforce="yes"
@@ -484,10 +489,19 @@ for i in $(LC_ALL=C; echo $cboxhooksdir/*[^~,]); do
 	if [ -x $i ]; then
 		echo -n "Executing $(basename $i): "
 		echo "Executing $(basename $i)" >> $cboxlogfile
-		$i >> $cboxlogfile 2>&1 || {
-			echo "ERROR $? from $(basename $i). Please check logs"
-			exit 1
-		}
+		while true; do
+			$i >> $cboxlogfile 2>&1 || {
+				echo "ERROR $? from $(basename $i). Please check logs"
+				if [ -z $cboxdevel ]; then
+					exit 1
+				else
+					echo "Run 'screen -rS cboxfixme' and exit when config fixed."
+					screen -DmS cboxfixme
+					continue
+				fi
+			}
+			break
+                done
 		echo "OK"
 		echo "Done with $(basename $i)" >> $cboxlogfile
 	fi
