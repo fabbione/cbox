@@ -13,6 +13,9 @@ set clustername (default: testcluster)
 \fB\-f\fR
 force switch to skip all questions. Use with care!
 .TP
+\fB\-k\fR kickstart
+use custom kickstart file. This overrides both \-O and \-r.
+.TP
 \fB\-m\fR [pacemaker|rgmanager|none]
 use a resource manager (default: none)
 .TP
@@ -21,6 +24,9 @@ a value between 2 and 16 (default: 2)
 .TP
 \fB\-o\fR path_to_storage_dir
 set path where to store VMs (default: /srv/cbox)
+.TP
+\fB\-O\fR osname
+use kickstart without fedora prefix distributed with cbox. This overrides \-r.
 .TP
 \fB\-q\fR
 enable qdiskd for cman clusters (default: no)

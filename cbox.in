@@ -87,9 +87,11 @@ function print_usage() {
 	echo "Options:"
 	echo " -c cluster_name                set clustername (default: testcluster)"
 	echo " -f                             force switch to skip all questions. Use with care!"
+	echo " -k kickstart                   use custom kickstart file. This overrides both \-O and \-r."
 	echo " -m [pacemaker|rgmanager|none]  use a resource manager (default: none)"
 	echo " -n number_of_nodes             a value between 2 and 16 (default: 2)"
 	echo " -o path_to_storage_dir         set path where to store VMs (default: /srv/cbox)"
+	echo " -O osname                      use kickstart without fedora prefix distributed with cbox. This overrides \-r"
 	echo " -q                             enable qdiskd for cman clusters (default: no)"
 	echo " -r fedora_release              force fedora release to install on the nodes (defaults: autodetect/same as host)"
 	echo " -t [cman|corosync]             define cluster type (default: cman)"
@@ -199,6 +201,8 @@ cboxforce=""
 cboxnumnodes=""
 cboxminnodes=""
 cboxclustertype=""
+cboxkickstart=""
+cboxos=""
 cboxfedrelease=""
 cboxrasmngr=""
 cboxqdiskd=""
@@ -211,13 +215,16 @@ cboxvirtroot=4096
 cboxvirtswap=$((cboxvirtram / 2))
 cboxvirtshare=20544
 
-while getopts ":c:fhlm:n:o:qr:t:v:" optflag; do
+while getopts ":c:fhk:lm:n:o:O:qr:t:v:" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
 		;;
 	f)
 		cboxforce="yes"
+		;;
+	k)
+		cboxkickstart="$OPTARG"
 		;;
 	l)
 		cboxuseloop="yes"
@@ -240,6 +247,9 @@ while getopts ":c:fhlm:n:o:qr:t:v:" optflag; do
 		;;
 	o)
 		cboxvmsdir="$OPTARG"
+		;;
+	O)
+		cboxos="$OPTARG"
 		;;
 	q)
 		cboxqdiskd="yes"
@@ -350,13 +360,20 @@ fi
 
 [ -z "$cboxrasmngr" ] && cboxrasmngr=none
 
-[ -z "$cboxfedrelease" ] && {
-	cboxfedrelease=$(cat /etc/fedora-release | awk '{print $3}')
-	grep -q -i rawhide /etc/fedora-release && cboxfedrelease=rawhide
-}
+if [ -z "$cboxkickstart" ]; then
+	if [ -n "$cboxos" ]; then
+		cboxkickstart=$cboxdatadir/$cboxos.ks
+	else
+		if [ -z "$cboxfedrelease" ]; then
+			cboxfedrelease=$(cat /etc/fedora-release | awk '{print $3}')
+			grep -q -i rawhide /etc/fedora-release && cboxfedrelease=rawhide
+		fi
+		cboxkickstart=$cboxdatadir/fedora-$cboxfedrelease.ks
+	fi
+fi
 
-[ ! -f $cboxdatadir/fedora-$cboxfedrelease.ks ] && {
-	echo "ERROR: no kickstart file for fedora $cboxfedrelease"
+[ ! -f "$cboxkickstart" ] && {
+	echo "ERROR: no kickstart file $cboxkickstart"
 	exit 1
 }
 
@@ -430,6 +447,8 @@ export cboxclustertype
 export cboxlogdir
 export cboxlogfile
 export cboxfedrelease
+export cboxos
+export cboxkickstart
 export cboxrasmngr
 export cboxqdiskd
 export cboxvmsdir

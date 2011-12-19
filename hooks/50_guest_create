@@ -8,7 +8,7 @@ cd $cboxtempdir
 
 appliance-creator -v --vmem=$cboxvirtram --vcpu=$cboxvirtcpus \
 		  -n $cboxclustername-boot \
-		  -c fedora-$cboxfedrelease.ks
+		  -c cbox-guest.ks
 
 rm -f $cboxclustername-boot/$cboxclustername-boot.xml
 

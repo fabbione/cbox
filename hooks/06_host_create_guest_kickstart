@@ -2,7 +2,7 @@
 
 set -e
 
-echo "Generating fedora-$cboxfedrelease.ks"
+echo "Generating cbox-guest.ks"
 
 cd $cboxtempdir
 
@@ -21,13 +21,13 @@ freespace=$((freespace - gfs2size))
 clvmdsize=$freespace
 . /etc/sysconfig/clock
 
-cat $cboxdatadir/fedora-$cboxfedrelease.ks | sed \
+cat "$cboxkickstart" | sed \
 	-e 's#@TIMEZONE@#'$ZONE'#g' \
 	-e 's#@ROOTSIZE@#'$cboxvirtroot'#g' \
 	-e 's#@SWAPSIZE@#'$cboxvirtswap'#g' \
 	-e 's#@QDISKDSIZE@#'$qdiskdsize'#g' \
 	-e 's#@GFS2SIZE@#'$gfs2size'#g' \
 	-e 's#@CLVMDSIZE@#'$clvmdsize'#g' \
-	> fedora-$cboxfedrelease.ks
+	> cbox-guest.ks
 
 exit 0
