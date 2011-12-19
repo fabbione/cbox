@@ -496,3 +496,5 @@ done
 echo "cluster $cboxclustername successfully created and running"
 
 exit 0
+
+# vim:shiftwidth=8:noexpandtab
