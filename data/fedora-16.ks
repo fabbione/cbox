@@ -32,8 +32,8 @@ part /srv/cbox/clvmd --size @CLVMDSIZE@ --fstype ext3 --ondisk vdb
 #
 # Repositories
 #
-repo --name="Fedora 15 - x86_64" --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-15&arch=$basearch
-repo --name="Fedora 15 - x86_64 - Updates" --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f15&arch=$basearch
+repo --name="Fedora 16 - x86_64" --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-16&arch=$basearch
+repo --name="Fedora 16 - x86_64 - Updates" --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f16&arch=$basearch
 
 #
 # Add all the packages after the base packages
