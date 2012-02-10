@@ -14,7 +14,7 @@ set -e
 	# TODO: would like to be able to skip this question if -f is used:
 	read -p "Do you want to totally destroy $cboxclustername (y/N)? " ans
 
-	[ -z "$ans" ] && [ "$ans" != "y" ] && {
+	[ -z "$ans" ] || [ "$ans" != "y" ] && {
 		echo "Aborting"
 		exit 1
 	}
