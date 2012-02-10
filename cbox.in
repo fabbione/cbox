@@ -362,6 +362,8 @@ if [ "$cboxnumnodes" -lt "$cboxminnodes" ] || \
 fi
 
 [ -z "$cboxclustertype" ] && cboxclustertype=cman
+[ "$cboxfedrelease" -gt 16 ] && cboxclustertype=corosync
+[ "$cboxfedrelease" = "rawhide" ] && cboxclustertype=corosync
 
 [ -z "$cboxrasmngr" ] && cboxrasmngr=none
 

@@ -6,9 +6,15 @@ cd $cboxtempdir
 
 echo "Creating qdiskd filesystem on $(cat qdiskd_partition)"
 
+# Fixme: should handle this using global
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
-	"echo y | mkqdisk -l $cboxclustername-qdiskd -c $(cat "qdiskd_partition")"
+	"[ -f /usr/sbin/mkqdisks ]" || exit 0
+
+ssh $cboxclustername-node1 \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no \
+	"[ -f /usr/sbin/mkqdisks ] && echo y | mkqdisk -l $cboxclustername-qdiskd -c $(cat "qdiskd_partition")"
 
 exit 0
