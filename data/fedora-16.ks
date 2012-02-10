@@ -4,7 +4,7 @@ timezone @TIMEZONE@
 auth --useshadow --enablemd5
 selinux --permissive
 firewall --disabled
-bootloader --timeout=1 --append="selinux=0"
+bootloader --location=mbr --driveorder vda,vdb --timeout=1 --append="selinux=0"
 network --bootproto=dhcp --device=eth0 --onboot=on
 network --bootproto=dhcp --device=eth1 --onboot=on
 services --enabled=network
@@ -21,13 +21,17 @@ device virtio_blk
 # This information is used by appliance-tools but
 # not by the livecd tools.
 #
-part / --size @ROOTSIZE@ --fstype ext3 --ondisk vda
+
+part biosboot --size 1 --fstype biosboot --ondisk vda
+part / --size @ROOTSIZE@ --fstype ext4 --ondisk vda
 part swap --size @SWAPSIZE@ --fstype swap --ondisk vda
 
 # temporary workaround to get the image created easily
-part /srv/cbox/qdiskd --size @QDISKDSIZE@ --fstype ext3 --ondisk vdb
-part /srv/cbox/gfs2 --size @GFS2SIZE@ --fstype ext3 --ondisk vdb
-part /srv/cbox/clvmd --size @CLVMDSIZE@ --fstype ext3 --ondisk vdb
+# appliance creator cannot handle it if gpt is used, moved out
+#part /srv/cbox/qdiskd --size @QDISKDSIZE@ --fstype ext4 --ondisk vdb
+#part /srv/cbox/gfs2 --size @GFS2SIZE@ --fstype ext4 --ondisk vdb
+#part /srv/cbox/clvmd --size @CLVMDSIZE@ --fstype ext4 --ondisk vdb
+
 
 #
 # Repositories
@@ -42,7 +46,7 @@ repo --name="Fedora 16 - x86_64 - Updates" --mirrorlist=http://mirrors.fedorapro
 bash
 kernel
 less
-grub
+grub2
 e2fsprogs
 passwd
 policycoreutils
@@ -54,6 +58,7 @@ acpid
 dbus
 #needed to disable selinux
 lokkit
+parted
 
 #Allow for dhcp access
 dhclient
@@ -116,4 +121,3 @@ ntpdate
 %post
 
 %end
-

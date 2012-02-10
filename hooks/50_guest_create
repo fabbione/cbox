@@ -8,7 +8,7 @@ cd $cboxtempdir
 
 appliance-creator -v --vmem=$cboxvirtram --vcpu=$cboxvirtcpus \
 		  -n $cboxclustername-boot \
-		  -c cbox-guest.ks
+		  -c cbox-guest.ks -d
 
 rm -f $cboxclustername-boot/$cboxclustername-boot.xml
 

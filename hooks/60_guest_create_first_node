@@ -11,8 +11,35 @@ echo "Moving disks"
 mv $cboxtempdir/$cboxclustername-boot/$cboxclustername-boot-vda.raw \
    $cboxclustername-node1.raw
 
-mv $cboxtempdir/$cboxclustername-boot/$cboxclustername-boot-vdb.raw \
-   $cboxclustername-shareddisk.raw
+SHAREDIMG_ORIG=$cboxtempdir/$cboxclustername-boot/$cboxclustername-boot-vdb.raw
+SHAREDIMG=$cboxclustername-shareddisk.raw
+if [ -f $SHAREDIMG_ORIG ] ; then
+	mv $SHAREDIMG_ORIG $SHAREDIMG
+else
+	dd if=/dev/zero of=$SHAREDIMG bs=1M count=0 seek=$cboxvirtshare
+
+	# FIXME: copy from kickstart
+	# priciple of ops:
+	# disk size - 64MB for qdisk
+	# free space / 2 (one for gfs2 and one for clvmd)
+
+	freespace=$cboxvirtshare
+	qdiskdsize=64
+	freespace=$((freespace - qdiskdsize))
+	gfs2size=$((freespace / 2))
+	freespace=$((freespace - gfs2size))
+	clvmdsize=$freespace
+
+	parted -s $SHAREDIMG \
+		mklabel gpt \
+		mkpart primary 0 $qdiskdsize \
+		mkpart primary $qdiskdsize $(($qdiskdsize + $gfs2size)) \
+		mkpart primary $(($qdiskdsize + $gfs2size)) $(($qdiskdsize + $gfs2size + $clvmdsize))
+
+	echo "/dev/vdb1" >$cboxtempdir/qdiskd_partition
+	echo "/dev/vdb2" >$cboxtempdir/gfs2_partition
+	echo "/dev/vdb3" >$cboxtempdir/clvmd_partition
+fi
 
 echo "Generating $cboxclustername-node1 libvirt xml template"
 
@@ -24,7 +51,7 @@ cat $cboxdatadir/libvirt_template.xml | sed \
 	-e 's#@MEMORY@#'$memory'#g' \
 	-e 's#@VCPUS@#'$cboxvirtcpus'#g' \
 	-e 's#@DISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-node1.raw'#g' \
-	-e 's#@SHAREDDISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-shareddisk.raw'#g' \
+	-e 's#@SHAREDDISK@#'$cboxvmsdir/$cboxclustername/$SHAREDIMG'#g' \
 	-e 's#@MACADDRESS0@#54:52:00:00:00:1#g' \
 	-e 's#@BRIDGE0@#'$cboxclustername-br0'#g' \
 	-e 's#@MACADDRESS1@#54:52:00:00:01:1#g' \

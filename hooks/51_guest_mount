@@ -8,13 +8,16 @@ cd $cboxtempdir
 
 mkdir -p $cboxclustername-mount
 
+IMG=$cboxclustername-boot/$cboxclustername-boot-vda.raw
+
+PART=1
+# GPT uses additional biosboot partition (no fs there)
+blkid -p $IMG | grep gpt && PART=2
+
 if [ -z "$cboxuseloop" ]; then
-    guestmount \
-		-a $cboxclustername-boot/$cboxclustername-boot-vda.raw \
-		-m /dev/vda1 \
-		$cboxclustername-mount
+	guestmount  -a $IMG -m /dev/vda$PART $cboxclustername-mount
 else
-	name=$(kpartx -p p -a $cboxclustername-boot/$cboxclustername-boot-vda.raw -v | grep p1 | cut -d' ' -f 3)
+	name=$(kpartx -p p -a $IMG -v | grep p$PART | cut -d' ' -f 3)
 	mount /dev/mapper/$name $cboxclustername-mount
 fi
 

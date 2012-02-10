@@ -6,7 +6,7 @@ echo "Apply distribution/version specific hacks pre-run"
 
 cd $cboxtempdir
 
-chroot $cboxclustername-mount su - root -c "chkconfig iptables off"
-chroot $cboxclustername-mount su - root -c "chkconfig ip6tables off"
+chroot $cboxclustername-mount su -c "chkconfig iptables off" && true
+chroot $cboxclustername-mount su -c "chkconfig ip6tables off" && true
 
 exit 0
