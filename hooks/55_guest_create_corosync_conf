@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+
+[ "$cboxclustertype" != "corosync" ] && exit 0
+
+cd $cboxtempdir
+
+echo "Creating corosync /etc/corosync/corosync.conf in the guest"
+
+CFG=$cboxclustername-mount/etc/corosync/corosync.conf
+
+if [ "$cboxnumnodes" = "2" ]; then
+	twonodes=1
+else
+	twonodes=0
+fi
+
+cat $cboxclustername-mount/etc/corosync/corosync.conf.example | sed \
+	-e 's#192.168.1.0#192.168.124.0#g' \
+	-e 's#192.168.1.1#192.168.124.1#g' \
+	-e "s#\#provider: corosync_votequorum#provider: corosync_votequorum\n\ttwo_node: $twonodes#g" \
+	> $CFG
+
+cat >> $CFG << EOF
+nodelist {
+EOF
+
+for i in $(seq 1 $cboxnumnodes); do
+cat >> $CFG << EOF
+	node {
+		ring0_addr: 192.168.124.$i
+		nodeid: $i
+	}
+EOF
+done
+
+cat >> $CFG << EOF
+}
+EOF
+
+exit 0

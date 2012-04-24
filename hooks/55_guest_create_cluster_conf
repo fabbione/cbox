@@ -2,6 +2,8 @@
 
 set -e
 
+[ "$cboxclustertype" != "cman" ] && exit 0
+
 cd $cboxtempdir
 
 echo "Creating RHCS /etc/cluster/cluster.conf in the guest"
@@ -69,11 +71,5 @@ cat >> $cboxclustername-mount/etc/cluster/cluster.conf << EOF
   </fencedevices>
 </cluster>
 EOF
-
-echo "Creating corosync /etc/corosync/corosync.conf in the guest"
-
-cat $cboxclustername-mount/etc/corosync/corosync.conf.example | sed \
-	-e 's#192.168.1.1#192.168.124.1#g' \
-	> $cboxclustername-mount/etc/corosync/corosync.conf
 
 exit 0

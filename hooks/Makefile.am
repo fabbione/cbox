@@ -13,6 +13,7 @@ HOOKS			= 01_host_update \
 			  53_guest_fstab_setup \
 			  54_guest_install_ssh_keys \
 			  55_guest_create_cluster_conf \
+			  55_guest_create_corosync_conf \
 			  56_fix_ntp_conf \
 			  58_guest_apply_hacks_prerun \
 			  59_guest_umount \
