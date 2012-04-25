@@ -45,6 +45,7 @@ repo --name="Fedora 17 - x86_64 - Updates" --mirrorlist=http://mirrors.fedorapro
 %packages
 bash
 kernel
+kernel-modules-extra
 less
 grub2
 e2fsprogs

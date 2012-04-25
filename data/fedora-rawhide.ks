@@ -46,6 +46,7 @@ repo --name=rawhide --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?rep
 %packages
 bash
 kernel
+kernel-modules-extra
 less
 grub2
 e2fsprogs
