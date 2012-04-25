@@ -108,7 +108,7 @@ resource-agents
 rgmanager
 pacemaker
 lvm2-cluster
-#cmirror
+cmirror
 gfs2-utils
 rsyslog
 ntp
