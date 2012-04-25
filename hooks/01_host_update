@@ -3,6 +3,6 @@
 set -e
 
 echo "Updating host machine"
-yum update -y
+yum update -y --skip-broken
 
 exit 0
