@@ -39,6 +39,7 @@ part swap --size @SWAPSIZE@ --fstype swap --ondisk vda
 
 # To compose against rawhide, use the following "repo" (disabled by default)
 repo --name=rawhide --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=rawhide&arch=$basearch
+@REPOURL@
 
 #
 # Add all the packages after the base packages

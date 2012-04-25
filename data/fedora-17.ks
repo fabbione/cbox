@@ -38,6 +38,7 @@ part swap --size @SWAPSIZE@ --fstype swap --ondisk vda
 #
 repo --name="Fedora 17 - x86_64" --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-17&arch=$basearch
 repo --name="Fedora 17 - x86_64 - Updates" --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f17&arch=$basearch
+@REPOURL@
 
 #
 # Add all the packages after the base packages

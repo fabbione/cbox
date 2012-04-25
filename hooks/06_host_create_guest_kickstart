@@ -21,6 +21,8 @@ freespace=$((freespace - gfs2size))
 clvmdsize=$freespace
 . /etc/sysconfig/clock
 
+[ -n "$cboxrepourl" ] && repourl="repo --name=\"localrepo\" --baseurl=$cboxrepourl"
+
 cat "$cboxkickstart" | sed \
 	-e 's#@TIMEZONE@#'$ZONE'#g' \
 	-e 's#@ROOTSIZE@#'$cboxvirtroot'#g' \
@@ -28,6 +30,7 @@ cat "$cboxkickstart" | sed \
 	-e 's#@QDISKDSIZE@#'$qdiskdsize'#g' \
 	-e 's#@GFS2SIZE@#'$gfs2size'#g' \
 	-e 's#@CLVMDSIZE@#'$clvmdsize'#g' \
+	-e "s#@REPOURL@#$repourl#g" \
 	> cbox-guest.ks
 
 exit 0

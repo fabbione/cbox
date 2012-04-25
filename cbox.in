@@ -96,6 +96,7 @@ function print_usage() {
 	echo " -q                             enable qdiskd for cman clusters (default: no)"
 	echo " -r fedora_release              force fedora release to install on the nodes (defaults: autodetect/same as host)"
 	echo " -t [cman|corosync]             define cluster type (default: cman)"
+	echo " -u repo_URL                    use additional custom yum repository"
 	echo " -h                             this help"
 	echo " -v virt_opts                   define virtual nodes and storage size in a comma separated list of parameters"
 	echo "    valid parameters are:"
@@ -209,6 +210,7 @@ cboxfedrelease=""
 cboxrasmngr=""
 cboxqdiskd=""
 cboxvmsdir="/srv/cbox"
+cboxrepourl=""
 
 cboxvirt=""
 cboxvirtram=2048
@@ -217,7 +219,7 @@ cboxvirtroot=4096
 cboxvirtswap=$((cboxvirtram / 2))
 cboxvirtshare=20544
 
-while getopts ":c:dfhk:lm:n:o:O:qr:t:v:" optflag; do
+while getopts ":c:dfhk:lm:n:o:O:qr:t:u:v:" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
@@ -269,6 +271,9 @@ while getopts ":c:dfhk:lm:n:o:O:qr:t:v:" optflag; do
 			echo "ERROR: cluster type has to be cman or corosync"
 			exit 1
 		fi
+		;;
+	u)
+		cboxrepourl="$OPTARG"
 		;;
 	v)
 		cboxvirt="$OPTARG"
@@ -467,6 +472,7 @@ export cboxvirtswap
 export cboxvirtshare
 export cboxuseloop
 export cboxemulator
+export cboxrepourl
 
 echo ""
 echo "Creating cluster... this might take several minutes"
