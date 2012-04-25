@@ -20,7 +20,7 @@ daemons=""
         try_daemons="gfs2-cluster"
 
 [ "$cboxclustertype" = "corosync" ] && \
-	daemons="$daemons corosync clvmd cmirrord"
+	daemons="$daemons corosync dlm clvmd cmirrord"
 
 [ "$cboxrasmngr" != "none" ] && daemons="$daemons $cboxrasmngr"
 
