@@ -20,6 +20,7 @@ cat $cboxclustername-mount/etc/corosync/corosync.conf.example | sed \
 	-e 's#192.168.1.0#192.168.124.0#g' \
 	-e 's#192.168.1.1#192.168.124.1#g' \
 	-e "s#\#provider: corosync_votequorum#provider: corosync_votequorum\n\ttwo_node: $twonodes#g" \
+	-e "s#version: 2#version: 2\n\n\tcluster_name: $cboxclustername#g" \
 	> $CFG
 
 cat >> $CFG << EOF
