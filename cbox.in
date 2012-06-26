@@ -366,8 +366,23 @@ if [ "$cboxnumnodes" -lt "$cboxminnodes" ] || \
 	exit 1
 fi
 
+if [ -z "$cboxfedrelease" ]; then
+	if [ -n "$cboxos" ] || [ -n "$cboxkickstart" ]; then
+		cboxfedrelease="custom"
+	else
+		if [ ! -f "/etc/fedora-release" ]; then
+			echo "ERROR: can't detect Fedora release"
+			exit 1
+		fi
+
+		cboxfedrelease=$(cat /etc/fedora-release | awk '{print $3}')
+		grep -q -i rawhide /etc/fedora-release && cboxfedrelease=rawhide
+	fi
+fi
+
 [ -z "$cboxclustertype" ] && cboxclustertype=cman
-[ "$cboxfedrelease" -gt 16 ] && cboxclustertype=corosync
+[ "$cboxfedrelease" = "rawhide" ] || [ "$cboxfedrelease" = "custom" ] && \
+	[ "$cboxfedrelease" -gt 16 ] && cboxclustertype=corosync
 [ "$cboxfedrelease" = "rawhide" ] && cboxclustertype=corosync
 
 [ -z "$cboxrasmngr" ] && cboxrasmngr=none
@@ -376,10 +391,6 @@ if [ -z "$cboxkickstart" ]; then
 	if [ -n "$cboxos" ]; then
 		cboxkickstart=$cboxdatadir/$cboxos.ks
 	else
-		if [ -z "$cboxfedrelease" ]; then
-			cboxfedrelease=$(cat /etc/fedora-release | awk '{print $3}')
-			grep -q -i rawhide /etc/fedora-release && cboxfedrelease=rawhide
-		fi
 		cboxkickstart=$cboxdatadir/fedora-$cboxfedrelease.ks
 	fi
 fi
