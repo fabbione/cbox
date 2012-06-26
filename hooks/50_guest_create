@@ -6,9 +6,11 @@ echo "Creating main/first VM in $cboxtempdir (this will take time!)"
 
 cd $cboxtempdir
 
+[ "$cboxcache" == "yes" ] && extra_params="--cache=$cboxvmsdir/accache"
+
 appliance-creator -v --vmem=$cboxvirtram --vcpu=$cboxvirtcpus \
 		  -n $cboxclustername-boot \
-		  -c cbox-guest.ks -d
+		  -c cbox-guest.ks -d $extra_params
 
 rm -f $cboxclustername-boot/$cboxclustername-boot.xml
 

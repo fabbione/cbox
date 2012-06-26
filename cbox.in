@@ -98,6 +98,7 @@ function print_usage() {
 	echo " -t [cman|corosync]             define cluster type (default: cman)"
 	echo " -u repo_URL                    use additional custom yum repository"
 	echo " -h                             this help"
+	echo " -C                             enable appliance-creator cache (stored in /srv/cbox/accache)"
 	echo " -v virt_opts                   define virtual nodes and storage size in a comma separated list of parameters"
 	echo "    valid parameters are:"
 	echo "    ram=XXX                     amount of RAM (for each node) in MB (min. 512 - default 2048)"
@@ -219,10 +220,13 @@ cboxvirtroot=4096
 cboxvirtswap=$((cboxvirtram / 2))
 cboxvirtshare=20544
 
-while getopts ":c:dfhk:lm:n:o:O:qr:t:u:v:" optflag; do
+while getopts ":c:dfhk:lm:n:o:O:qr:t:u:v:C" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
+		;;
+	C)
+		cboxcache="yes"
 		;;
 	d)
 		cboxdevel="yes"
@@ -484,6 +488,7 @@ export cboxvirtshare
 export cboxuseloop
 export cboxemulator
 export cboxrepourl
+export cboxcache
 
 echo ""
 echo "Creating cluster... this might take several minutes"
