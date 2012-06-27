@@ -385,7 +385,7 @@ if [ -z "$cboxfedrelease" ]; then
 fi
 
 [ -z "$cboxclustertype" ] && cboxclustertype=cman
-[ "$cboxfedrelease" = "rawhide" ] || [ "$cboxfedrelease" = "custom" ] && \
+[ "$cboxfedrelease" != "rawhide" ] && [ "$cboxfedrelease" != "custom" ] && \
 	[ "$cboxfedrelease" -gt 16 ] && cboxclustertype=corosync
 [ "$cboxfedrelease" = "rawhide" ] && cboxclustertype=corosync
 
