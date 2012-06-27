@@ -46,6 +46,11 @@ define additional yum repository for kickstart (default: none)
 \fB\-C\fR
 enable appliance-creator cache (stored in /srv/cbox/accache)
 .TP
+\fB\-E\fR regexp
+exclude given script (regexp is matched by =~ bash operator). Let's say you want
+to exclude all gfs2, guest_setup (clvmd, ...) and enable of deamons, just use
+\-E "(gfs2|guest_setup|guest_enable)"
+.TP
 \fB\-h\fR
 this help
 .TP
