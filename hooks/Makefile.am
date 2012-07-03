@@ -19,6 +19,7 @@ HOOKS			= 01_host_update \
 			  59_guest_umount \
 			  60_guest_create_first_node \
 			  61_guest_start_first \
+			  61_guest_create_driver_node \
 			  62_guest_setup_clvmd \
 			  63_guest_setup_gfs2 \
 			  64_guest_setup_qdiskd \
@@ -28,6 +29,7 @@ HOOKS			= 01_host_update \
 			  70_guest_clone_nodes \
 			  71_guest_autostart_nodes \
 			  72_guest_start_nodes \
+			  73_guest_driver_node_postrun \
 			  99_final_cleanup
 
 EXTRA_DIST		= $(HOOKS)

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+[ "$cboxdrivernode" != "yes" ] && exit 0
+
+echo "Cloning $cboxclustername-node1 (this will take time)"
+
+cd $cboxvmsdir/$cboxclustername
+
+memory=$((cboxvirtram * 1024))
+
+echo "Creating $cboxclustername-node-driver boot disk"
+cp $cboxclustername-node1.raw $cboxclustername-node-driver.raw
+
+dn_num=$(($cboxnumnodes + 1))
+
+echo "Creating $cboxclustername-node-driver libvirt xml template"
+cat $cboxdatadir/libvirt_template.xml | sed \
+	-e 's#@NAME@#'$cboxclustername-node-driver'#g' \
+	-e 's#@UUID@#'$(uuidgen)'#g' \
+	-e 's#@MEMORY@#'$memory'#g' \
+	-e 's#@VCPUS@#'$cboxvirtcpus'#g' \
+	-e 's#@DISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-node-driver.raw'#g' \
+	-e 's#@SHAREDDISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-shareddisk.raw'#g' \
+	-e 's#@MACADDRESS0@#54:52:00:00:00:'$(printf '%x' $dn_num)'#g' \
+	-e 's#@BRIDGE0@#'$cboxclustername-br0'#g' \
+	-e 's#@MACADDRESS1@#54:52:00:00:01:'$(printf '%x' $dn_num)'#g' \
+	-e 's#@BRIDGE1@#'$cboxclustername-br1'#g' \
+	-e 's#@EMULATOR@#'$cboxemulator'#g' \
+	> $cboxclustername-node-driver.xml
+
+echo "Defining $cboxclustername-node-driver in libvirt"
+virsh define $cboxclustername-node-driver.xml
+
+exit 0

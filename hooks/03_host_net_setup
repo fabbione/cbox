@@ -33,10 +33,14 @@ for br in 0 1; do
       <range start='192.168.$((123 + br)).1' end='192.168.$((123 + br)).253'/>
 EOF
 
+	[ "$cboxdrivernode" == "yes" ] && dn_num=$(($cboxnumnodes + 1))
 	for i in $(seq 1 $cboxnumnodes); do
 		echo "      <host mac='54:52:00:00:$br:$(printf '%x' $i)' name='$cboxclustername-node$i$brstr' ip='192.168.$((123 + br)).$i' />" >> "$tempfile"
 	done
 
+	if [ "$cboxdrivernode" == "yes" ];then
+		echo "      <host mac='54:52:00:00:$br:$(printf '%x' $dn_num)' name='$cboxclustername-node-driver$brstr' ip='192.168.$((123 + br)).$dn_num' />" >> "$tempfile"
+	fi
 	cat >> "$tempfile" << EOF
     </dhcp>
   </ip>
@@ -50,6 +54,9 @@ EOF
 	for i in $(seq 1 $cboxnumnodes); do
 		echo "192.168.$((123 + br)).$i $cboxclustername-node$i$brstr" >> /etc/hosts
 	done
+	if [ "$cboxdrivernode" == "yes" ];then
+		echo "192.168.$((123 + br)).$dn_num $cboxclustername-node-driver$brstr" >> /etc/hosts
+	fi
 	echo "192.168.$((123 + br)).254 $cboxclustername-host$brstr" >> /etc/hosts
 
 	echo "Adding $cboxclustername-br$br to libvirt"

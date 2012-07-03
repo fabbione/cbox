@@ -4,14 +4,17 @@ set -e
 
 echo "Booting all cluster nodes"
 
-for i in $(seq 1 $cboxnumnodes); do
+nodes=$(seq 1 $cboxnumnodes)
+[ "$cboxdrivernode" == "yes" ] && nodes="$nodes -driver"
+
+for i in $nodes; do
 	virsh start $cboxclustername-node$i
 done
 
 echo "Wait for nodes to boot and update main host .ssh/known_hosts"
 
 # not ideal but let's not make it too complicated
-for i in $(seq 1 $cboxnumnodes); do
+for i in $nodes; do
 	max=60
 	count=0
 	while ! ssh $cboxclustername-node$i \

@@ -51,6 +51,13 @@ exclude given script (regexp is matched by =~ bash operator). Let's say you want
 to exclude all gfs2, guest_setup (clvmd, ...) and enable of deamons, just use
 \-E "(gfs2|guest_setup|guest_enable)"
 .TP
+\fB\-D\fR
+enable creation of driver node. Driver node is base node without additional
+configuration (hacks with number 62_ and larger are not applied), so it's also out
+of fencing. It's not included in cluster configuration. Feature is useful as driver
+node for tests (like CTS) or for standalone management node. Driver node is fully
+preconfigured for password-less ssh to other cluster nodes.
+.TP
 \fB\-h\fR
 this help
 .TP

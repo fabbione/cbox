@@ -4,7 +4,11 @@ set -e
 
 echo "Setting cluster nodes to autostart"
 
-for i in $(seq 1 $cboxnumnodes); do
+nodes=$(seq 1 $cboxnumnodes)
+
+[ "$cboxdrivernode" == "yes" ] && nodes="$nodes -driver"
+
+for i in $nodes; do
 	virsh autostart $cboxclustername-node$i
 done
 

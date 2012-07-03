@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+[ "$cboxdrivernode" != "yes" ] && exit 0
+
+echo "Installing ssh keys and configs to driver node"
+
+grep "^$cboxclustername-" /root/.ssh/known_hosts | ssh $cboxclustername-node-driver \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no "cat > /root/.ssh/known_hosts"
+
+scp -i /root/.ssh/id_rsa_$cboxclustername \
+	-q -o StrictHostKeyChecking=no  \
+	/root/.ssh/id_rsa_$cboxclustername* $cboxclustername-node-driver:/root/.ssh
+
+( cat << EOF
+Host $cboxclustername-node*
+    IdentityFile ~/.ssh/id_rsa_$cboxclustername
+EOF
+) | ssh $cboxclustername-node-driver \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no "cat >> /root/.ssh/config"
+
+exit 0
