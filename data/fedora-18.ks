@@ -36,9 +36,8 @@ part swap --size @SWAPSIZE@ --fstype swap --ondisk vda
 #
 # Repositories
 #
-
-# To compose against rawhide, use the following "repo" (disabled by default)
-repo --name=rawhide --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=rawhide&arch=$basearch
+repo --name="Fedora 18 - x86_64" --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-18&arch=$basearch
+repo --name="Fedora 18 - x86_64 - Updates" --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f18&arch=$basearch
 @REPOURL@
 
 #
