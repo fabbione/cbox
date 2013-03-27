@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+echo "Apply distribution/version specific hacks on each node after start"
+
+nodes=$(seq 1 $cboxnumnodes)
+
+[ "$cboxdrivernode" == "yes" ] && nodes="$nodes -driver"
+
+# Fedora /etc/mtab is symlink in new versions and mtab is not updated
+# as expected. If mtab doesn't contain root (/) -> create mtab
+for i in $nodes; do
+	if ! ssh "$cboxclustername-node$i" \
+	    -i /root/.ssh/id_rsa_$cboxclustername \
+	    -o StrictHostKeyChecking=no "cat /etc/mtab" | grep ' / ' >/dev/null;then
+		echo "Creating softlink /etc/mtab -> /proc/mounts on $cboxclustername-node$i"
+		ssh "$cboxclustername-node$i" \
+		    -i /root/.ssh/id_rsa_$cboxclustername \
+		    -o StrictHostKeyChecking=no "rm -f /etc/mtab; ln -s /proc/mounts /etc/mtab"
+	fi
+done
+
+exit 0
