@@ -15,7 +15,9 @@ PART=1
 blkid -p $IMG | grep gpt && PART=2
 
 if [ -z "$cboxuseloop" ]; then
-	guestmount  -a $IMG -m /dev/vda$PART $cboxclustername-mount
+	# Get libguestfs device name
+	dev_name=`virt-filesystems --block-devices -a $IMG`
+	guestmount  -a $IMG -m $dev_name$PART $cboxclustername-mount
 else
 	name=$(kpartx -p p -a $IMG -v | grep p$PART | cut -d' ' -f 3)
 	mount /dev/mapper/$name $cboxclustername-mount
