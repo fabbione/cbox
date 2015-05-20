@@ -41,7 +41,7 @@ echo "Switching VG $cboxclustername-vg to clustered"
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
-	"vgchange --clustered y $cboxclustername-vg"
+	"vgchange -y --clustered y $cboxclustername-vg"
 
 echo "Enable lvm cluster locking"
 

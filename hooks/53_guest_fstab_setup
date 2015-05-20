@@ -26,9 +26,10 @@ if [ "$cboxclustertype" = "corosync" -o "$cboxclustertype" = "cman" ] ; then
     cat $cboxclustername-mount/etc/fstab | grep qdiskd | awk '{print $2}' > qdiskd_partition
     cat $cboxclustername-mount/etc/fstab | grep clvmd | awk '{print $2}' > clvmd_partition
 
-    echo "Create clvmd/gfs2 device mount point"
-    echo "/dev/$cboxclustername-vg/$cboxclustername-lv /srv/cbox/clvmd gfs2 defaults,noatime 0 0" >> \
-	$cboxclustername-mount/etc/fstab
+# FIXME need to fix start of clvmd
+#    echo "Create clvmd/gfs2 device mount point"
+#    echo "/dev/$cboxclustername-vg/$cboxclustername-lv /srv/cbox/clvmd gfs2 defaults,noatime 0 0" >> \
+#	$cboxclustername-mount/etc/fstab
 
     echo "Create debugfs fstab entry"
     echo "debugfs /sys/kernel/debug debugfs defaults 0 0" >> \

@@ -15,12 +15,13 @@ enable_daemon() {
 
 daemons=""
 
-[ "$cboxclustertype" = "cman" ] && \
-	daemons="$daemons clvmd cman cmirrord gfs2 modclusterd ricci"
-        try_daemons="gfs2-cluster"
-
-[ "$cboxclustertype" = "corosync" ] && \
-	daemons="$daemons corosync dlm clvmd cmirrord"
+if [ "$cboxclustertype" = "cman" ] ; then
+    daemons="$daemons clvmd cman cmirrord gfs2 modclusterd ricci"
+    try_daemons="gfs2-cluster"
+elif [ "$cboxclustertype" = "corosync" ] ; then
+    daemons="$daemons corosync dlm"
+    try_daemons="clvmd cmirrord"
+fi
 
 [ "$cboxrasmngr" != "none" ] && daemons="$daemons $cboxrasmngr"
 
@@ -28,7 +29,7 @@ for i in $daemons ntpd ntpdate; do
 	enable_daemon $i
 done
 
-for i in $try_daemons; do
+for i in "$try_daemons"; do
 	enable_daemon $i || echo "WARNING: Daemon $i failed."
 done
 
