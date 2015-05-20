@@ -9,6 +9,9 @@ cd $cboxtempdir
 chroot $cboxclustername-mount su -c "chkconfig iptables off" && true
 chroot $cboxclustername-mount su -c "chkconfig ip6tables off" && true
 
+# FIXME
+chroot $cboxclustername-mount su -c "chkconfig ipmievd off" && true
+
 # DLM config, no fencing
 echo "DLM_CONTROLD_OPTS=-f 0" >$cboxclustername-mount/etc/sysconfig/dlm
 
