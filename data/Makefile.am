@@ -6,7 +6,11 @@ KICKSTARTS		= fedora-13.ks \
 			  fedora-16.ks \
 			  fedora-17.ks \
 			  fedora-18.ks \
-			  fedora-rawhide.ks
+			  fedora-21.ks \
+			  fedora-rawhide.ks \
+			  packages_cman.ks \
+			  packages_corosync.ks \
+			  packages_ceph.ks
 
 TEMPLATES		= libvirt_template.xml
 

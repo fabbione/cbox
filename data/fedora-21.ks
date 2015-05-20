@@ -25,18 +25,16 @@ part biosboot --fstype=biosboot --size=1 --ondisk=vda
 part / --fstype ext4 --size=@ROOTSIZE@ --ondisk=vda
 part swap --size=@SWAPSIZE@ --fstype swap --ondisk=vda
 
-part /srv/cbox/qdiskd --size=@QDISKDSIZE@   --fstype=ext4 --ondisk=vdb
-part /srv/cbox/gfs2   --size=@GFS2SIZE@ --fstype=ext4 --ondisk=vdb
-part /srv/cbox/clvmd  --size=@CLVMDSIZE@ --fstype=ext4 --ondisk=vdb
+# /dev/vdb is partitioned in scripts acording to cluster type
 
 #
 # Repositories
 #
 # This will be parsed for virt-install to download image
-#IMAGE_TREE=http://ftp.linux.cz/pub/linux/fedora/linux/releases/21/Server/x86_64/os/
-#           http://download.eng.brq.redhat.com/pub/fedora/linux/development/rawhide/x86_64/os/
+#IMAGE_TREE=http://download.fedoraproject.org/pub/fedora/linux/releases/21/Server/x86_64/os/
 
-repo --name=rawhide --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=rawhide&arch=x86_64
+repo --name="Fedora" --mirrorlist="http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-21&arch=x86_64"
+repo --name="FedoraUpdates" --mirrorlist="http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f21&arch=x86_64"
 @REPOURL@
 
 #
