@@ -2,6 +2,8 @@
 
 set -e
 
+[ "$cboxclustertype" != "corosync" -a "$cboxclustertype" != "cman" ] && exit 0
+
 cd $cboxtempdir
 
 echo "Creating gfs2 filesystem on $(cat gfs2_partition)"

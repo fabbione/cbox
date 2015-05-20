@@ -18,6 +18,7 @@ HOOKS			= 01_host_update \
 			  58_guest_apply_hacks_prerun \
 			  59_guest_umount \
 			  60_guest_create_first_node \
+			  60_guest_create_shared_disk \
 			  61_guest_start_first \
 			  61_guest_create_driver_node \
 			  62_guest_setup_clvmd \
