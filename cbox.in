@@ -95,10 +95,9 @@ function print_usage() {
 	echo " -O osname                      use kickstart without fedora prefix distributed with cbox. This overrides -r"
 	echo " -q                             enable qdiskd for cman clusters (default: no)"
 	echo " -r fedora_release              force fedora release to install on the nodes (defaults: autodetect/same as host)"
-	echo " -t [cman|corosync]             define cluster type (default: cman)"
+	echo " -t [cman|corosync|ceph]        define cluster type (default: cman)"
 	echo " -u repo_URL                    use additional custom yum repository"
 	echo " -h                             this help"
-	echo " -C                             enable appliance-creator cache (stored in /srv/cbox/accache)"
 	echo " -E regexp                      exclude given script (regexp is matched by =~ bash operator)"
 	echo " -D                             enable creation of driver node"
 	echo " -v virt_opts                   define virtual nodes and storage size in a comma separated list of parameters"
@@ -196,7 +195,7 @@ function parse_virt_opts() {
 # o -> output dir (cboxvmsdir)
 # q -> enable qdiskd (cboxqdiskd)
 # r -> fedora release (13 / 14 / rawhide)
-# t -> type (cboxclustertype) cman|corosync
+# t -> type (cboxclustertype) cman|corosync|ceph
 # v -> virt params (ram/cpu/root/swap)
 # l -> disable guestmount and use loop and kpartx
 
@@ -224,13 +223,10 @@ cboxvirtroot=4096
 cboxvirtswap=$((cboxvirtram / 2))
 cboxvirtshare=20544
 
-while getopts ":c:dfhk:lm:n:o:O:qr:t:u:v:CE:D" optflag; do
+while getopts ":c:dfhk:lm:n:o:O:qr:t:u:v:E:D" optflag; do
 	case "$optflag" in
 	c)
 		cboxclustername="$OPTARG"
-		;;
-	C)
-		cboxcache="yes"
 		;;
 	d)
 		cboxdevel="yes"
@@ -281,8 +277,9 @@ while getopts ":c:dfhk:lm:n:o:O:qr:t:u:v:CE:D" optflag; do
 	t)
 		cboxclustertype="$OPTARG"
 		if [ "$cboxclustertype" != "cman" ] && \
-		   [ "$cboxclustertype" != "corosync" ]; then
-			echo "ERROR: cluster type has to be cman or corosync"
+		   [ "$cboxclustertype" != "corosync" ] && \
+		   [ "$cboxclustertype" != "ceph" ]; then
+			echo "ERROR: cluster type has to be cman, corosync or ceph"
 			exit 1
 		fi
 		;;
@@ -394,10 +391,10 @@ if [ -z "$cboxfedrelease" ]; then
 	fi
 fi
 
-[ -z "$cboxclustertype" ] && cboxclustertype=cman
-[ "$cboxfedrelease" != "rawhide" ] && [ "$cboxfedrelease" != "custom" ] && \
-	[ "$cboxfedrelease" -gt 16 ] && cboxclustertype=corosync
-[ "$cboxfedrelease" = "rawhide" ] && cboxclustertype=corosync
+[ -z "$cboxclustertype" ] && cboxclustertype=corosync
+#[ "$cboxfedrelease" != "rawhide" ] && [ "$cboxfedrelease" != "custom" ] && \
+#	[ "$cboxfedrelease" -gt 16 ] && cboxclustertype=corosync
+#[ "$cboxfedrelease" = "rawhide" ] && cboxclustertype=corosync
 
 [ -z "$cboxrasmngr" ] && cboxrasmngr=none
 
@@ -498,7 +495,6 @@ export cboxvirtshare
 export cboxuseloop
 export cboxemulator
 export cboxrepourl
-export cboxcache
 export cboxdrivernode
 
 echo ""
