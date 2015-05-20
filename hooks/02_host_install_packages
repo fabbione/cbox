@@ -6,9 +6,8 @@ echo "Installing required packages on host system"
 
 yum install -y \
 	libvirt libvirt-client qemu-system-x86 \
-	appliance-tools libguestfs-mount \
+	virt-install libguestfs-mount libguestfs-tools libguestfs-tools-c \
 	fence-virtd fence-virtd-multicast fence-virtd-libvirt \
-	openssh-clients ntp \
-	ccs
+	openssh-clients ntp
 
 exit 0

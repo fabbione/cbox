@@ -48,9 +48,9 @@ AC_PROG_LN_S
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
-AC_CHECK_PROGS([APPCREATOR],[appliance-creator])
-if test -z "$APPCREATOR"; then
-	AC_MSG_ERROR([you don't seem to have appliance-creator; it is required])
+AC_CHECK_PROGS([VIRTINSTALL],[virt-install])
+if test -z "$VIRTINSTALL"; then
+	AC_MSG_ERROR([you don't seem to have virt-install; it is required])
 fi
 
 AC_PATH_TOOL([CBOXEMULATOR],[qemu-kvm],,[/usr/bin:/usr/libexec])

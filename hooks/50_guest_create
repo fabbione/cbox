@@ -5,12 +5,30 @@ set -e
 echo "Creating main/first VM in $cboxtempdir (this will take time!)"
 
 cd $cboxtempdir
+mkdir -p $cboxclustername-boot
 
-[ "$cboxcache" == "yes" ] && extra_params="--cache=$cboxvmsdir/accache"
+eval $(grep IMAGE_TREE cbox-guest.ks | sed -e 's/#//')
 
-appliance-creator -v --vmem=$cboxvirtram --vcpu=$cboxvirtcpus \
-		  -n $cboxclustername-boot \
-		  -c cbox-guest.ks -d -t "$cboxtempdir" $extra_params
+# Hack +100M for bios partition
+ROOT_DISK_GB=$((($cboxvirtroot + $cboxvirtswap + 100 + 1023) / 1024))
+SHARED_DISK_GB=$((($cboxvirtshare + 1023) / 1024))
+
+virt-install --connect=qemu:///system \
+    --network=bridge:testcluster-br0 \
+    --network=bridge:testcluster-br1 \
+    --initrd-inject=cbox-guest.ks \
+    --extra-args="ks=file:/cbox-guest.ks console=tty0 console=ttyS0,115200" \
+    --name=$cboxclustername-boot \
+    --disk path=$cboxclustername-boot/$cboxclustername-boot-vda.raw,size=$ROOT_DISK_GB \
+    --disk path=$cboxclustername-boot/$cboxclustername-boot-vdb.raw,size=$SHARED_DISK_GB \
+    --ram $cboxvirtram \
+    --vcpus=$cboxvirtcpus \
+    --check-cpu \
+    --accelerate \
+    --hvm \
+    --location=$IMAGE_TREE \
+    --nographics \
+    --noreboot
 
 rm -f $cboxclustername-boot/$cboxclustername-boot.xml
 
