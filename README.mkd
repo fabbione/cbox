@@ -22,7 +22,7 @@ Use at your own risk or do not use at all.
 ### Requirements
 
  - autoconf
- - appliance-tools
+ - virt-install
  - qemu-kvm
 
 ### Build and install
