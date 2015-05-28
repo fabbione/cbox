@@ -11,26 +11,29 @@ echo "Making a backup copy of guest /etc/fstab to /etc/fstab.cbox"
 cp $cboxclustername-mount/etc/fstab \
    $cboxclustername-mount/etc/fstab.cbox
 
-echo "Remove clvmd/qdiskd fake mountpoint, and fix gfs2 fs type"
-echo "(leftover from anaconda partitioning hack)"
+if [ "$cboxclustertype" = "corosync" -o "$cboxclustertype" = "cman" ] ; then
+    echo "Remove clvmd/qdiskd fake mountpoint, and fix gfs2 fs type"
+    echo "(leftover from anaconda partitioning hack)"
 
-sed -i \
-   -e 's%.*vdb.*clvm.*%## &%g' \
-   -e 's%.*vdb.*qdisk.*%## &%g' \
-   -e 's%gfs2.*ext3%gfs2 gfs2%g' \
-   $cboxclustername-mount/etc/fstab
+    sed -i \
+       -e 's%.*vdb.*clvm.*%## &%g' \
+       -e 's%.*vdb.*qdisk.*%## &%g' \
+       -e 's%gfs2.*ext3%gfs2 gfs2%g' \
+       $cboxclustername-mount/etc/fstab
 
-echo "Gather info on shared storage"
-cat $cboxclustername-mount/etc/fstab | grep gfs2 | awk '{print $1}' > gfs2_partition
-cat $cboxclustername-mount/etc/fstab | grep qdiskd | awk '{print $2}' > qdiskd_partition
-cat $cboxclustername-mount/etc/fstab | grep clvmd | awk '{print $2}' > clvmd_partition
+    echo "Gather info on shared storage"
+    cat $cboxclustername-mount/etc/fstab | grep gfs2 | awk '{print $1}' > gfs2_partition
+    cat $cboxclustername-mount/etc/fstab | grep qdiskd | awk '{print $2}' > qdiskd_partition
+    cat $cboxclustername-mount/etc/fstab | grep clvmd | awk '{print $2}' > clvmd_partition
 
-echo "Create clvmd/gfs2 device mount point"
-echo "/dev/$cboxclustername-vg/$cboxclustername-lv /srv/cbox/clvmd gfs2 defaults,noatime 0 0" >> \
-	$cboxclustername-mount/etc/fstab
+# FIXME need to fix start of clvmd
+#    echo "Create clvmd/gfs2 device mount point"
+#    echo "/dev/$cboxclustername-vg/$cboxclustername-lv /srv/cbox/clvmd gfs2 defaults,noatime 0 0" >> \
+#	$cboxclustername-mount/etc/fstab
 
-echo "Create debugfs fstab entry"
-echo "debugfs /sys/kernel/debug debugfs defaults 0 0" >> \
-	$cboxclustername-mount/etc/fstab
+    echo "Create debugfs fstab entry"
+    echo "debugfs /sys/kernel/debug debugfs defaults 0 0" >> \
+    	$cboxclustername-mount/etc/fstab
+fi
 
 exit 0

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+cd $cboxvmsdir/$cboxclustername
+
+echo "Creating shared disk partitions"
+
+SHAREDIMG=$cboxclustername-shareddisk.raw
+
+if [ "$cboxclustertype" = "corosync" -o "$cboxclustertype" = "cman" ] ; then
+
+	# priciple of ops:
+	# disk size - 64MB for qdisk
+	# free space / 2 (one for gfs2 and one for clvmd)
+
+	freespace=$cboxvirtshare
+	qdiskdsize=64
+	freespace=$((freespace - qdiskdsize))
+	gfs2size=$((freespace / 2))
+	freespace=$((freespace - gfs2size))
+	clvmdsize=$freespace
+
+	parted -s $SHAREDIMG \
+		mklabel gpt \
+		mkpart primary 0 $qdiskdsize \
+		mkpart primary $qdiskdsize $(($qdiskdsize + $gfs2size)) \
+		mkpart primary $(($qdiskdsize + $gfs2size)) $(($qdiskdsize + $gfs2size + $clvmdsize))
+
+	echo "/dev/vdb1" >$cboxtempdir/qdiskd_partition
+	echo "/dev/vdb2" >$cboxtempdir/gfs2_partition
+	echo "/dev/vdb3" >$cboxtempdir/clvmd_partition
+elif [ "$cboxclustertype" = "ceph"] ; then
+    # TODO create OSD here
+    echo
+fi
+
+exit 0

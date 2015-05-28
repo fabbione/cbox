@@ -2,6 +2,8 @@
 
 set -e
 
+[ "$cboxclustertype" != "corosync" -a "$cboxclustertype" != "cman" ] && exit 0
+
 echo "Configure clvmd in the guest $cboxclustername-node1"
 
 cd $cboxtempdir
@@ -39,7 +41,7 @@ echo "Switching VG $cboxclustername-vg to clustered"
 ssh $cboxclustername-node1 \
 	-i /root/.ssh/id_rsa_$cboxclustername \
 	-o StrictHostKeyChecking=no \
-	"vgchange --clustered y $cboxclustername-vg"
+	"vgchange -y --clustered y $cboxclustername-vg"
 
 echo "Enable lvm cluster locking"
 

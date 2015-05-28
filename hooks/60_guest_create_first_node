@@ -17,28 +17,13 @@ if [ -f $SHAREDIMG_ORIG ] ; then
 	mv $SHAREDIMG_ORIG $SHAREDIMG
 else
 	dd if=/dev/zero of=$SHAREDIMG bs=1M count=0 seek=$cboxvirtshare
+fi
 
-	# FIXME: copy from kickstart
-	# priciple of ops:
-	# disk size - 64MB for qdisk
-	# free space / 2 (one for gfs2 and one for clvmd)
-
-	freespace=$cboxvirtshare
-	qdiskdsize=64
-	freespace=$((freespace - qdiskdsize))
-	gfs2size=$((freespace / 2))
-	freespace=$((freespace - gfs2size))
-	clvmdsize=$freespace
-
-	parted -s $SHAREDIMG \
-		mklabel gpt \
-		mkpart primary 0 $qdiskdsize \
-		mkpart primary $qdiskdsize $(($qdiskdsize + $gfs2size)) \
-		mkpart primary $(($qdiskdsize + $gfs2size)) $(($qdiskdsize + $gfs2size + $clvmdsize))
-
-	echo "/dev/vdb1" >$cboxtempdir/qdiskd_partition
-	echo "/dev/vdb2" >$cboxtempdir/gfs2_partition
-	echo "/dev/vdb3" >$cboxtempdir/clvmd_partition
+# Ceph uses per-node disk, not shared storage
+if [ "$cboxclustertype" = "ceph" ] ; then
+	CEPHDISK=$cboxclustername-node1-shareddisk.raw
+	mv $SHAREDIMG $CEPHDISK
+	SHAREDIMG=$CEPHDISK
 fi
 
 echo "Generating $cboxclustername-node1 libvirt xml template"
@@ -62,5 +47,7 @@ cat $cboxdatadir/libvirt_template.xml | sed \
 echo "Defining $cboxclustername-node1 in libvirt"
 
 virsh define $cboxclustername-node1.xml
+
+virsh undefine $cboxclustername-boot
 
 exit 0

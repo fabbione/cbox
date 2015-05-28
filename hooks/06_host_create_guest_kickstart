@@ -19,7 +19,9 @@ freespace=$((freespace - qdiskdsize))
 gfs2size=$((freespace / 2))
 freespace=$((freespace - gfs2size))
 clvmdsize=$freespace
-. /etc/sysconfig/clock
+
+[ -f /etc/sysconfig/clock ] && . /etc/sysconfig/clock
+[ -z "$ZONE" ] && ZONE="America/New_York"
 
 [ -n "$cboxrepourl" ] && repourl="repo --name=\"localrepo\" --baseurl=$cboxrepourl"
 
@@ -32,5 +34,8 @@ cat "$cboxkickstart" | sed \
 	-e 's#@CLVMDSIZE@#'$clvmdsize'#g' \
 	-e "s#@REPOURL@#$repourl#g" \
 	> cbox-guest.ks
+
+# Add specific cluster packages
+sed -i "/\# CLUSTER_PACKAGES/r $cboxdatadir/packages_$cboxclustertype.ks" cbox-guest.ks
 
 exit 0
