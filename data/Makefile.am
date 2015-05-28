@@ -7,6 +7,7 @@ KICKSTARTS		= fedora-13.ks \
 			  fedora-17.ks \
 			  fedora-18.ks \
 			  fedora-21.ks \
+			  fedora-22.ks \
 			  fedora-rawhide.ks \
 			  packages_cman.ks \
 			  packages_corosync.ks \
