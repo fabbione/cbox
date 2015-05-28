@@ -172,7 +172,7 @@ function parse_virt_opts() {
 				echo "ERROR: virt shared disk size needs to be an integer"
 				exit 1
 			}
-			[ "$cboxvirtshare" -lt "20544" ] && {
+			[ "$cboxclustertype" != "ceph" -a "$cboxvirtshare" -lt "20544" ] && {
 				echo "ERROR: virt shared disk size needs to be a reasonable value (hint: greater than 20544 MB)"
 				exit 1
 			}

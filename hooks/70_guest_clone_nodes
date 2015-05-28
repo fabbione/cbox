@@ -12,6 +12,12 @@ for i in $(seq 2 $cboxnumnodes); do
 	echo "Creating $cboxclustername-node$i boot disk"
 	cp $cboxclustername-node1.raw $cboxclustername-node$i.raw
 
+	if [ "$cboxclustertype" = "ceph" ] ; then
+	    SHAREDIMG=$cboxclustername-node$i-shareddisk.raw
+	    cp $cboxclustername-node1-shareddisk.raw $SHAREDIMG
+	else
+	    SHAREDIMG=$cboxclustername-shareddisk.raw
+	fi
 
 	echo "Creating $cboxclustername-node$i libvirt xml template"
 	cat $cboxdatadir/libvirt_template.xml | sed \
@@ -20,7 +26,7 @@ for i in $(seq 2 $cboxnumnodes); do
 		-e 's#@MEMORY@#'$memory'#g' \
 		-e 's#@VCPUS@#'$cboxvirtcpus'#g' \
 		-e 's#@DISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-node$i.raw'#g' \
-		-e 's#@SHAREDDISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-shareddisk.raw'#g' \
+		-e 's#@SHAREDDISK@#'$cboxvmsdir/$cboxclustername/$SHAREDIMG'#g' \
 		-e 's#@MACADDRESS0@#54:52:00:00:00:'$(printf '%x' $i)'#g' \
 		-e 's#@BRIDGE0@#'$cboxclustername-br0'#g' \
 		-e 's#@MACADDRESS1@#54:52:00:00:01:'$(printf '%x' $i)'#g' \

@@ -19,6 +19,13 @@ else
 	dd if=/dev/zero of=$SHAREDIMG bs=1M count=0 seek=$cboxvirtshare
 fi
 
+# Ceph uses per-node disk, not shared storage
+if [ "$cboxclustertype" = "ceph" ] ; then
+	CEPHDISK=$cboxclustername-node1-shareddisk.raw
+	mv $SHAREDIMG $CEPHDISK
+	SHAREDIMG=$CEPHDISK
+fi
+
 echo "Generating $cboxclustername-node1 libvirt xml template"
 
 memory=$((cboxvirtram * 1024))
