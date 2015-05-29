@@ -30,7 +30,7 @@ if [ "$cboxclustertype" = "corosync" -o "$cboxclustertype" = "cman" ] ; then
 	echo "/dev/vdb1" >$cboxtempdir/qdiskd_partition
 	echo "/dev/vdb2" >$cboxtempdir/gfs2_partition
 	echo "/dev/vdb3" >$cboxtempdir/clvmd_partition
-elif [ "$cboxclustertype" = "ceph"] ; then
+elif [ "$cboxclustertype" = "ceph" ] ; then
     # TODO create OSD here
     echo
 fi

@@ -19,6 +19,12 @@ for i in $nodes; do
 		    -i /root/.ssh/id_rsa_$cboxclustername \
 		    -o StrictHostKeyChecking=no "rm -f /etc/mtab; ln -s /proc/mounts /etc/mtab"
 	fi
+
+	# Force set hostname
+	echo "Ensuring that hostname is set to $cboxclustername-node$i"
+	ssh "$cboxclustername-node$i" \
+	    -i /root/.ssh/id_rsa_$cboxclustername \
+	    -o StrictHostKeyChecking=no "hostnamectl set-hostname $cboxclustername-node$i"
 done
 
 exit 0
