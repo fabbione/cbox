@@ -24,4 +24,13 @@ ssh $cboxclustername-node1-br1 \
     -i /root/.ssh/id_rsa_$cboxclustername \
     -o StrictHostKeyChecking=no "sleep 1"
 
+# Add local repository
+if [ -n "$cboxrepourl" ] ; then
+    REPO="[localrepo]\nname=localrepo\nbaseurl=$cboxrepourl\nenabled=1\ngpgcheck=0\n"
+    ssh $cboxclustername-node1 \
+	-i /root/.ssh/id_rsa_$cboxclustername \
+	-o StrictHostKeyChecking=no \
+	"[ -d /etc/yum.repos.d ] && echo -e '$REPO' >/etc/yum.repos.d/local.repo"
+fi
+
 exit $?
