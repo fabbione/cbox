@@ -12,4 +12,7 @@ cp /root/.ssh/id_rsa_$cboxclustername.pub \
 
 chmod 0400 $cboxclustername-mount/root/.ssh/authorized_keys
 
+# The above will not properly set context, force relabel on boot
+touch $cboxclustername-mount/.autorelabel
+
 exit 0
