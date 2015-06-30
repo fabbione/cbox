@@ -13,10 +13,27 @@ done
 
 echo "Wait for nodes to boot and update main host .ssh/known_hosts"
 
+function ping_host() {
+	max=60
+	count=0
+
+	# Avoid "no route to host" errors while hosts are starting
+	while ! ping -q -c 1 $1 >/dev/null ; do
+		count=$((count+1))
+		[ "$max" -eq "$count" ] && {
+			echo "WARNING: $1 did not respond to ping after $max seconds"
+			exit 1
+		}
+		sleep 1
+	done
+}
+
 # not ideal but let's not make it too complicated
 for i in $nodes; do
 	max=60
 	count=0
+
+	ping_host $cboxclustername-node$i
 	while ! ssh $cboxclustername-node$i \
 		-i /root/.ssh/id_rsa_$cboxclustername \
 		-o StrictHostKeyChecking=no -o ConnectTimeout=2 "sleep 1"; do
@@ -29,6 +46,7 @@ for i in $nodes; do
 		count=$((count+1))
 	done
 
+	ping_host $cboxclustername-node$i-br1
 	ssh $cboxclustername-node$i-br1 \
 	    -i /root/.ssh/id_rsa_$cboxclustername \
 	    -o StrictHostKeyChecking=no "sleep 1"
