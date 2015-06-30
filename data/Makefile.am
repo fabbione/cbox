@@ -9,6 +9,7 @@ KICKSTARTS		= fedora-13.ks \
 			  fedora-21.ks \
 			  fedora-22.ks \
 			  fedora-rawhide.ks \
+			  centos-7.1.ks \
 			  packages_cman.ks \
 			  packages_corosync.ks \
 			  packages_ceph.ks
