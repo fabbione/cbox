@@ -27,4 +27,11 @@ echo "Strip HOSTNAME to allow dhcp to set the correct one for us"
 sed -i -e 's#HOSTNAME.*##g' \
    $cboxclustername-mount/etc/sysconfig/network
 
+echo "Strip HWADDR from network config to allow new setting later"
+
+sed -i -e 's#HWADDR.*##g' \
+   $cboxclustername-mount/etc/sysconfig/network-scripts/ifcfg-eth0
+sed -i -e 's#HWADDR.*##g' \
+   $cboxclustername-mount/etc/sysconfig/network-scripts/ifcfg-eth1
+
 exit 0

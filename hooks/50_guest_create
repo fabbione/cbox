@@ -14,8 +14,8 @@ ROOT_DISK_GB=$((($cboxvirtroot + $cboxvirtswap + 100 + 1023) / 1024))
 SHARED_DISK_GB=$((($cboxvirtshare + 1023) / 1024))
 
 virt-install --connect=qemu:///system \
-    --network=bridge:testcluster-br0 \
-    --network=bridge:testcluster-br1 \
+    --network=bridge:testcluster-br0,mac=54:52:00:00:00:1 \
+    --network=bridge:testcluster-br1,mac=54:52:00:00:01:1 \
     --initrd-inject=cbox-guest.ks \
     --extra-args="ks=file:/cbox-guest.ks console=tty0 console=ttyS0,115200" \
     --name=$cboxclustername-boot \
