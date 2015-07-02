@@ -19,8 +19,8 @@ virt-install --connect=qemu:///system \
     --initrd-inject=cbox-guest.ks \
     --extra-args="ks=file:/cbox-guest.ks console=tty0 console=ttyS0,115200" \
     --name=$cboxclustername-boot \
-    --disk path=$cboxclustername-boot/$cboxclustername-boot-vda.raw,size=$ROOT_DISK_GB \
-    --disk path=$cboxclustername-boot/$cboxclustername-boot-vdb.raw,size=$SHARED_DISK_GB \
+    --disk path=$cboxclustername-boot/$cboxclustername-boot-vda.raw,format=raw,sparse=true,size=$ROOT_DISK_GB \
+    --disk path=$cboxclustername-boot/$cboxclustername-boot-vdb.raw,format=raw,sparse=true,size=$SHARED_DISK_GB \
     --ram $cboxvirtram \
     --vcpus=$cboxvirtcpus \
     --check-cpu \

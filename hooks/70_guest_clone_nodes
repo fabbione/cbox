@@ -10,11 +10,11 @@ memory=$((cboxvirtram * 1024))
 
 for i in $(seq 2 $cboxnumnodes); do
 	echo "Creating $cboxclustername-node$i boot disk"
-	cp $cboxclustername-node1.raw $cboxclustername-node$i.raw
+	cp --sparse=always $cboxclustername-node1.raw $cboxclustername-node$i.raw
 
 	if [ "$cboxclustertype" = "ceph" ] ; then
 	    SHAREDIMG=$cboxclustername-node$i-shareddisk.raw
-	    cp $cboxclustername-node1-shareddisk.raw $SHAREDIMG
+	    cp --sparse=always $cboxclustername-node1-shareddisk.raw $SHAREDIMG
 	else
 	    SHAREDIMG=$cboxclustername-shareddisk.raw
 	fi
