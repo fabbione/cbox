@@ -1,0 +1,101 @@
+%global git_release c9fc
+
+ExclusiveArch:  x86_64
+
+Name:           cbox
+Version:        0.0.64
+Release:        1.%{git_release}%{?dist}
+Summary:        Cluster in a Box
+
+License:        GPLv2
+URL:            https://github.com/fabbione/cbox.git
+Source0:        cbox-%{version}-%{git_release}.tar.bz2
+
+BuildRequires:  automake
+BuildRequires:  autoconf
+BuildRequires:  appliance-tools
+BuildRequires:  qemu-system-x86
+BuildRequires:  virt-install
+Requires:       appliance-tools
+Requires:       qemu-system-x86
+Requires:       virt-install
+
+%description
+The cbox is a tool for provisioning of several virtual machines at the same
+time. Use at your own risk or do not use at all.
+
+
+%prep
+%setup -q -n %{name}-%{version}-%{git_release}
+
+%build
+./autogen.sh
+%configure
+make %{?_smp_mflags}
+
+
+%install
+rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/cbox
+%make_install
+
+
+%files
+%defattr(-,root,root,-)
+%{_sbindir}/cbox
+%dir %{_datadir}/cbox
+%{_datadir}/cbox/fedora-13.ks
+%{_datadir}/cbox/fedora-14.ks
+%{_datadir}/cbox/fedora-15.ks
+%{_datadir}/cbox/fedora-16.ks
+%{_datadir}/cbox/fedora-17.ks
+%{_datadir}/cbox/fedora-18.ks
+%{_datadir}/cbox/fedora-21.ks
+%{_datadir}/cbox/fedora-22.ks
+%{_datadir}/cbox/fedora-rawhide.ks
+%{_datadir}/cbox/centos-7.1.ks
+%dir %{_datadir}/cbox/hooks
+%{_datadir}/cbox/hooks/01_host_update
+%{_datadir}/cbox/hooks/02_host_install_packages
+%{_datadir}/cbox/hooks/03_host_net_setup
+%{_datadir}/cbox/hooks/04_host_fence_setup
+%{_datadir}/cbox/hooks/05_host_create_ssh_keys
+%{_datadir}/cbox/hooks/06_host_create_guest_kickstart
+%{_datadir}/cbox/hooks/07_host_ntp_setup
+%{_datadir}/cbox/hooks/50_guest_create
+%{_datadir}/cbox/hooks/51_guest_mount
+%{_datadir}/cbox/hooks/52_guest_net_setup
+%{_datadir}/cbox/hooks/53_guest_fstab_setup
+%{_datadir}/cbox/hooks/54_guest_install_ssh_keys
+%{_datadir}/cbox/hooks/55_guest_create_cluster_conf
+%{_datadir}/cbox/hooks/55_guest_create_corosync_conf
+%{_datadir}/cbox/hooks/56_fix_ntp_conf
+%{_datadir}/cbox/hooks/58_guest_apply_hacks_prerun
+%{_datadir}/cbox/hooks/59_guest_umount
+%{_datadir}/cbox/hooks/60_guest_create_first_node
+%{_datadir}/cbox/hooks/60_guest_create_shared_disk
+%{_datadir}/cbox/hooks/61_guest_create_driver_node
+%{_datadir}/cbox/hooks/61_guest_start_first
+%{_datadir}/cbox/hooks/62_guest_setup_clvmd
+%{_datadir}/cbox/hooks/63_guest_setup_gfs2
+%{_datadir}/cbox/hooks/64_guest_setup_qdiskd
+%{_datadir}/cbox/hooks/67_guest_enable_daemons
+%{_datadir}/cbox/hooks/68_guest_apply_hacks_live
+%{_datadir}/cbox/hooks/69_guest_stop_first
+%{_datadir}/cbox/hooks/70_guest_clone_nodes
+%{_datadir}/cbox/hooks/71_guest_autostart_nodes
+%{_datadir}/cbox/hooks/72_guest_start_nodes
+%{_datadir}/cbox/hooks/73_guest_driver_node_postrun
+%{_datadir}/cbox/hooks/74-quest_apply_hacks_running
+%{_datadir}/cbox/hooks/99_final_cleanup
+%{_datadir}/cbox/libvirt_template.xml
+%{_datadir}/cbox/packages_ceph.ks
+%{_datadir}/cbox/packages_cman.ks
+%{_datadir}/cbox/packages_corosync.ks
+%doc %{_mandir}/man8/cbox.8*
+%{_localstatedir}/log/cbox
+
+
+%changelog
+* Wed Jul  8 2015 Boris Ranto <branto@redhat.com> - 0.0.64-1.c9fc
+- Initial release
