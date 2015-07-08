@@ -46,10 +46,20 @@ for i in $nodes; do
 		count=$((count+1))
 	done
 
+	max=60
+	count=0
 	ping_host $cboxclustername-node$i-br1
-	ssh $cboxclustername-node$i-br1 \
-	    -i /root/.ssh/id_rsa_$cboxclustername \
-	    -o StrictHostKeyChecking=no "sleep 1"
+	while ! ssh $cboxclustername-node$i-br1 \
+		-i /root/.ssh/id_rsa_$cboxclustername \
+		-o StrictHostKeyChecking=no "sleep 1"; do
+		echo "Wating for $cboxclustername-node$i-br1 to come up"
+		sleep 5
+		[ "$max" -eq "$count" ] && {
+			echo "WARNING: $cboxclustername-node$i did not respond to ssh after 300 seconds"
+			exit 1
+		}
+		count=$((count+1))
+	done
 
 done
 
