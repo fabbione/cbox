@@ -13,6 +13,9 @@ eval $(grep IMAGE_TREE cbox-guest.ks | sed -e 's/#//')
 ROOT_DISK_GB=$((($cboxvirtroot + $cboxvirtswap + 100 + 1023) / 1024))
 SHARED_DISK_GB=$((($cboxvirtshare + 1023) / 1024))
 
+truncate -s ${ROOT_DISK_GB}G $cboxclustername-boot/$cboxclustername-boot-vda.raw
+truncate -s ${SHARED_DISK_GB}G $cboxclustername-boot/$cboxclustername-boot-vdb.raw
+
 virt-install --connect=qemu:///system \
     --network=bridge:testcluster-br0,mac=54:52:00:00:00:1 \
     --network=bridge:testcluster-br1,mac=54:52:00:00:01:1 \
