@@ -29,6 +29,7 @@ HOOKS			= 01_host_update \
 			  69_guest_stop_first \
 			  70_guest_clone_nodes \
 			  71_guest_autostart_nodes \
+			  71_guest_apply_hacks_prerun \
 			  72_guest_start_nodes \
 			  73_guest_driver_node_postrun \
 			  74-quest_apply_hacks_running \

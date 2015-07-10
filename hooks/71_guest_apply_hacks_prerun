@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+
+# FIXME, not possible for now if using loop
+[ -n "$cboxuseloop" ] && exit 0
+
+echo "Apply distribution/version specific hacks pre-run for cloned nodes"
+
+cd $cboxvmsdir/$cboxclustername
+
+MOUNT=$cboxclustername-mount
+mkdir -p $MOUNT
+
+for i in $(seq 1 $cboxnumnodes); do
+	IMG=$cboxclustername-node$i.raw
+	PART=1
+	# GPT uses additional biosboot partition (no fs there)
+	blkid -p $IMG | grep gpt && PART=2
+
+	dev_name=$(virt-filesystems --block-devices -a $IMG)
+	guestmount -a $IMG -m $dev_name$PART $MOUNT
+
+	echo "Set HWADDR for $cboxclustername-node$i"
+	CFG=$MOUNT/etc/sysconfig/network-scripts/ifcfg-eth
+	# eth0
+	sed -i -e 's#HWADDR.*##g' $CFG"0"
+	echo "HWADDR=54:52:00:00:00:$(printf '%02x' $i)" >> $CFG"0"
+	# eth1
+	sed -i -e 's#HWADDR.*##g' $CFG"1"
+	echo "HWADDR=54:52:00:00:01:$(printf '%02x' $i)" >> $CFG"1"
+
+	echo "Ensuring that hostname is set to $cboxclustername-node$i"
+	echo "$cboxclustername-node$i" > $MOUNT/etc/hostname
+
+	umount $MOUNT
+done
+
+sync
+rm -rf $MOUNT
+
+exit 0

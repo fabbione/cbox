@@ -27,9 +27,9 @@ for i in $(seq 2 $cboxnumnodes); do
 		-e 's#@VCPUS@#'$cboxvirtcpus'#g' \
 		-e 's#@DISK@#'$cboxvmsdir/$cboxclustername/$cboxclustername-node$i.raw'#g' \
 		-e 's#@SHAREDDISK@#'$cboxvmsdir/$cboxclustername/$SHAREDIMG'#g' \
-		-e 's#@MACADDRESS0@#54:52:00:00:00:'$(printf '%x' $i)'#g' \
+		-e 's#@MACADDRESS0@#54:52:00:00:00:'$(printf '%02x' $i)'#g' \
 		-e 's#@BRIDGE0@#'$cboxclustername-br0'#g' \
-		-e 's#@MACADDRESS1@#54:52:00:00:01:'$(printf '%x' $i)'#g' \
+		-e 's#@MACADDRESS1@#54:52:00:00:01:'$(printf '%02x' $i)'#g' \
 		-e 's#@BRIDGE1@#'$cboxclustername-br1'#g' \
 		-e 's#@EMULATOR@#'$cboxemulator'#g' \
 		> $cboxclustername-node$i.xml
