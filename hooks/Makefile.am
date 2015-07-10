@@ -32,7 +32,7 @@ HOOKS			= 01_host_update \
 			  71_guest_apply_hacks_prerun \
 			  72_guest_start_nodes \
 			  73_guest_driver_node_postrun \
-			  74-quest_apply_hacks_running \
+			  74-guest_apply_hacks_running \
 			  99_final_cleanup
 
 EXTRA_DIST		= $(HOOKS)

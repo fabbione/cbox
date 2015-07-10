@@ -84,9 +84,10 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/cbox
 %{_datadir}/cbox/hooks/69_guest_stop_first
 %{_datadir}/cbox/hooks/70_guest_clone_nodes
 %{_datadir}/cbox/hooks/71_guest_autostart_nodes
+%{_datadir}/cbox/hooks/71_guest_apply_hacks_prerun
 %{_datadir}/cbox/hooks/72_guest_start_nodes
 %{_datadir}/cbox/hooks/73_guest_driver_node_postrun
-%{_datadir}/cbox/hooks/74-quest_apply_hacks_running
+%{_datadir}/cbox/hooks/74-guest_apply_hacks_running
 %{_datadir}/cbox/hooks/99_final_cleanup
 %{_datadir}/cbox/libvirt_template.xml
 %{_datadir}/cbox/packages_ceph.ks
