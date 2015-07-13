@@ -24,7 +24,7 @@ set -e
 
 	echo "Destroying nodes:"
 
-	for i in $(virsh list --all | grep $cboxclustername-node | awk '{print $2}'); do
+	for i in $(virsh list --all | grep $cboxclustername- | awk '{print $2}'); do
 		virsh destroy $i
 		virsh undefine $i
 	done
