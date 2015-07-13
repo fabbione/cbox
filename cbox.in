@@ -36,6 +36,11 @@ set -e
 		virsh net-undefine $cboxclustername-br$i
 	done
 
+	for i in $(mount | grep $cboxclustername | awk '{print $3}'); do
+		echo "Unmounting $i"
+		umount $i
+	done
+
 	echo "Purging nodes disks $cboxvmsdir/$cboxclustername"
 	rm -rf $cboxvmsdir/$cboxclustername
 
