@@ -1,6 +1,6 @@
 EXTRA_DIST		= autogen.sh .version make/release.mk \
 			  make/git-version-gen make/gitlog-to-changelog \
-			  cbox.in cbox.8
+			  cbox.in cbox.8 cbox.spec.in
 
 SUBDIRS			= data hooks
 
@@ -24,6 +24,24 @@ $(TARGET): $(TARGET).in
 		-e 's#EMULATOR#$(CBOXEMULATOR)#g' \
 		> $@-t && \
 	chmod 755 $@-t && mv $@-t $@
+
+cbox.spec: cbox.spec.in
+	cat $< | sed \
+		-e "s#RPM_VERSION#`echo $(VERSION)| tr -- - _`#g" \
+		-e "s#VERSION#$(VERSION)#g" \
+		> $@-t && \
+	chmod 755 $@-t && mv $@-t $@
+
+srpm: dist cbox.spec
+	rpmbuild --define "_sourcedir $$PWD" \
+	    --define "_specdir $$PWD" \
+	    --define "_builddir $$PWD" \
+	    --define "_srcrpmdir $$PWD" \
+	    --define "_rpmdir $$PWD" \
+	    --define "dist .any" \
+	    --define "fedora 21" \
+	    --define "rhel 7" \
+	    --nodeps -bs cbox.spec
 
 clean-local:
 	rm -f $(TARGET)

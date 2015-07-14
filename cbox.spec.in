@@ -1,15 +1,13 @@
-%global git_release c9fc
-
 ExclusiveArch:  x86_64
 
 Name:           cbox
-Version:        0.0.64
-Release:        1.%{git_release}%{?dist}
+Version:        RPM_VERSION
+Release:        0%{?dist}
 Summary:        Cluster in a Box
 
 License:        GPLv2
 URL:            https://github.com/fabbione/cbox.git
-Source0:        cbox-%{version}-%{git_release}.tar.bz2
+Source0:        cbox-VERSION.tar.bz2
 
 BuildRequires:  automake
 BuildRequires:  autoconf
@@ -26,7 +24,7 @@ time. Use at your own risk or do not use at all.
 
 
 %prep
-%setup -q -n %{name}-%{version}-%{git_release}
+%setup -q -n %{name}-VERSION
 
 %build
 ./autogen.sh
@@ -83,8 +81,8 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/cbox
 %{_datadir}/cbox/hooks/68_guest_apply_hacks_live
 %{_datadir}/cbox/hooks/69_guest_stop_first
 %{_datadir}/cbox/hooks/70_guest_clone_nodes
-%{_datadir}/cbox/hooks/71_guest_autostart_nodes
 %{_datadir}/cbox/hooks/71_guest_apply_hacks_prerun
+%{_datadir}/cbox/hooks/71_guest_autostart_nodes
 %{_datadir}/cbox/hooks/72_guest_start_nodes
 %{_datadir}/cbox/hooks/73_guest_driver_node_postrun
 %{_datadir}/cbox/hooks/74-guest_apply_hacks_running
@@ -98,5 +96,3 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/cbox
 
 
 %changelog
-* Wed Jul  8 2015 Boris Ranto <branto@redhat.com> - 0.0.64-1.c9fc
-- Initial release
