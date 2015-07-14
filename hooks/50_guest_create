@@ -18,8 +18,8 @@ truncate -s ${SHARED_DISK_GB}G $cboxclustername-boot/$cboxclustername-boot-vdb.r
 
 # Use script to fake TTY terminal
 script -q -c "virt-install --connect=qemu:///system \
-    --network=bridge:testcluster-br0,mac=54:52:00:00:00:1 \
-    --network=bridge:testcluster-br1,mac=54:52:00:00:01:1 \
+    --network=bridge:$cboxclustername-br0,mac=54:52:00:00:00:1 \
+    --network=bridge:$cboxclustername-br1,mac=54:52:00:00:01:1 \
     --initrd-inject=cbox-guest.ks \
     --extra-args='ks=file:/cbox-guest.ks serial console=ttyS0,115200' \
     --name=$cboxclustername-boot \
