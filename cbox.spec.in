@@ -11,10 +11,8 @@ Source0:        cbox-VERSION.tar.bz2
 
 BuildRequires:  automake
 BuildRequires:  autoconf
-BuildRequires:  appliance-tools
 BuildRequires:  qemu-system-x86
 BuildRequires:  virt-install
-Requires:       appliance-tools
 Requires:       qemu-system-x86
 Requires:       virt-install
 
