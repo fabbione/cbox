@@ -2,3 +2,5 @@
 
 ceph
 mc
+wget
+vim
